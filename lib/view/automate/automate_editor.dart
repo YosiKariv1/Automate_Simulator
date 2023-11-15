@@ -10,11 +10,18 @@ class AutomateEditor extends StatefulWidget {
 
 class _AutomateEditorState extends State<AutomateEditor> {
   List<Offset?> circleOffsets = [];
-  double offsetIndexDX = 80;
+  double offsetDX = 80;
 
   void updatePosition(int index, Offset newPosition) {
     setState(() {
       circleOffsets[index] = newPosition;
+    });
+  }
+
+  void addCircle() {
+    setState(() {
+      circleOffsets.add(Offset(offsetDX, 100));
+      ;
     });
   }
 
@@ -24,10 +31,7 @@ class _AutomateEditorState extends State<AutomateEditor> {
       appBar: AppBar(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          setState(() {
-            circleOffsets.add(Offset(offsetIndexDX, 100));
-            offsetIndexDX += 10;
-          });
+          addCircle();
         },
         child: const Icon(Icons.add),
       ),
@@ -38,24 +42,27 @@ class _AutomateEditorState extends State<AutomateEditor> {
             size: Size(MediaQuery.of(context).size.width,
                 MediaQuery.of(context).size.height),
           ),
+          // //check this part, how it works
           ...List.generate(
             circleOffsets.length,
             (index) => circleOffsets[index] != null
                 ? Positioned(
-                    left: circleOffsets[index]!.dx - 10,
-                    top: circleOffsets[index]!.dy - 10,
+                    left: circleOffsets[index]!.dx - 20,
+                    top: circleOffsets[index]!.dy - 20,
                     child: GestureDetector(
                       onPanUpdate: (details) {
                         updatePosition(
                             index, circleOffsets[index]! + details.delta);
                       },
                       child: Container(
-                        width: 20,
-                        height: 20,
+                        alignment: AlignmentDirectional.center,
+                        width: 40,
+                        height: 40,
                         decoration: const BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Colors.transparent,
+                          color: Colors.white,
                         ),
+                        child: Text("q" + index.toString()),
                       ),
                     ),
                   )

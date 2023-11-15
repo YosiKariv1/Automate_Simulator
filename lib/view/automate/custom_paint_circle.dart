@@ -13,7 +13,7 @@ class NodePaint extends CustomPainter {
 
     for (final circleOffset in circleOffsets) {
       if (circleOffset != null) {
-        canvas.drawCircle(circleOffset, 10, paint);
+        canvas.drawCircle(circleOffset, 30, paint);
       }
     }
   }
@@ -23,3 +23,7 @@ class NodePaint extends CustomPainter {
     return true;
   }
 }
+
+// run in loop for each circle in the circleoffsets list (need to check if its work everytime or just if add a circle)
+// circleoffsets will be the list in the automate class that contains all the circles
+
