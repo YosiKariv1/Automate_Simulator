@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:automate_simulator/view/constants.dart';
+import 'package:automate_simulator/constants.dart';
 import 'automate/automate_editor.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 

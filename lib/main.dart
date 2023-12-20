@@ -1,7 +1,7 @@
-import 'package:automate_simulator/view/responsive/resoibsive_layout.dart';
-import 'package:automate_simulator/view/responsive/mobile_scaffold.dart';
-import 'package:automate_simulator/view/responsive/tablet_scaffold.dart';
-import 'package:automate_simulator/view/responsive/web_scaffold.dart';
+import 'package:automate_simulator/responsive/resoibsive_layout.dart';
+import 'package:automate_simulator/responsive/mobile_scaffold.dart';
+import 'package:automate_simulator/responsive/tablet_scaffold.dart';
+import 'package:automate_simulator/responsive/web_scaffold.dart';
 import 'package:flutter/material.dart';
 
 void main() {
