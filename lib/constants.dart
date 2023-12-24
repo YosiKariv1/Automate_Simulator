@@ -15,7 +15,7 @@ final List<Widget> imageSliders = imgList
           child: Stack(
             children: <Widget>[
               Container(
-                color: item, // or specify a height
+                color: item,
               ),
             ],
           ),

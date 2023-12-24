@@ -19,16 +19,17 @@ class MyHomePage extends StatelessWidget {
               color: const Color.fromARGB(255, 205, 240, 159),
               boxShadow: const [
                 BoxShadow(
-                    color: Colors.white, blurRadius: 15.0, spreadRadius: 1.0),
+                    color: Colors.black45, blurRadius: 15.0, spreadRadius: 1.0),
               ]),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const Padding(
-                padding: EdgeInsets.only(top: 15.0, bottom: 0.0),
-                child:
-                    Text("Automate Simulator", style: TextStyle(fontSize: 30)),
+                padding: EdgeInsets.only(top: 15.0),
+                child: Text("Automate Simulator",
+                    style:
+                        TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
               ),
               const VerticalSliderDemo(),
               TextButton(

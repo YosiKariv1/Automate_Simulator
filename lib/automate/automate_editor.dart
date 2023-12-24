@@ -21,6 +21,7 @@ class _AutomateEditorState extends State<AutomateEditor> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 205, 240, 159),
       floatingActionButton: FloatingButtons(
         addNode: addNode,
         deleteNode: deleteNode,
