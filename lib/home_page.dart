@@ -9,38 +9,33 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: const Color.fromARGB(255, 135, 203, 46),
       body: Center(
         child: Container(
           width: 400,
           height: 400,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
-              color: Colors.grey[300],
-              boxShadow: [
+              color: const Color.fromARGB(255, 205, 240, 159),
+              boxShadow: const [
                 BoxShadow(
-                    color: Colors.grey.shade500,
-                    offset: const Offset(5.0, 5.0),
-                    blurRadius: 15.0,
-                    spreadRadius: 1.0),
-                const BoxShadow(
-                    color: Colors.white,
-                    offset: Offset(-0.4, -0.4),
-                    blurRadius: 15.0,
-                    spreadRadius: 1.0),
+                    color: Colors.white, blurRadius: 15.0, spreadRadius: 1.0),
               ]),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text("Automate Simulator", style: TextStyle(fontSize: 30)),
+              const Padding(
+                padding: EdgeInsets.only(top: 15.0, bottom: 0.0),
+                child:
+                    Text("Automate Simulator", style: TextStyle(fontSize: 30)),
+              ),
               const VerticalSliderDemo(),
               TextButton(
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) =>
-                            const AutomateEditor(), // replace with your actual editor widget
+                        builder: (context) => const AutomateEditor(),
                       ),
                     );
                   },
@@ -59,7 +54,7 @@ class VerticalSliderDemo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 300, // specify height
+      height: 250, // specify height
       child: CarouselSlider(
         options: CarouselOptions(
           aspectRatio: 2.0,

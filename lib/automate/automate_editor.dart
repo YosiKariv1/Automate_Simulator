@@ -21,13 +21,13 @@ class _AutomateEditorState extends State<AutomateEditor> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Finite State Automaton Simulator'),
-      ),
       floatingActionButton: FloatingButtons(
         addNode: addNode,
         deleteNode: deleteNode,
         playAction: () {},
+        onBack: () {
+          Navigator.pop(context);
+        },
       ),
       body: Stack(children: [
         CustomPaint(
@@ -90,7 +90,7 @@ class _AutomateEditorState extends State<AutomateEditor> {
   void updateTransition(DragUpdateDetails details) {
     RenderBox renderBox = context.findRenderObject() as RenderBox;
     Offset localPosition =
-        renderBox.globalToLocal(details.globalPosition - const Offset(-10, 40));
+        renderBox.globalToLocal(details.globalPosition - const Offset(-10, 0));
 
     setState(() {
       to = localPosition;

@@ -11,7 +11,7 @@ class NodePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     var paint = Paint()
-      ..color = const Color(0xff87cb2e)
+      ..color = const Color.fromARGB(255, 135, 203, 46)
       ..style = PaintingStyle.fill;
 
     canvas.drawCircle(position, diameter / 2, paint);
