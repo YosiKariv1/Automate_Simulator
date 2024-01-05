@@ -1,17 +1,18 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:automate_simulator/automate/models/node_model.dart';
 import 'package:automate_simulator/automate/painters/transition_painter.dart';
 import 'package:automate_simulator/automate/widgets/node_widget.dart';
 import 'package:automate_simulator/automate/widgets/floating_buttons.dart';
 
-class AutomateEditor extends StatefulWidget {
-  const AutomateEditor({super.key});
+class AutomateEditorMobile extends StatefulWidget {
+  const AutomateEditorMobile({super.key});
 
   @override
-  State<AutomateEditor> createState() => _AutomateEditorState();
+  State<AutomateEditorMobile> createState() => _AutomateEditorMobileState();
 }
 
-class _AutomateEditorState extends State<AutomateEditor> {
+class _AutomateEditorMobileState extends State<AutomateEditorMobile> {
   Offset? from;
   Offset? to;
   Transition? tempTransition;
@@ -31,11 +32,14 @@ class _AutomateEditorState extends State<AutomateEditor> {
         },
       ),
       body: Stack(children: [
-        CustomPaint(
-          painter: TransitionPainter(
-              transitions: transitions, tempTransition: tempTransition),
-          size: Size(MediaQuery.of(context).size.width,
-              MediaQuery.of(context).size.height),
+        GestureDetector(
+          onTapUp: _onCanvasTap,
+          child: CustomPaint(
+            painter: TransitionPainter(
+                transitions: transitions, tempTransition: tempTransition),
+            size: Size(MediaQuery.of(context).size.width,
+                MediaQuery.of(context).size.height),
+          ),
         ),
         ...nodes.map((node) {
           return NodeWidget(
@@ -122,5 +126,50 @@ class _AutomateEditorState extends State<AutomateEditor> {
       }
     }
     return null;
+  }
+
+  void _onCanvasTap(TapUpDetails details) {
+    RenderBox renderBox = context.findRenderObject() as RenderBox;
+    Offset localPosition = renderBox.globalToLocal(details.globalPosition);
+
+    for (var transition in transitions) {
+      if (transition.textRect != null &&
+          transition.textRect!.contains(localPosition)) {
+        if (kDebugMode) {
+          print("Canvas tapped");
+        }
+        _editTransitionText(transition);
+        break;
+      }
+    }
+  }
+
+  void _editTransitionText(Transition transition) {
+    final TextEditingController controller =
+        TextEditingController(text: transition.alphabet);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Edit Transition Text'),
+          content: TextField(
+            controller: controller,
+          ),
+          actions: <Widget>[
+            ElevatedButton(
+              child: const Text('OK'),
+              onPressed: () {
+                setState(() {
+                  transition.alphabet = controller.text;
+                  // Redraw the transitions with updated text
+                });
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

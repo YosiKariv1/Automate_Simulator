@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../web/home_page.dart';
 
 class WebScaffold extends StatefulWidget {
   const WebScaffold({super.key});
@@ -10,8 +11,6 @@ class WebScaffold extends StatefulWidget {
 class _WebScaffoldState extends State<WebScaffold> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Colors.red,
-    );
+    return const MyHomePage();
   }
 }

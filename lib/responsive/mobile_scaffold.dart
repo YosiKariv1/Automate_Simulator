@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../home_page.dart';
+import '../mobile/home_page.dart';
 
 class MobileScaffold extends StatefulWidget {
   const MobileScaffold({super.key});

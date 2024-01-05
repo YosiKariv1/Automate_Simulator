@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:automate_simulator/constants.dart';
-import 'automate/automate_editor.dart';
+import 'automate_editor.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class MyHomePage extends StatelessWidget {
@@ -36,7 +36,7 @@ class MyHomePage extends StatelessWidget {
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => const AutomateEditor(),
+                        builder: (context) => const AutomateEditorMobile(),
                       ),
                     );
                   },
