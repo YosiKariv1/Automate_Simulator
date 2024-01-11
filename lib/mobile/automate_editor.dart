@@ -152,17 +152,21 @@ class _AutomateEditorMobileState extends State<AutomateEditorMobile> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Edit Transition Text'),
-          content: TextField(
-            controller: controller,
-          ),
+          title: const Text('Chose a letter'),
+          content: Column(children: [
+            TextField(
+              controller: controller,
+            ),
+            TextButton(onPressed: () {}, child: const Text('A'))
+          ]),
           actions: <Widget>[
             ElevatedButton(
               child: const Text('OK'),
               onPressed: () {
                 setState(() {
                   transition.alphabet = controller.text;
-                  // Redraw the transitions with updated text
+                  
+                  
                 });
                 Navigator.of(context).pop();
               },
