@@ -80,39 +80,3 @@ class _NodeWidgetState extends State<NodeWidget> {
     );
   }
 }
-
-class TransitionCircleWidget extends StatelessWidget {
-  final Offset position;
-  final Function onStartTransition;
-  final Function onUpdateTransition;
-  final Function onEndTransition;
-
-  const TransitionCircleWidget({
-    super.key,
-    required this.position,
-    required this.onStartTransition,
-    required this.onUpdateTransition,
-    required this.onEndTransition,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Positioned(
-      left: position.dx,
-      top: position.dy,
-      child: GestureDetector(
-        onPanStart: (_) => onStartTransition(),
-        onPanUpdate: (details) => onUpdateTransition(details.localPosition),
-        onPanEnd: (_) => onEndTransition(),
-        child: Container(
-          width: 20, // Size of the small circle
-          height: 20,
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.grey,
-          ),
-        ),
-      ),
-    );
-  }
-}

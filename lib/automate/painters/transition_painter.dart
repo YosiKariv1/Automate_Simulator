@@ -10,7 +10,7 @@ class Transition {
   String alphabet;
 
   Transition(this.start, this.end,
-      {this.node, this.target, this.textRect, this.alphabet = 'a'});
+      {this.node, this.target, this.textRect, this.alphabet = ''});
 }
 
 class TransitionPainter extends CustomPainter {

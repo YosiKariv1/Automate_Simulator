@@ -159,7 +159,7 @@ class _AutomateEditorMobileState extends State<AutomateEditorMobile> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Chose a letter'),
+          title: const Text('Choose a letter'),
           content: Column(children: [
             TextField(
               controller: controller,
