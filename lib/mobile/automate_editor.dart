@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:automate_simulator/automate/models/node_model.dart';
 import 'package:automate_simulator/automate/painters/transition_painter.dart';
 import 'package:automate_simulator/automate/widgets/node_widget.dart';
-import 'package:automate_simulator/automate/widgets/floating_buttons.dart';
+import 'package:automate_simulator/mobile/widgets/floating_buttons.dart';
+import 'package:automate_simulator/automate/models/automate_model.dart';
 
 class AutomateEditorMobile extends StatefulWidget {
-  const AutomateEditorMobile({super.key});
+  final AutomateModel automateModel;
+  const AutomateEditorMobile({super.key, required this.automateModel});
 
   @override
   State<AutomateEditorMobile> createState() => _AutomateEditorMobileState();
@@ -17,7 +19,6 @@ class _AutomateEditorMobileState extends State<AutomateEditorMobile> {
   Offset? to;
   Transition? tempTransition;
   List<Transition> transitions = [];
-  List<NodeModel> nodes = [];
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +42,7 @@ class _AutomateEditorMobileState extends State<AutomateEditorMobile> {
                 MediaQuery.of(context).size.height),
           ),
         ),
-        ...nodes.map((node) {
+        ...widget.automateModel.nodes.map((node) {
           return NodeWidget(
             node: node,
             updatePosition: updatePosition,
@@ -57,27 +58,30 @@ class _AutomateEditorMobileState extends State<AutomateEditorMobile> {
 //====================================== Nodes Functions ====================================//
   void addNode() {
     setState(() {
-      nodes.add(NodeModel(
-          name: 'q${nodes.length}',
-          location: const Offset(100, 100),
+      widget.automateModel.nodes.add(NodeModel(
+          name: 'q${widget.automateModel.nodes.length}',
+          location: const Offset(200, 200),
           next: {},
           ifFinal: false));
     });
+    if (kDebugMode) {
+      print('Adding node:${widget.automateModel.nodes.last.name}');
+    }
   }
 
   void updatePosition(NodeModel node, Offset newPos) {
     setState(() {
-      int index = nodes.indexOf(node);
+      int index = widget.automateModel.nodes.indexOf(node);
       if (index != -1) {
-        nodes[index].location += newPos;
+        widget.automateModel.nodes[index].location += newPos;
       }
     });
   }
 
   void deleteNode() {
     setState(() {
-      NodeModel nodeToDelete = nodes.last;
-      nodes.removeLast();
+      NodeModel nodeToDelete = widget.automateModel.nodes.last;
+      widget.automateModel.nodes.removeLast();
 
       transitions.removeWhere((transition) =>
           transition.node == nodeToDelete || transition.target == nodeToDelete);
@@ -110,6 +114,7 @@ class _AutomateEditorMobileState extends State<AutomateEditorMobile> {
         transitions.add(Transition(from!, targetNode.leftCirclePosition(),
             node: node, target: targetNode));
         tempTransition = null;
+        //adding the next node to the array of the current node
         node.next![targetNode.name] = targetNode;
       });
     } else {
@@ -120,13 +125,15 @@ class _AutomateEditorMobileState extends State<AutomateEditorMobile> {
   }
 
   NodeModel? findNodeAtPosition(Offset position) {
-    for (var node in nodes) {
+    for (var node in widget.automateModel.nodes) {
       if ((position - node.leftCirclePosition()).distance <= 30) {
         return node;
       }
     }
     return null;
   }
+
+//=================================== Clicking on the line and Dialog box ================================//
 
   void _onCanvasTap(TapUpDetails details) {
     RenderBox renderBox = context.findRenderObject() as RenderBox;
@@ -157,7 +164,14 @@ class _AutomateEditorMobileState extends State<AutomateEditorMobile> {
             TextField(
               controller: controller,
             ),
-            TextButton(onPressed: () {}, child: const Text('A'))
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton(onPressed: () {}, child: const Text('A')),
+                TextButton(onPressed: () {}, child: const Text('B')),
+                TextButton(onPressed: () {}, child: const Text('C')),
+              ],
+            )
           ]),
           actions: <Widget>[
             ElevatedButton(
@@ -165,8 +179,6 @@ class _AutomateEditorMobileState extends State<AutomateEditorMobile> {
               onPressed: () {
                 setState(() {
                   transition.alphabet = controller.text;
-                  
-                  
                 });
                 Navigator.of(context).pop();
               },

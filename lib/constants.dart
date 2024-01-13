@@ -8,16 +8,3 @@ final List<Color> imgList = [
   const Color.fromARGB(255, 14, 17, 212),
   const Color.fromARGB(255, 29, 228, 11),
 ];
-
-final List<Widget> imageSliders = imgList
-    .map((item) => ClipRRect(
-          borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-          child: Stack(
-            children: <Widget>[
-              Container(
-                color: item,
-              ),
-            ],
-          ),
-        ))
-    .toList();
