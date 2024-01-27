@@ -19,22 +19,19 @@ class _SimpleInputPageState extends State<SimpleInputPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Simple Input Page'),
+        title: const Text('Automate Setting Page'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TextField(
-              controller: _textController,
-              decoration: const InputDecoration(
-                labelText: 'Enter something',
-                border: OutlineInputBorder(),
-              ),
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          TextField(
+            controller: _textController,
+            decoration: const InputDecoration(
+              labelText: 'Enter alphabet',
+              border: OutlineInputBorder(),
             ),
-          ],
-        ),
+          ),
+        ]),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

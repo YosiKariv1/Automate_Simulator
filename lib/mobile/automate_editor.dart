@@ -116,6 +116,8 @@ class _AutomateEditorMobileState extends State<AutomateEditorMobile> {
         tempTransition = null;
         //adding the next node to the array of the current node
         node.next![targetNode.name] = targetNode;
+        //open a dialog box to choose the letter when you finish to draw the line
+        _editTransitionText(transitions.last);
       });
     } else {
       setState(() {
@@ -152,28 +154,56 @@ class _AutomateEditorMobileState extends State<AutomateEditorMobile> {
   }
 
   void _editTransitionText(Transition transition) {
-    final TextEditingController controller =
-        TextEditingController(text: transition.alphabet);
+    final controller = TextEditingController(text: transition.alphabet);
+    final selectedLetters = <String>{};
+
+    void updateText() {
+      controller.text = selectedLetters.join(',');
+    }
 
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Choose a letter'),
-          content: Column(children: [
-            TextField(
-              controller: controller,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+          content: SingleChildScrollView(
+            child: Column(
               children: [
-                TextButton(onPressed: () {}, child: const Text('A')),
-                TextButton(onPressed: () {}, child: const Text('B')),
-                TextButton(onPressed: () {}, child: const Text('C')),
+                TextField(
+                  controller: controller,
+                  readOnly: true, // Makes the text field non-interactive
+                  decoration: const InputDecoration(
+                    hintText: 'select the letters',
+                    border:
+                        OutlineInputBorder(), // Optional: adds an outline border
+                  ),
+                ),
+                Wrap(
+                  alignment: WrapAlignment.center,
+                  spacing: 8.0,
+                  children: widget.automateModel.alphabet.map((letter) {
+                    return TextButton(
+                      onPressed: () {
+                        if (selectedLetters.add(letter)) {
+                          setState(updateText);
+                        }
+                      },
+                      child: Text(letter),
+                    );
+                  }).toList(),
+                ),
               ],
-            )
-          ]),
-          actions: <Widget>[
+            ),
+          ),
+          actions: [
+            ElevatedButton(
+              child: const Text('Delete'),
+              onPressed: () {
+                if (selectedLetters.remove(selectedLetters.last)) {
+                  setState(updateText);
+                }
+              },
+            ),
             ElevatedButton(
               child: const Text('OK'),
               onPressed: () {
