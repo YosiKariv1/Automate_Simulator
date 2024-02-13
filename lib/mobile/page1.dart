@@ -1,4 +1,4 @@
-import 'package:automate_simulator/automate/models/automate_model.dart';
+import 'package:automate_simulator/automate/controllers/automate_controller.dart';
 import 'package:automate_simulator/mobile/automate_editor.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +13,7 @@ class SimpleInputPage extends StatefulWidget {
 
 class _SimpleInputPageState extends State<SimpleInputPage> {
   final TextEditingController _textController = TextEditingController();
-  AutomateModel automateModel = AutomateModel();
+  AutomateController automateController = AutomateController();
 
   @override
   Widget build(BuildContext context) {
@@ -35,14 +35,14 @@ class _SimpleInputPageState extends State<SimpleInputPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          automateModel.alphabet = _textController.text.split('');
+          automateController.model.alphabet = _textController.text.split('');
           Navigator.of(context).push(MaterialPageRoute(
               builder: (_) => AutomateEditorMobile(
-                    automateModel: automateModel,
+                    automatonController: automateController,
                   )));
           if (kDebugMode) {
             print('Next button pressed with text: ${_textController.text}');
-            print('The alphabet text is: ${automateModel.alphabet}');
+            print('The alphabet text is: ${automateController.model.alphabet}');
           }
         },
         child: const Icon(Icons.navigate_next),

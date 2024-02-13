@@ -5,13 +5,15 @@ class FloatingButtons extends StatelessWidget {
   final VoidCallback deleteNode;
   final VoidCallback playAction;
   final VoidCallback onBack;
+  final VoidCallback onInfo;
 
   const FloatingButtons({
     super.key,
     required this.addNode,
     required this.deleteNode,
     required this.playAction,
-    required this.onBack, // Add this
+    required this.onBack,
+    required this.onInfo,
   });
 
   @override
@@ -19,15 +21,25 @@ class FloatingButtons extends StatelessWidget {
     return Stack(children: [
       Align(
         alignment: Alignment.topLeft,
-        child: Padding(
-          padding: EdgeInsets.only(
-              top: MediaQuery.of(context).size.height * 0.08,
-              left: MediaQuery.of(context).size.width * 0.08),
-          child: FloatingActionButton(
-            onPressed: onBack,
-            heroTag: 'backButton',
-            child: const Icon(Icons.arrow_back),
-          ),
+        child: Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * 0.08,
+                  left: MediaQuery.of(context).size.width * 0.08),
+              child: FloatingActionButton(
+                onPressed: onBack,
+                heroTag: 'backButton',
+                child: const Icon(Icons.arrow_back),
+              ),
+            ),
+            FloatingActionButton(
+              onPressed: onInfo,
+              heroTag: 'infoButton',
+              child: const Icon(Icons.info),
+            ),
+            //
+          ],
         ),
       ),
       Align(

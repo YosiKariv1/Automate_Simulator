@@ -11,6 +11,7 @@ class WebScaffold extends StatefulWidget {
 class _WebScaffoldState extends State<WebScaffold> {
   @override
   Widget build(BuildContext context) {
-    return const MyHomePage();
+    return Container();
+    //return const MyHomePage();
   }
 }
