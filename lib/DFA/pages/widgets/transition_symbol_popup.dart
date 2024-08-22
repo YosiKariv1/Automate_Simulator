@@ -7,11 +7,11 @@ class TransitionSymbolPopup extends StatefulWidget {
   final Set<String> usedSymbols;
 
   const TransitionSymbolPopup({
-    Key? key,
+    super.key,
     required this.alphabet,
     required this.initialSymbols,
     required this.usedSymbols,
-  }) : super(key: key);
+  });
 
   @override
   TransitionSymbolPopupState createState() => TransitionSymbolPopupState();

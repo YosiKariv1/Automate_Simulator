@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:myapp/DFA/pages/widgets/enter_word_widget.dart';
 import 'package:myapp/PDA/widgets/stack_widget.dart';
 import 'package:myapp/PDA/editor_widget.dart';
 import 'package:myapp/classes/pda_class.dart';
@@ -154,33 +153,14 @@ class PdaPageState extends State<PdaPage> {
   }
 
   Widget buildRightPanel(bool isWideScreen) {
-    return Expanded(
+    return const Expanded(
       flex: 1,
       child: Column(
         children: [
-          const EnterWordWidget(),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(26.0),
-                  border: Border.all(
-                    color: Colors.deepPurple.shade500,
-                    width: 4.0,
-                  ),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 15.0,
-                      offset: Offset(0, 10),
-                    ),
-                  ],
-                ),
-                child: const StackWidget(),
-              ),
+              padding: EdgeInsets.all(8.0),
+              child: StackWidget(),
             ),
           ),
         ],

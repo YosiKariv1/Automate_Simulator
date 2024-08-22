@@ -7,11 +7,11 @@ class PDATransitionPopup extends StatefulWidget {
   final Set<String> usedSymbols;
 
   const PDATransitionPopup({
-    Key? key,
+    super.key,
     required this.alphabet,
     required this.initialSymbols,
     required this.usedSymbols,
-  }) : super(key: key);
+  });
 
   @override
   PDATransitionPopupState createState() => PDATransitionPopupState();

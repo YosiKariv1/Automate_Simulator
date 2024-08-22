@@ -159,93 +159,12 @@ class PdaPageState extends State<PdaPage> {
   }
 
   Widget buildRightPanel(bool isWideScreen) {
-    return Expanded(
+    return const Expanded(
       flex: 1,
       child: Column(
         children: [
-          buildEnterWordWidget(), // כאן הכנסנו את הווידג'ט החדש
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                key: stackKey,
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(26.0),
-                  border: Border.all(
-                    color: Colors.deepPurple.shade500,
-                    width: 4.0,
-                  ),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 15.0,
-                      offset: Offset(0, 10),
-                    ),
-                  ],
-                ),
-                child: const StackWidget(),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget buildEnterWordWidget() {
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      margin: const EdgeInsets.all(8.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(25.0),
-        border: Border.all(
-          color: Colors.deepPurple,
-          width: 4.0,
-        ),
-        boxShadow: const [
-          BoxShadow(color: Colors.black12, blurRadius: 10.0),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          TextField(
-            controller: inputController,
-            decoration: InputDecoration(
-              labelText: 'Enter a word to push to stack',
-              labelStyle: TextStyle(color: Colors.deepPurple.shade700),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.deepPurple.shade700),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-            ),
-          ),
-          const SizedBox(height: 10),
-          ElevatedButton(
-            onPressed: () {
-              final inputWord = inputController.text.trim();
-              if (inputWord.isNotEmpty) {
-                for (var char in inputWord.split('')) {
-                  automaton.pushToStack(char);
-                }
-              }
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.deepPurple.shade600,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-            ),
-            child: const Text(
-              'Submit',
-              style: TextStyle(color: Colors.white),
-            ),
+            child: Padding(padding: EdgeInsets.all(8.0), child: StackWidget()),
           ),
         ],
       ),

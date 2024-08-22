@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/TM/simulator/tm_algorithm.dart';
 import 'package:myapp/classes/node_class.dart';
 import 'package:myapp/classes/rule_class.dart';
 import 'package:myapp/classes/tape_class.dart';
@@ -102,7 +101,7 @@ class TuringMachine extends ChangeNotifier {
     );
     nodes.add(node);
     print(
-        "Node added for rule ID: ${rule.id}, Node Position: (${xPosition}, ${yPosition})");
+        "Node added for rule ID: ${rule.id}, Node Position: ($xPosition, $yPosition)");
     notifyListeners();
   }
 
