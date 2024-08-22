@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
-import 'package:myapp/classes/automaton_class.dart';
+import 'package:myapp/classes/dfa_class.dart';
 import 'package:myapp/classes/node_class.dart';
-import 'package:myapp/classes/transmition_class.dart';
+import 'package:myapp/classes/transition_class.dart';
 import 'package:myapp/DFA/simulator/dfa_algorithm.dart';
 
 class Simulator extends ValueNotifier<bool> {
-  final Automaton automaton;
+  final DFA automaton;
   DfaAlgorithm algorithm = DfaAlgorithm();
   List<SimulationStep> steps = [];
   int currentStepIndex = -1;

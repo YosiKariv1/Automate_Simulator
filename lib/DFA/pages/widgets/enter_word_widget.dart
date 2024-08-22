@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:myapp/classes/automaton_class.dart';
+import 'package:myapp/classes/dfa_class.dart';
 import 'package:myapp/DFA/info/regex_info.dart';
 import 'package:provider/provider.dart';
 
-class RegxWidget extends StatefulWidget {
-  const RegxWidget({super.key});
+class EnterWordWidget extends StatefulWidget {
+  const EnterWordWidget({super.key});
 
   @override
-  RegxWidgetState createState() => RegxWidgetState();
+  EnterWordWidgetState createState() => EnterWordWidgetState();
 }
 
-class RegxWidgetState extends State<RegxWidget> {
-  late Automaton automatonModel;
+class EnterWordWidgetState extends State<EnterWordWidget> {
+  late DFA automatonModel;
   bool showInputField = false;
   final TextEditingController textController = TextEditingController();
   String inputText = "";
@@ -20,7 +20,7 @@ class RegxWidgetState extends State<RegxWidget> {
   @override
   void initState() {
     super.initState();
-    automatonModel = Provider.of<Automaton>(context, listen: false);
+    automatonModel = Provider.of<DFA>(context, listen: false);
   }
 
   @override

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/classes/automaton_class.dart';
+import 'package:myapp/classes/dfa_class.dart';
 
 class AutomatonValidator {
-  static bool validateAndNotify(BuildContext context, Automaton automaton) {
+  static bool validateAndNotify(BuildContext context, DFA automaton) {
     String alphabetString = automaton.alphabet;
     List<String> messages = [];
     bool hasAcceptingState = automaton.nodes.any((node) => node.isAccepting);

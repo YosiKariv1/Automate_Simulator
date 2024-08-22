@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:myapp/DFA/pages/widgets/enter_word_widget.dart';
 import 'package:myapp/PDA/widgets/stack_widget.dart';
 import 'package:myapp/PDA/editor_widget.dart';
 import 'package:myapp/classes/pda_class.dart';
@@ -15,6 +14,11 @@ class PdaPage extends StatefulWidget {
 
 class PdaPageState extends State<PdaPage> {
   late PDA automaton;
+  final TextEditingController inputController = TextEditingController();
+
+  final GlobalKey editorKey = GlobalKey();
+  final GlobalKey controlPanelKey = GlobalKey();
+  final GlobalKey stackKey = GlobalKey();
 
   @override
   void initState() {
@@ -132,6 +136,7 @@ class PdaPageState extends State<PdaPage> {
             ),
             const SizedBox(height: 10),
             Container(
+              key: controlPanelKey,
               decoration: BoxDecoration(
                 color: Colors.blueGrey[50],
                 borderRadius: BorderRadius.circular(20.0),
@@ -158,11 +163,12 @@ class PdaPageState extends State<PdaPage> {
       flex: 1,
       child: Column(
         children: [
-          const EnterWordWidget(),
+          buildEnterWordWidget(), // כאן הכנסנו את הווידג'ט החדש
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
+                key: stackKey,
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -181,6 +187,64 @@ class PdaPageState extends State<PdaPage> {
                 ),
                 child: const StackWidget(),
               ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildEnterWordWidget() {
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      margin: const EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(25.0),
+        border: Border.all(
+          color: Colors.deepPurple,
+          width: 4.0,
+        ),
+        boxShadow: const [
+          BoxShadow(color: Colors.black12, blurRadius: 10.0),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          TextField(
+            controller: inputController,
+            decoration: InputDecoration(
+              labelText: 'Enter a word to push to stack',
+              labelStyle: TextStyle(color: Colors.deepPurple.shade700),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.deepPurple.shade700),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          ElevatedButton(
+            onPressed: () {
+              final inputWord = inputController.text.trim();
+              if (inputWord.isNotEmpty) {
+                for (var char in inputWord.split('')) {
+                  automaton.pushToStack(char);
+                }
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.deepPurple.shade600,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+            ),
+            child: const Text(
+              'Submit',
+              style: TextStyle(color: Colors.white),
             ),
           ),
         ],

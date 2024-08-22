@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myapp/DFA/simulator/regex_display_widget.dart';
-import 'package:myapp/classes/automaton_class.dart';
+import 'package:myapp/classes/dfa_class.dart';
 import 'package:myapp/DFA/info/dfa_info.dart';
 import 'package:myapp/DFA/info/welcome_popup.dart';
 import 'package:myapp/DFA/pages/widgets/animated_border.dart';
 import 'package:myapp/DFA/pages/widgets/editor_widget.dart';
-import 'package:myapp/DFA/pages/widgets/regx_widget.dart';
+import 'package:myapp/DFA/pages/widgets/enter_word_widget.dart';
 import 'package:myapp/DFA/simulator/simulation_control_panel.dart';
 import 'package:myapp/DFA/simulator/simulator_class.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +21,7 @@ class DfaPage extends StatefulWidget {
 
 class DfaPageState extends State<DfaPage> {
   late Simulator simulator;
-  late Automaton automaton;
+  late DFA automaton;
 
   final GlobalKey editorKey = GlobalKey();
   final GlobalKey regxKey = GlobalKey();
@@ -31,7 +31,7 @@ class DfaPageState extends State<DfaPage> {
   @override
   void initState() {
     super.initState();
-    automaton = Provider.of<Automaton>(context, listen: false);
+    automaton = Provider.of<DFA>(context, listen: false);
     simulator = Simulator(automaton);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await showWelcomeDialog(context);
@@ -147,7 +147,7 @@ class DfaPageState extends State<DfaPage> {
                                   ),
                                 ],
                               ),
-                              child: EditorWidget(key: editorKey),
+                              child: DFAEditorWidget(key: editorKey),
                             ),
                             AnimatedBorder(isSimulating: isSimulating),
                           ],
@@ -228,7 +228,7 @@ class DfaPageState extends State<DfaPage> {
           BoxShadow(color: Colors.black12, blurRadius: 10.0),
         ],
       ),
-      child: const RegxWidget(),
+      child: const EnterWordWidget(),
     );
   }
 

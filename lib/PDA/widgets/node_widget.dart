@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:myapp/classes/dfa_class.dart';
+import 'package:myapp/classes/pda_class.dart';
 import 'package:myapp/classes/node_class.dart';
 import 'package:provider/provider.dart';
 
-class NodeWidget extends StatelessWidget {
-  const NodeWidget({super.key});
+class PDANodeWidget extends StatelessWidget {
+  const PDANodeWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Consumer<Node>(
       builder: (context, node, child) {
         Offset localPosition = Offset.zero;
-        DFA automaton = Provider.of<DFA>(context, listen: false);
+        PDA automaton = Provider.of<PDA>(context, listen: false);
 
         return Stack(
           children: [

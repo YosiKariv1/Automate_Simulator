@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:arrow_path/arrow_path.dart';
-import 'package:myapp/classes/transmition_class.dart';
+import 'package:myapp/classes/transition_class.dart';
 
 class TransitionPainter extends CustomPainter {
   final List<Transition> transitions;

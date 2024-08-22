@@ -3,7 +3,7 @@ import 'package:myapp/TM/simulator/tm_algorithm.dart';
 import 'package:myapp/classes/node_class.dart';
 import 'package:myapp/classes/rule_class.dart';
 import 'package:myapp/classes/tape_class.dart';
-import 'package:myapp/classes/transmition_class.dart';
+import 'package:myapp/classes/transition_class.dart';
 
 class TuringMachine extends ChangeNotifier {
   List<Rule> rules;

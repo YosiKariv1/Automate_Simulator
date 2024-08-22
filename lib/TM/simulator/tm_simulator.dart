@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:myapp/TM/simulator/tm_algorithm.dart';
 import 'package:myapp/classes/turing_machine_class.dart';
 import 'package:myapp/classes/node_class.dart';
-import 'package:myapp/classes/transmition_class.dart';
+import 'package:myapp/classes/transition_class.dart';
 
 class TuringSimulator extends ValueNotifier<bool> {
   final TuringMachine turingMachine;

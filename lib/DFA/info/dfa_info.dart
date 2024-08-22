@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:myapp/classes/automaton_class.dart';
+import 'package:myapp/classes/dfa_class.dart';
 import 'package:provider/provider.dart';
 
 class DfaInfoWidget extends StatelessWidget {
@@ -8,7 +8,7 @@ class DfaInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<Automaton>(
+    return Consumer<DFA>(
       builder: (context, automaton, child) {
         if (automaton.nodes.isEmpty) {
           return Center(
@@ -82,7 +82,7 @@ class DfaInfoWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildTransitionTable(Automaton automaton) {
+  Widget _buildTransitionTable(DFA automaton) {
     if (automaton.transitions.isEmpty) {
       return Card(
         child: Padding(
@@ -204,8 +204,7 @@ class DfaInfoWidget extends StatelessWidget {
     );
   }
 
-  String _getNextState(
-      Automaton automaton, String currentState, String symbol) {
+  String _getNextState(DFA automaton, String currentState, String symbol) {
     for (var transition in automaton.transitions) {
       if (transition.from.name == currentState &&
           transition.symbol.contains(symbol)) {
@@ -215,7 +214,7 @@ class DfaInfoWidget extends StatelessWidget {
     return '-';
   }
 
-  String _getAcceptStates(Automaton automaton) {
+  String _getAcceptStates(DFA automaton) {
     var acceptStates =
         automaton.nodes.where((n) => n.isAccepting).map((n) => n.name).toList();
     return acceptStates.isNotEmpty ? acceptStates.join(', ') : 'None';

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myapp/DFA/pages/widgets/transition_painter.dart';
 import 'package:myapp/classes/turing_machine_class.dart';
-import 'package:myapp/classes/transmition_class.dart';
+import 'package:myapp/classes/transition_class.dart';
 import 'package:provider/provider.dart';
 
 class TuringTransitionWidget extends StatelessWidget {

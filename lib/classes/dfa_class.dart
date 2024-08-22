@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp/classes/node_class.dart';
-import 'package:myapp/classes/transmition_class.dart';
+import 'package:myapp/classes/transition_class.dart';
 import 'package:myapp/DFA/pages/widgets/transition_symbol_popup.dart';
 
-class Automaton extends ChangeNotifier {
+class DFA extends ChangeNotifier {
   List<Node> nodes = [];
   List<Transition> transitions = [];
   Transition? tempTransition;

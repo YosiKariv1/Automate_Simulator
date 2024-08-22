@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/classes/automaton_class.dart';
+import 'package:myapp/classes/dfa_class.dart';
 import 'package:provider/provider.dart';
 
 class WelcomeDialog extends StatelessWidget {
@@ -9,7 +9,7 @@ class WelcomeDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final automaton = Provider.of<Automaton>(context, listen: false);
+    final automaton = Provider.of<DFA>(context, listen: false);
 
     return Directionality(
       textDirection: TextDirection.ltr,

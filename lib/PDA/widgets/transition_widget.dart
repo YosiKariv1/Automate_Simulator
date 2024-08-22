@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:myapp/classes/dfa_class.dart';
-import 'package:myapp/classes/transition_class.dart';
-import 'package:myapp/DFA/pages/widgets/transition_symbol_popup.dart';
 import 'package:myapp/DFA/pages/widgets/transition_painter.dart';
+import 'package:myapp/PDA/tansition_popup.dart';
+import 'package:myapp/classes/pda_class.dart';
+import 'package:myapp/classes/transition_class.dart';
 import 'package:provider/provider.dart';
 
-class TransitionWidget extends StatelessWidget {
-  const TransitionWidget({super.key});
+class PDATransitionWidget extends StatelessWidget {
+  const PDATransitionWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<DFA>(
+    return Consumer<PDA>(
       builder: (context, automaton, child) {
         return Stack(
           children: [
@@ -54,7 +53,7 @@ class TransitionWidget extends StatelessWidget {
   }
 
   Future<void> _showEditTransitionDialog(BuildContext context,
-      Transition transition, String alphabet, DFA automaton) async {
+      Transition transition, String alphabet, PDA automaton) async {
     Set<String> usedSymbols = automaton.transitions
         .where((t) => t.from == transition.from && t != transition)
         .expand((t) => t.symbol)
@@ -63,7 +62,7 @@ class TransitionWidget extends StatelessWidget {
     final result = await showDialog<Set<String>>(
       context: context,
       builder: (BuildContext context) {
-        return TransitionSymbolPopup(
+        return PDATransitionPopup(
           alphabet: alphabet,
           initialSymbols: transition.symbol,
           usedSymbols: usedSymbols,
@@ -77,14 +76,9 @@ class TransitionWidget extends StatelessWidget {
   }
 
   Widget buildTransitionContainer(Transition transition) {
-    Color transitionColor;
-    if (transition.isInSimulation) {
-      transitionColor = Colors.red;
-    } else if (transition.isPermanentHighlighted) {
-      transitionColor = Colors.green;
-    } else {
-      transitionColor = Colors.white;
-    }
+    Color transitionColor = transition.isInSimulation
+        ? Colors.red
+        : (transition.isPermanentHighlighted ? Colors.green : Colors.white);
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
@@ -114,7 +108,8 @@ class TransitionWidget extends StatelessWidget {
                 : null,
       ),
       child: Center(
-        child: buildTransitionText(transition.symbol.join(','),
+        child: buildTransitionText(
+            "${transition.read} / ${transition.write} -> ${transition.direction}",
             transition.isInSimulation || transition.isPermanentHighlighted),
       ),
     );
@@ -123,7 +118,7 @@ class TransitionWidget extends StatelessWidget {
   Widget buildTransitionText(String label, bool isHighlighted) {
     return Text(
       label,
-      style: GoogleFonts.poppins(
+      style: TextStyle(
         color: isHighlighted ? Colors.white : Colors.black,
         fontSize: 12,
         fontWeight: isHighlighted ? FontWeight.bold : FontWeight.normal,

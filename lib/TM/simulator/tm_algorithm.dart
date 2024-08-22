@@ -1,6 +1,6 @@
 import 'package:myapp/TM/simulator/tm_simulator.dart';
 import 'package:myapp/classes/node_class.dart';
-import 'package:myapp/classes/transmition_class.dart';
+import 'package:myapp/classes/transition_class.dart';
 import 'package:myapp/classes/turing_machine_class.dart';
 
 class TuringAlgorithm {

@@ -1,6 +1,6 @@
-import 'package:myapp/classes/automaton_class.dart';
+import 'package:myapp/classes/dfa_class.dart';
 import 'package:myapp/classes/node_class.dart';
-import 'package:myapp/classes/transmition_class.dart';
+import 'package:myapp/classes/transition_class.dart';
 import 'package:myapp/DFA/simulator/simulator_class.dart';
 
 class NodeWithTransitions {
@@ -11,7 +11,7 @@ class NodeWithTransitions {
 }
 
 class DfaAlgorithm {
-  List<NodeWithTransitions> buildDataStructure(Automaton automaton) {
+  List<NodeWithTransitions> buildDataStructure(DFA automaton) {
     List<NodeWithTransitions> structure = [];
 
     for (var node in automaton.nodes) {
@@ -24,7 +24,7 @@ class DfaAlgorithm {
     return structure;
   }
 
-  List<SimulationStep> simulate(Automaton automaton, String input) {
+  List<SimulationStep> simulate(DFA automaton, String input) {
     List<SimulationStep> steps = [];
     List<NodeWithTransitions> structure = buildDataStructure(automaton);
 

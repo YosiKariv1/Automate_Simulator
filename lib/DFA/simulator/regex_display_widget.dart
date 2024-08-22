@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/classes/automaton_class.dart';
+import 'package:myapp/classes/dfa_class.dart';
 import 'package:myapp/DFA/simulator/simulator_class.dart';
 import 'package:provider/provider.dart';
 
@@ -15,7 +15,7 @@ class RegexDisplayWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<Automaton>(
+    return Consumer<DFA>(
       builder: (context, automaton, child) {
         return AnimatedOpacity(
           duration: const Duration(milliseconds: 300),
