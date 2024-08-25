@@ -1,107 +1,94 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class StackWidget extends StatefulWidget {
   const StackWidget({super.key});
 
   @override
-  _StackWidgetState createState() => _StackWidgetState();
+  StackWidgetState createState() => StackWidgetState();
 }
 
-class _StackWidgetState extends State<StackWidget> {
-  List<String> _stack = [];
-
-  void _showInputDialog() {
-    TextEditingController textController = TextEditingController();
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Enter a word'),
-          content: TextField(
-            controller: textController,
-            decoration: const InputDecoration(
-              labelText: 'Word',
-              border: OutlineInputBorder(),
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            ElevatedButton(
-              child: const Text('Submit'),
-              onPressed: () {
-                final inputWord = textController.text.trim();
-                if (inputWord.isNotEmpty) {
-                  setState(() {
-                    _stack.addAll(inputWord.split(''));
-                  });
-                  Navigator.of(context)
-                      .pop(); // Close the dialog after submission
-                }
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+class StackWidgetState extends State<StackWidget> {
+  final List<String> _stack = [];
+  final TextEditingController textController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(12.0),
-      decoration: BoxDecoration(
-        color: Colors.deepPurple[50],
-        border: Border.all(color: Colors.deepPurple, width: 2),
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black26,
-            blurRadius: 10,
-            offset: Offset(0, 5),
-          ),
-        ],
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Stack(
-            children: [
-              Align(
-                alignment: Alignment.center,
-                child: Text(
-                  'Stack',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.deepPurple[800],
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: IconButton(
-                  icon: Icon(Icons.add_circle_outline,
-                      color: Colors.deepPurple[800]),
-                  onPressed: _showInputDialog,
-                ),
-              ),
-            ],
-          ),
           const SizedBox(height: 10),
           Expanded(
-            child: SingleChildScrollView(
-              reverse: true, // Start the scroll view from the bottom
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: _buildStackVisualization(),
+            child: _stack.isEmpty
+                ? Center(
+                    child: Text(
+                      'The stack is empty.',
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        color: Colors.deepPurple[800],
+                      ),
+                    ),
+                  )
+                : Column(
+                    children: [
+                      Expanded(
+                        child: SingleChildScrollView(
+                          reverse: true,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: _buildStackVisualization(),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                    ],
+                  ),
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: textController,
+                  decoration: InputDecoration(
+                    hintText: 'Enter text to push',
+                    hintStyle: GoogleFonts.poppins(),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide:
+                          const BorderSide(color: Colors.deepPurple, width: 2),
+                    ),
+                  ),
+                  style: GoogleFonts.poppins(),
+                ),
               ),
-            ),
+              const SizedBox(width: 10),
+              ElevatedButton(
+                onPressed: () {
+                  final inputWord = textController.text.trim();
+                  if (inputWord.isNotEmpty) {
+                    setState(() {
+                      _stack.addAll(inputWord.split(''));
+                      textController.clear();
+                    });
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.deepPurple,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: Text('Push', style: GoogleFonts.poppins()),
+              ),
+            ],
           ),
         ],
       ),
@@ -109,24 +96,12 @@ class _StackWidgetState extends State<StackWidget> {
   }
 
   List<Widget> _buildStackVisualization() {
-    if (_stack.isEmpty) {
-      return [
-        Text(
-          'The stack is empty.',
-          style: TextStyle(
-            fontSize: 14, // Reduced font size
-            color: Colors.deepPurple[800],
-          ),
-        ),
-      ];
-    }
-
     List<Widget> stackItems = [];
     for (int i = _stack.length - 1; i >= 0; i--) {
       stackItems.add(
         Container(
-          margin: const EdgeInsets.symmetric(vertical: 1.0), // Reduced margin
-          padding: const EdgeInsets.all(4.0), // Reduced padding
+          margin: const EdgeInsets.symmetric(vertical: 1.0),
+          padding: const EdgeInsets.all(4.0),
           width: double.infinity,
           decoration: BoxDecoration(
             color: i == _stack.length - 1
@@ -148,7 +123,7 @@ class _StackWidgetState extends State<StackWidget> {
             child: Text(
               _stack[i],
               style: TextStyle(
-                fontSize: 14, // Reduced font size
+                fontSize: 14,
                 color: i == _stack.length - 1
                     ? Colors.white
                     : Colors.deepPurple[900],

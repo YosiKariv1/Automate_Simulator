@@ -41,7 +41,7 @@ class EnterWordWidgetState extends State<EnterWordWidget> {
           child: Row(
             children: [
               Text(
-                'Check Word',
+                'Input Word',
                 style: GoogleFonts.poppins(
                   textStyle: const TextStyle(
                     fontSize: 20,
@@ -93,7 +93,7 @@ class EnterWordWidgetState extends State<EnterWordWidget> {
                           onPressed: () {
                             setState(() {
                               inputText = textController.text;
-                              automatonModel.regularExp = inputText;
+                              automatonModel.word = inputText;
                               showInputField = false;
                             });
                           },

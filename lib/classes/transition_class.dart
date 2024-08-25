@@ -12,9 +12,15 @@ class Transition extends ChangeNotifier {
   bool isError = false;
   bool _isPending = false;
 
+  //For turing machine
   String read = '';
   String write = '';
   String direction = 'Right';
+
+  //For PDA
+  String stackPeakSymbol = '';
+  String stackTopSymbol = '';
+  String stackPushSymbol = '';
 
   Transition({
     required this.from,
@@ -91,7 +97,6 @@ class Transition extends ChangeNotifier {
     notifyListeners();
   }
 
-  // New functions to update error state
   void setError(bool value) {
     isError = value;
     notifyListeners();

@@ -26,20 +26,23 @@ class PDAEditorWidgetState extends State<PDAEditorWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.deepPurple[50],
-      body: InteractiveViewer(
-        boundaryMargin: const EdgeInsets.all(200),
-        minScale: 0.1,
-        maxScale: 5.0,
-        constrained: false,
-        child: const SizedBox(
-          width: 3000,
-          height: 3000,
-          child: PDAWidget(),
+    return Column(
+      children: [
+        Expanded(
+          child: InteractiveViewer(
+            boundaryMargin: const EdgeInsets.all(200),
+            minScale: 0.1,
+            maxScale: 5.0,
+            constrained: false,
+            child: const SizedBox(
+              width: 3000,
+              height: 3000,
+              child: PDAWidget(),
+            ),
+          ),
         ),
-      ),
-      bottomNavigationBar: buildButtonBar(),
+        buildButtonBar(),
+      ],
     );
   }
 

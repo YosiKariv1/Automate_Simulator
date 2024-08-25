@@ -8,7 +8,7 @@ class DFA extends ChangeNotifier {
   List<Node> nodes = [];
   List<Transition> transitions = [];
   Transition? tempTransition;
-  String regularExp = '';
+  String word = '';
   Offset? currentMousePosition;
   String alphabet = '';
 
@@ -22,12 +22,12 @@ class DFA extends ChangeNotifier {
   }
 
   void setRegularExpression(String regex) {
-    regularExp = regex;
+    word = regex;
     notifyListeners();
   }
 
   String getRegularExpression() {
-    return regularExp;
+    return word;
   }
 
   void addNode(Node node) {
@@ -180,7 +180,7 @@ class DFA extends ChangeNotifier {
     nodes.clear();
     transitions.clear();
     tempTransition = null;
-    regularExp = '';
+    word = '';
     currentMousePosition = null;
     alphabet = '';
     notifyListeners();

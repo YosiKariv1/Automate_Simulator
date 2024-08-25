@@ -9,10 +9,8 @@ class PDA extends ChangeNotifier {
   List<Transition> transitions = [];
   Transition? tempTransition;
   String alphabet = '';
-  List<String> stack = [];
+  String word = '';
   Offset? currentMousePosition;
-
-  // מחסנית ה-PDA
   final PDAStack pdaStack = PDAStack();
 
   void setAlphabet(String newAlphabet) {

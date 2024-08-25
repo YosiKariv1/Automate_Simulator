@@ -19,14 +19,21 @@ class PDATransitionPopup extends StatefulWidget {
 
 class PDATransitionPopupState extends State<PDATransitionPopup> {
   late Set<String> selectedSymbols;
-  String currentState = '';
-  String stackTopSymbol = '';
+  String stackPeakSymbol = '';
   String inputSymbol = '';
+  String stackPushSymbol = '';
 
   @override
   void initState() {
     super.initState();
     selectedSymbols = Set.from(widget.initialSymbols);
+  }
+
+  bool _isConfirmEnabled() {
+    return stackPeakSymbol.isNotEmpty &&
+        inputSymbol.isNotEmpty &&
+        stackPushSymbol.isNotEmpty &&
+        selectedSymbols.isNotEmpty;
   }
 
   @override
@@ -35,15 +42,15 @@ class PDATransitionPopupState extends State<PDATransitionPopup> {
       backgroundColor: Colors.transparent,
       child: Container(
         width: MediaQuery.of(context).size.width * 0.4,
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(15),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 10,
-              offset: const Offset(0, 5),
+              color: Colors.black.withOpacity(0.2),
+              blurRadius: 15,
+              offset: const Offset(0, 8),
             ),
           ],
         ),
@@ -55,32 +62,22 @@ class PDATransitionPopupState extends State<PDATransitionPopup> {
               "PDA Transition",
               style: GoogleFonts.rajdhani(
                 fontSize: 28,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w600,
                 color: Colors.deepPurple[800],
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 20),
             buildTextField(
-              label: "Current State",
-              value: currentState,
+              label: "Stack Peak Symbol",
+              value: stackPeakSymbol,
               onChanged: (value) {
                 setState(() {
-                  currentState = value;
+                  stackPeakSymbol = value;
                 });
               },
             ),
-            const SizedBox(height: 12),
-            buildTextField(
-              label: "Stack Top Symbol",
-              value: stackTopSymbol,
-              onChanged: (value) {
-                setState(() {
-                  stackTopSymbol = value;
-                });
-              },
-            ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 16),
             buildTextField(
               label: "Input Symbol",
               value: inputSymbol,
@@ -90,47 +87,27 @@ class PDATransitionPopupState extends State<PDATransitionPopup> {
                 });
               },
             ),
-            const SizedBox(height: 12),
-            Text(
-              "Select Symbols to Push onto Stack",
-              style: GoogleFonts.rajdhani(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.deepPurple[800],
-              ),
-              textAlign: TextAlign.center,
+            const SizedBox(height: 16),
+            buildTextField(
+              label: "Stack Push Symbol",
+              value: stackPushSymbol,
+              onChanged: (value) {
+                setState(() {
+                  stackPushSymbol = value;
+                });
+              },
             ),
-            const SizedBox(height: 12),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-              decoration: BoxDecoration(
-                color: Colors.deepPurple[50],
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Colors.deepPurple[200]!),
-              ),
-              child: Text(
-                selectedSymbols.isEmpty
-                    ? 'No symbols selected'
-                    : selectedSymbols.join(', '),
-                style: GoogleFonts.roboto(
-                  fontSize: 14,
-                  color: Colors.deepPurple[800],
-                ),
-                textAlign: TextAlign.center,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 20),
             Wrap(
               alignment: WrapAlignment.center,
-              spacing: 8,
-              runSpacing: 8,
+              spacing: 10,
+              runSpacing: 10,
               children: widget.alphabet.split('').map((letter) {
                 bool isSelected = selectedSymbols.contains(letter);
                 bool isUsed = widget.usedSymbols.contains(letter);
                 return SizedBox(
-                  width: 45,
-                  height: 45,
+                  width: 50,
+                  height: 50,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       foregroundColor:
@@ -144,6 +121,7 @@ class PDATransitionPopupState extends State<PDATransitionPopup> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       padding: EdgeInsets.zero,
+                      elevation: 5,
                     ),
                     onPressed: isUsed
                         ? null
@@ -158,59 +136,60 @@ class PDATransitionPopupState extends State<PDATransitionPopup> {
                           },
                     child: Text(
                       letter,
-                      style: GoogleFonts.roboto(fontSize: 16),
+                      style: GoogleFonts.roboto(fontSize: 18),
                     ),
                   ),
                 );
               }).toList(),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 24),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 SizedBox(
-                  width: 100,
+                  width: 120,
                   child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 61, 43, 97),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                    ),
-                    onPressed: selectedSymbols.isNotEmpty
+                    onPressed: _isConfirmEnabled()
                         ? () => Navigator.of(context).pop({
-                              'currentState': currentState,
-                              'stackTopSymbol': stackTopSymbol,
+                              'stackPeakSymbol': stackPeakSymbol,
                               'inputSymbol': inputSymbol,
+                              'stackPushSymbol': stackPushSymbol,
                               'pushSymbols': selectedSymbols,
                             })
                         : null,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:
+                          _isConfirmEnabled() ? Colors.deepPurple : Colors.grey,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      elevation: _isConfirmEnabled() ? 5 : 0,
+                    ),
                     child: Text(
                       'Confirm',
                       style: GoogleFonts.roboto(
-                        fontSize: 16,
+                        fontSize: 18,
                         color: Colors.white,
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(width: 16),
                 SizedBox(
-                  width: 100,
+                  width: 120,
                   child: TextButton(
                     onPressed: () => Navigator.of(context).pop(null),
                     style: TextButton.styleFrom(
                       foregroundColor: Colors.deepPurple[800],
-                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      padding: const EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(12),
                         side: BorderSide(color: Colors.deepPurple[800]!),
                       ),
                     ),
                     child: Text(
                       'Cancel',
-                      style: GoogleFonts.roboto(fontSize: 16),
+                      style: GoogleFonts.roboto(fontSize: 18),
                     ),
                   ),
                 ),
@@ -233,23 +212,37 @@ class PDATransitionPopupState extends State<PDATransitionPopup> {
         Text(
           label,
           style: GoogleFonts.rajdhani(
-            fontSize: 18,
+            fontSize: 20,
             fontWeight: FontWeight.bold,
             color: Colors.deepPurple[800],
           ),
         ),
         const SizedBox(height: 8),
-        TextField(
-          onChanged: onChanged,
-          decoration: InputDecoration(
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(color: Colors.deepPurple),
+        Center(
+          child: SizedBox(
+            width: 120,
+            height: 48,
+            child: TextField(
+              onChanged: onChanged,
+              textAlign: TextAlign.center,
+              maxLength: 1,
+              style: GoogleFonts.roboto(
+                fontSize: 18,
+                color: Colors.deepPurple[800],
+                fontWeight: FontWeight.bold,
+              ),
+              decoration: InputDecoration(
+                counterText: '',
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(color: Colors.deepPurple),
+                ),
+                filled: true,
+                fillColor: Colors.deepPurple[50],
+              ),
             ),
-            filled: true,
-            fillColor: Colors.deepPurple[50],
           ),
         ),
       ],

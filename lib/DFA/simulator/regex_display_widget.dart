@@ -46,7 +46,7 @@ class RegexDisplayWidget extends StatelessWidget {
                   return RichText(
                     text: TextSpan(
                       children: _buildTextSpans(
-                        automaton.regularExp,
+                        automaton.word,
                         simulator.processedSymbols,
                         simulator.lastProcessedIndex,
                         simulator.lastStepType,

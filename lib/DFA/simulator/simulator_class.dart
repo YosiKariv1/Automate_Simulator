@@ -85,7 +85,7 @@ class Simulator extends ValueNotifier<bool> {
   }
 
   void _initializeSimulation() {
-    String input = automaton.regularExp;
+    String input = automaton.word;
     steps = algorithm.simulate(automaton, input);
     currentStepIndex = -1;
     processedSymbols.clear();
@@ -142,7 +142,7 @@ class Simulator extends ValueNotifier<bool> {
       if (step.symbol != null) {
         processedSymbols.add(step.symbol!);
         lastProcessedIndex =
-            automaton.regularExp.indexOf(step.symbol!, lastProcessedIndex + 1);
+            automaton.word.indexOf(step.symbol!, lastProcessedIndex + 1);
       }
     } else {
       activeTransition = null;

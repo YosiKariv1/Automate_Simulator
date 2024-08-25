@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:myapp/PDA/control_panel.dart';
+import 'package:myapp/PDA/enter_word_widget.dart';
 import 'package:myapp/PDA/widgets/stack_widget.dart';
 import 'package:myapp/PDA/editor_widget.dart';
 import 'package:myapp/classes/pda_class.dart';
@@ -107,19 +109,17 @@ class PdaPageState extends State<PdaPage> {
               child: Stack(
                 children: [
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(10.0),
+                    borderRadius: BorderRadius.circular(16.0),
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10.0),
-                        border: Border.all(
-                          color: Colors.deepPurple.shade500,
-                          width: 4.0,
-                        ),
+                        color: Colors.deepPurple[50],
+                        border: Border.all(color: Colors.deepPurple, width: 3),
+                        borderRadius: BorderRadius.circular(20),
                         boxShadow: const [
                           BoxShadow(
                             color: Colors.black26,
-                            blurRadius: 15.0,
+                            blurRadius: 10,
+                            offset: Offset(0, 5),
                           ),
                         ],
                       ),
@@ -132,18 +132,19 @@ class PdaPageState extends State<PdaPage> {
             const SizedBox(height: 10),
             Container(
               decoration: BoxDecoration(
-                color: Colors.blueGrey[50],
-                borderRadius: BorderRadius.circular(20.0),
-                border: Border.all(
-                  color: Colors.deepPurple.shade500,
-                  width: 4.0,
-                ),
+                color: Colors.deepPurple[50],
+                border: Border.all(color: Colors.deepPurple, width: 3),
+                borderRadius: BorderRadius.circular(22),
                 boxShadow: const [
-                  BoxShadow(color: Colors.black26, blurRadius: 10.0),
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 10,
+                    offset: Offset(0, 5),
+                  ),
                 ],
               ),
               child: const Center(
-                child: Text('Simulation Control Panel'),
+                child: SimulationControlPanel(),
               ),
             ),
           ],
@@ -153,17 +154,137 @@ class PdaPageState extends State<PdaPage> {
   }
 
   Widget buildRightPanel(bool isWideScreen) {
-    return const Expanded(
+    return Expanded(
       flex: 1,
       child: Column(
         children: [
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.all(8.0),
-              child: StackWidget(),
-            ),
-          ),
+          buildStackPanel(),
+          buildSmallContainer(),
         ],
+      ),
+    );
+  }
+
+  Widget buildStackPanel() {
+    return Expanded(
+      flex: 2,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 20, right: 20),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.deepPurple[50],
+            border: Border.all(color: Colors.deepPurple, width: 2),
+            borderRadius: BorderRadius.circular(22),
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.black26,
+                blurRadius: 10,
+                offset: Offset(0, 5),
+              ),
+            ],
+          ),
+          child: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12.0),
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  color: Colors.deepPurple,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20.0),
+                    topRight: Radius.circular(20.0),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Text(
+                      'Stack',
+                      style: GoogleFonts.poppins(
+                        textStyle: const TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    const Spacer(),
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.info_outline, color: Colors.white),
+                    ),
+                  ],
+                ),
+              ),
+              const Expanded(
+                child: Padding(
+                  padding: EdgeInsets.all(12.0),
+                  child: StackWidget(),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildSmallContainer() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20, bottom: 20, right: 20),
+      child: Container(
+        height: 200, // הגדרת גובה מותאם אישית
+        decoration: BoxDecoration(
+          color: Colors.deepPurple[50],
+          border: Border.all(color: Colors.deepPurple, width: 2),
+          borderRadius: BorderRadius.circular(22),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 10,
+              offset: Offset(0, 5),
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12.0),
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                color: Colors.deepPurple,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20.0),
+                  topRight: Radius.circular(20.0),
+                ),
+              ),
+              child: Row(
+                children: [
+                  Text(
+                    'Input Word',
+                    style: GoogleFonts.poppins(
+                      textStyle: const TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  const Spacer(),
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.info_outline, color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
+            const Expanded(
+              child: Padding(
+                padding: EdgeInsets.all(12.0),
+                child: EnterWordWidget(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
