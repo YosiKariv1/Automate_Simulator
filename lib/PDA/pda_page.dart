@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myapp/PDA/control_panel.dart';
 import 'package:myapp/PDA/enter_word_widget.dart';
+import 'package:myapp/PDA/simulator/pda_simulator.dart';
 import 'package:myapp/PDA/widgets/stack_widget.dart';
 import 'package:myapp/PDA/editor_widget.dart';
 import 'package:myapp/classes/pda_class.dart';
@@ -16,11 +17,13 @@ class PdaPage extends StatefulWidget {
 
 class PdaPageState extends State<PdaPage> {
   late PDA automaton;
+  late PDASimulation simulator;
 
   @override
   void initState() {
     super.initState();
     automaton = Provider.of<PDA>(context, listen: false);
+    simulator = PDASimulation(automaton);
   }
 
   Widget buildCustomHeader() {
@@ -143,8 +146,8 @@ class PdaPageState extends State<PdaPage> {
                   ),
                 ],
               ),
-              child: const Center(
-                child: SimulationControlPanel(),
+              child: Center(
+                child: SimulationControlPanel(simulator: simulator),
               ),
             ),
           ],
@@ -232,7 +235,7 @@ class PdaPageState extends State<PdaPage> {
     return Padding(
       padding: const EdgeInsets.only(top: 20, bottom: 20, right: 20),
       child: Container(
-        height: 200, // הגדרת גובה מותאם אישית
+        height: 200,
         decoration: BoxDecoration(
           color: Colors.deepPurple[50],
           border: Border.all(color: Colors.deepPurple, width: 2),

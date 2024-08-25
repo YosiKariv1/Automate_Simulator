@@ -3,11 +3,11 @@ import 'package:myapp/classes/dfa_class.dart';
 import 'package:myapp/DFA/simulator/simulator_class.dart';
 import 'package:provider/provider.dart';
 
-class RegexDisplayWidget extends StatelessWidget {
+class WordDisplayWidget extends StatelessWidget {
   final bool isVisible;
   final Simulator simulator;
 
-  const RegexDisplayWidget({
+  const WordDisplayWidget({
     super.key,
     required this.isVisible,
     required this.simulator,

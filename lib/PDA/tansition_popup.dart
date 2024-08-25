@@ -1,39 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:myapp/classes/operations_class.dart';
 
 class PDATransitionPopup extends StatefulWidget {
-  final String alphabet;
-  final Set<String> initialSymbols;
-  final Set<String> usedSymbols;
+  final List<Operations> initialOperations;
 
-  const PDATransitionPopup({
-    super.key,
-    required this.alphabet,
-    required this.initialSymbols,
-    required this.usedSymbols,
-  });
+  const PDATransitionPopup({super.key, required this.initialOperations});
 
   @override
   PDATransitionPopupState createState() => PDATransitionPopupState();
 }
 
 class PDATransitionPopupState extends State<PDATransitionPopup> {
-  late Set<String> selectedSymbols;
-  String stackPeakSymbol = '';
-  String inputSymbol = '';
-  String stackPushSymbol = '';
+  late List<Operations> operations;
+  late List<bool> editModes;
 
   @override
   void initState() {
     super.initState();
-    selectedSymbols = Set.from(widget.initialSymbols);
+    operations = List.from(widget.initialOperations);
+    editModes = List.generate(operations.length, (_) => false);
   }
 
-  bool _isConfirmEnabled() {
-    return stackPeakSymbol.isNotEmpty &&
-        inputSymbol.isNotEmpty &&
-        stackPushSymbol.isNotEmpty &&
-        selectedSymbols.isNotEmpty;
+  void addAction() {
+    setState(() {
+      operations.add(Operations(
+        stackPeakSymbol: '',
+        inputTopSymbol: '',
+        stackPushSymbol: '',
+        stackPopSymbol: '', // הוספנו את המשתנה החדש
+      ));
+      editModes.add(true);
+    });
+  }
+
+  void removeAction(int index) {
+    setState(() {
+      operations.removeAt(index);
+      editModes.removeAt(index);
+    });
+  }
+
+  void toggleEditMode(int index) {
+    setState(() {
+      editModes[index] = !editModes[index];
+    });
   }
 
   @override
@@ -41,16 +52,16 @@ class PDATransitionPopupState extends State<PDATransitionPopup> {
     return Dialog(
       backgroundColor: Colors.transparent,
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.4,
-        padding: const EdgeInsets.all(20),
+        width: MediaQuery.of(context).size.width * 0.6,
+        padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.2),
-              blurRadius: 15,
-              offset: const Offset(0, 8),
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 10,
+              offset: const Offset(0, 5),
             ),
           ],
         ),
@@ -59,139 +70,66 @@ class PDATransitionPopupState extends State<PDATransitionPopup> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              "PDA Transition",
+              "PDA Transition Input",
               style: GoogleFonts.rajdhani(
                 fontSize: 28,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.bold,
                 color: Colors.deepPurple[800],
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 20),
-            buildTextField(
-              label: "Stack Peak Symbol",
-              value: stackPeakSymbol,
-              onChanged: (value) {
-                setState(() {
-                  stackPeakSymbol = value;
-                });
-              },
+            const SizedBox(height: 24),
+            ConstrainedBox(
+              constraints: BoxConstraints(
+                maxHeight: MediaQuery.of(context).size.height * 0.5,
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: operations.asMap().entries.map((entry) {
+                    int index = entry.key;
+                    Operations action = entry.value;
+                    return _buildActionCard(action, index);
+                  }).toList(),
+                ),
+              ),
             ),
             const SizedBox(height: 16),
-            buildTextField(
-              label: "Input Symbol",
-              value: inputSymbol,
-              onChanged: (value) {
-                setState(() {
-                  inputSymbol = value;
-                });
-              },
-            ),
-            const SizedBox(height: 16),
-            buildTextField(
-              label: "Stack Push Symbol",
-              value: stackPushSymbol,
-              onChanged: (value) {
-                setState(() {
-                  stackPushSymbol = value;
-                });
-              },
-            ),
-            const SizedBox(height: 20),
-            Wrap(
-              alignment: WrapAlignment.center,
-              spacing: 10,
-              runSpacing: 10,
-              children: widget.alphabet.split('').map((letter) {
-                bool isSelected = selectedSymbols.contains(letter);
-                bool isUsed = widget.usedSymbols.contains(letter);
-                return SizedBox(
-                  width: 50,
-                  height: 50,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor:
-                          isSelected ? Colors.white : Colors.deepPurple[800],
-                      backgroundColor: isSelected
-                          ? Colors.deepPurple[600]
-                          : isUsed
-                              ? Colors.grey[300]
-                              : Colors.deepPurple[100],
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      padding: EdgeInsets.zero,
-                      elevation: 5,
-                    ),
-                    onPressed: isUsed
-                        ? null
-                        : () {
-                            setState(() {
-                              if (isSelected) {
-                                selectedSymbols.remove(letter);
-                              } else {
-                                selectedSymbols.add(letter);
-                              }
-                            });
-                          },
-                    child: Text(
-                      letter,
-                      style: GoogleFonts.roboto(fontSize: 18),
-                    ),
+            Align(
+              alignment: Alignment.center,
+              child: ElevatedButton(
+                onPressed: addAction,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.deepPurple,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  minimumSize: const Size(150, 36),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                );
-              }).toList(),
+                ),
+                child: Text(
+                  "Add Operation",
+                  style: GoogleFonts.poppins(fontSize: 16),
+                ),
+              ),
             ),
             const SizedBox(height: 24),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(
-                  width: 120,
-                  child: ElevatedButton(
-                    onPressed: _isConfirmEnabled()
-                        ? () => Navigator.of(context).pop({
-                              'stackPeakSymbol': stackPeakSymbol,
-                              'inputSymbol': inputSymbol,
-                              'stackPushSymbol': stackPushSymbol,
-                              'pushSymbols': selectedSymbols,
-                            })
-                        : null,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          _isConfirmEnabled() ? Colors.deepPurple : Colors.grey,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      elevation: _isConfirmEnabled() ? 5 : 0,
-                    ),
-                    child: Text(
-                      'Confirm',
-                      style: GoogleFonts.roboto(
-                        fontSize: 18,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
+                _buildActionButton(
+                  'Confirm',
+                  operations.isNotEmpty ? Colors.deepPurple : Colors.grey,
+                  operations.isNotEmpty
+                      ? () => Navigator.of(context).pop(operations)
+                      : null,
                 ),
-                SizedBox(
-                  width: 120,
-                  child: TextButton(
-                    onPressed: () => Navigator.of(context).pop(null),
-                    style: TextButton.styleFrom(
-                      foregroundColor: Colors.deepPurple[800],
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        side: BorderSide(color: Colors.deepPurple[800]!),
-                      ),
-                    ),
-                    child: Text(
-                      'Cancel',
-                      style: GoogleFonts.roboto(fontSize: 18),
-                    ),
-                  ),
+                _buildActionButton(
+                  'Cancel',
+                  Colors.white,
+                  () => Navigator.of(context).pop(null),
+                  textColor: Colors.deepPurple[800]!,
+                  borderColor: Colors.deepPurple[800]!,
                 ),
               ],
             ),
@@ -201,51 +139,196 @@ class PDATransitionPopupState extends State<PDATransitionPopup> {
     );
   }
 
-  Widget buildTextField({
+  Widget _buildActionCard(Operations action, int index) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 16),
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  editModes[index] ? "Edit Action" : "Action Preview",
+                  style: GoogleFonts.rajdhani(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.deepPurple[800],
+                  ),
+                ),
+                if (!editModes[index])
+                  IconButton(
+                    icon: Icon(Icons.edit, color: Colors.deepPurple[800]),
+                    onPressed: () => toggleEditMode(index),
+                  ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            if (editModes[index])
+              _buildEditFields(action, index)
+            else
+              Center(
+                child: Text(
+                  "${action.getInputTopSymbol()}, ${action.getStackPeakSymbol()} -> ${action.getStackPushSymbol()}, ${action.getStackPopSymbol()}",
+                  style: GoogleFonts.poppins(
+                    fontSize: 18,
+                    color: Colors.deepPurple[800],
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildEditFields(Operations action, int index) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            _buildTextField(
+              label: "Input Top",
+              value: action.inputTopSymbol,
+              onChanged: (value) =>
+                  setState(() => action.inputTopSymbol = value),
+            ),
+            _buildTextField(
+              label: "Stack Peak",
+              value: action.stackPeakSymbol,
+              onChanged: (value) =>
+                  setState(() => action.stackPeakSymbol = value),
+            ),
+            _buildTextField(
+              label: "Stack Push",
+              value: action.stackPushSymbol,
+              onChanged: (value) =>
+                  setState(() => action.stackPushSymbol = value),
+            ),
+            _buildTextField(
+              label: "Stack Pop", // שדה חדש למשתנה החסר
+              value: action.stackPopSymbol,
+              onChanged: (value) =>
+                  setState(() => action.stackPopSymbol = value),
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () => toggleEditMode(index),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.deepPurple[300],
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              ),
+              child: Text('Save', style: GoogleFonts.poppins()),
+            ),
+            const SizedBox(width: 16),
+            ElevatedButton(
+              onPressed: () => removeAction(index),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.deepPurple[800],
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              ),
+              child: Text('Delete', style: GoogleFonts.poppins()),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTextField({
     required String label,
     required String value,
     required ValueChanged<String> onChanged,
   }) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
           label,
           style: GoogleFonts.rajdhani(
-            fontSize: 20,
+            fontSize: 16,
             fontWeight: FontWeight.bold,
             color: Colors.deepPurple[800],
           ),
         ),
         const SizedBox(height: 8),
-        Center(
-          child: SizedBox(
-            width: 120,
-            height: 48,
-            child: TextField(
-              onChanged: onChanged,
-              textAlign: TextAlign.center,
-              maxLength: 1,
-              style: GoogleFonts.roboto(
-                fontSize: 18,
-                color: Colors.deepPurple[800],
-                fontWeight: FontWeight.bold,
+        SizedBox(
+          width: 60,
+          height: 40,
+          child: TextField(
+            controller: TextEditingController(text: value),
+            onChanged: onChanged,
+            textAlign: TextAlign.center,
+            maxLength: 1,
+            style: GoogleFonts.roboto(
+              fontSize: 18,
+              color: Colors.deepPurple[800],
+            ),
+            decoration: InputDecoration(
+              counterText: '',
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(color: Colors.deepPurple),
               ),
-              decoration: InputDecoration(
-                counterText: '',
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: Colors.deepPurple),
-                ),
-                filled: true,
-                fillColor: Colors.deepPurple[50],
-              ),
+              filled: true,
+              fillColor: Colors.deepPurple[50],
             ),
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildActionButton(
+    String text,
+    Color backgroundColor,
+    VoidCallback? onPressed, {
+    Color textColor = Colors.white,
+    Color? borderColor,
+  }) {
+    return SizedBox(
+      height: 40,
+      width: 120,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: backgroundColor,
+          foregroundColor: textColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+            side: borderColor != null
+                ? BorderSide(color: borderColor)
+                : BorderSide.none,
+          ),
+        ),
+        child: Text(
+          text,
+          style: GoogleFonts.poppins(fontSize: 16),
+        ),
+      ),
     );
   }
 }

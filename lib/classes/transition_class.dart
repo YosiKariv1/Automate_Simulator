@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/classes/node_class.dart';
+import 'package:myapp/classes/operations_class.dart';
 import 'package:myapp/classes/rule_class.dart';
 
 class Transition extends ChangeNotifier {
@@ -18,17 +19,22 @@ class Transition extends ChangeNotifier {
   String direction = 'Right';
 
   //For PDA
-  String stackPeakSymbol = '';
-  String stackTopSymbol = '';
-  String stackPushSymbol = '';
+  List<Operations> operations;
+
+  // Dynamic dimensions
+  double operationHeight = 20.0;
+  double baseHeight = 24.0;
+  double operationWidth = 20.0;
+  double baseWidth = 50.0;
 
   Transition({
     required this.from,
     required this.to,
-    required this.symbol,
+    this.symbol = const {},
     this.read = '',
     this.write = '',
     this.direction = 'Right',
+    this.operations = const [],
   }) : midPoint = Offset.zero {
     from.addListener(onNodeChanged);
     to.addListener(onNodeChanged);
@@ -88,7 +94,19 @@ class Transition extends ChangeNotifier {
   }
 
   RRect get textRRect {
-    final rect = Rect.fromCenter(center: midPoint, width: 40, height: 24);
+    double calculatedHeight = baseHeight;
+    double calculatedWidth = baseWidth;
+    if (operations.length > 1) {
+      calculatedHeight = baseHeight + (operations.length * operationHeight);
+      calculatedWidth = baseWidth + (operations.length * operationWidth);
+    }
+
+    if (operations.length < 2) {
+      calculatedWidth = calculatedWidth + 35;
+      calculatedHeight = calculatedHeight + 10;
+    }
+    final rect = Rect.fromCenter(
+        center: midPoint, width: calculatedWidth, height: calculatedHeight);
     return RRect.fromRectAndRadius(rect, const Radius.circular(8));
   }
 
@@ -106,5 +124,20 @@ class Transition extends ChangeNotifier {
     return rule.read == read &&
         rule.write == write &&
         rule.direction == direction;
+  }
+
+  void addOperation(Operations operation) {
+    operations.add(operation);
+    notifyListeners();
+  }
+
+  void removeOperation(Operations operation) {
+    operations.remove(operation);
+    notifyListeners();
+  }
+
+  void setOperations(List<Operations> newOperations) {
+    operations = newOperations;
+    notifyListeners();
   }
 }

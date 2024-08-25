@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/PDA/tansition_popup.dart';
 import 'package:myapp/classes/node_class.dart';
+import 'package:myapp/classes/operations_class.dart';
 import 'package:myapp/classes/transition_class.dart';
 import 'package:myapp/classes/stack_class.dart';
 
@@ -52,7 +53,7 @@ class PDA extends ChangeNotifier {
   }
 
   void startTransition(Node fromNode, Offset fromOffset) {
-    tempTransition = Transition(from: fromNode, to: fromNode, symbol: {});
+    tempTransition = Transition(from: fromNode, to: fromNode);
     notifyListeners();
   }
 
@@ -68,7 +69,6 @@ class PDA extends ChangeNotifier {
       if (targetNode != null) {
         tempTransition!.to = targetNode;
 
-        // Check if a transition already exists between these nodes
         Transition? existingTransition;
         for (var t in transitions) {
           if (t.from == tempTransition!.from && t.to == targetNode) {
@@ -77,40 +77,32 @@ class PDA extends ChangeNotifier {
           }
         }
 
-        Set<String> usedSymbols = transitions
-            .where((t) => t.from == tempTransition!.from && t != tempTransition)
-            .expand((t) => t.symbol)
-            .toSet();
-
-        final Set<String>? result = await showDialog<Set<String>>(
+        final result = await showDialog<List<Operations>>(
           context: context,
           builder: (BuildContext context) {
             return PDATransitionPopup(
-              alphabet: alphabet,
-              initialSymbols: existingTransition?.symbol ?? {},
-              usedSymbols: usedSymbols,
+              initialOperations: existingTransition?.operations ?? [],
             );
           },
         );
 
         if (result != null && result.isNotEmpty) {
           if (existingTransition != null) {
-            // Update existing transition
-            existingTransition.updateSymbols(result);
+            existingTransition.setOperations(result);
           } else {
-            // Create new transition
             Transition newTransition = Transition(
               from: tempTransition!.from,
               to: targetNode,
-              symbol: result,
             );
+
+            newTransition.setOperations(result);
             transitions.add(newTransition);
           }
+
           notifyListeners();
         }
       }
 
-      // Clear temporary transition and mouse position
       tempTransition = null;
       currentMousePosition = null;
       notifyListeners();
@@ -139,5 +131,27 @@ class PDA extends ChangeNotifier {
     alphabet = '';
     pdaStack.reset();
     notifyListeners();
+  }
+
+  void printPDAState() {
+    print('Current word: $word');
+    print('Stack content: ${pdaStack.stack}');
+
+    print('Nodes:');
+    for (var node in nodes) {
+      print(
+          ' - Node ${node.name}: isStart=${node.isStart}, isAccepting=${node.isAccepting}');
+    }
+
+    print('Transitions:');
+    for (var transition in transitions) {
+      print(
+          ' - Transition from Node ${transition.from.name} to Node ${transition.to.name}');
+      print('   Operations:');
+      for (var operation in transition.operations) {
+        print(
+            '     Input: ${operation.inputTopSymbol}, Stack Pop: ${operation.stackPopSymbol}, Stack Push: ${operation.stackPushSymbol}');
+      }
+    }
   }
 }

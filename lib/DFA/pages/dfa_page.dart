@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:myapp/DFA/simulator/regex_display_widget.dart';
+import 'package:myapp/DFA/simulator/word_display_widget.dart';
 import 'package:myapp/classes/dfa_class.dart';
 import 'package:myapp/DFA/info/dfa_info.dart';
 import 'package:myapp/DFA/info/welcome_popup.dart';
@@ -164,7 +164,7 @@ class DfaPageState extends State<DfaPage> {
                         left: 0,
                         right: 0,
                         height: 50,
-                        child: RegexDisplayWidget(
+                        child: WordDisplayWidget(
                           isVisible: isSimulating,
                           simulator: simulator,
                         ),

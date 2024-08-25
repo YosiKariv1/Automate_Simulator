@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/PDA/simulator/pda_simulator.dart';
 
 class SimulationControlPanel extends StatefulWidget {
-  const SimulationControlPanel({super.key});
+  late PDASimulation simulator;
+
+  SimulationControlPanel({super.key, required this.simulator});
 
   @override
   SimulationControlPanelState createState() => SimulationControlPanelState();
@@ -63,17 +66,17 @@ class SimulationControlPanelState extends State<SimulationControlPanel>
             children: [
               _buildControlButton(
                 icon: Icons.play_arrow,
-                onPressed: () {},
+                onPressed: widget.simulator.start,
                 tooltip: 'Play',
               ),
               _buildControlButton(
                 icon: Icons.stop,
-                onPressed: () {},
+                onPressed: widget.simulator.pda.printPDAState,
                 tooltip: 'Stop',
               ),
               _buildControlButton(
                 icon: Icons.replay,
-                onPressed: () {},
+                onPressed: widget.simulator.reset,
                 tooltip: 'Reset',
               ),
               _buildSpeedControl(),

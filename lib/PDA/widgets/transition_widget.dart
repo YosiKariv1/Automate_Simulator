@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:myapp/DFA/pages/widgets/transition_painter.dart';
 import 'package:myapp/PDA/tansition_popup.dart';
+import 'package:myapp/classes/operations_class.dart';
 import 'package:myapp/classes/pda_class.dart';
 import 'package:myapp/classes/transition_class.dart';
 import 'package:provider/provider.dart';
@@ -54,24 +56,16 @@ class PDATransitionWidget extends StatelessWidget {
 
   Future<void> _showEditTransitionDialog(BuildContext context,
       Transition transition, String alphabet, PDA automaton) async {
-    Set<String> usedSymbols = automaton.transitions
-        .where((t) => t.from == transition.from && t != transition)
-        .expand((t) => t.symbol)
-        .toSet();
-
-    final result = await showDialog<Set<String>>(
+    final result = await showDialog<List<Operations>>(
       context: context,
       builder: (BuildContext context) {
-        return PDATransitionPopup(
-          alphabet: alphabet,
-          initialSymbols: transition.symbol,
-          usedSymbols: usedSymbols,
-        );
+        return PDATransitionPopup(initialOperations: transition.operations);
       },
     );
 
     if (result != null) {
-      transition.updateSymbols(result);
+      transition.setOperations(result);
+      transition.notifyListeners();
     }
   }
 
@@ -80,12 +74,14 @@ class PDATransitionWidget extends StatelessWidget {
         ? Colors.red
         : (transition.isPermanentHighlighted ? Colors.green : Colors.white);
 
+    // Calculate the dynamic dimensions based on the number of operations
+    double dynamicHeight = transition.textRRect.height;
+    double dynamicWidth = transition.textRRect.width;
+
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
-      constraints: const BoxConstraints(
-        minWidth: 40,
-        maxWidth: 120,
-      ),
+      width: dynamicWidth,
+      height: dynamicHeight,
       decoration: BoxDecoration(
         color: transitionColor,
         borderRadius: BorderRadius.circular(8),
@@ -107,21 +103,57 @@ class PDATransitionWidget extends StatelessWidget {
                   ]
                 : null,
       ),
-      child: Center(
-        child: buildTransitionText(
-            "${transition.read} / ${transition.write} -> ${transition.direction}",
-            transition.isInSimulation || transition.isPermanentHighlighted),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: transition.operations.asMap().entries.map((entry) {
+          int index = entry.key;
+          Operations operation = entry.value;
+          return Column(
+            children: [
+              if (index > 0)
+                const Divider(
+                  color: Colors.deepPurple,
+                  height: 1,
+                  thickness: 1,
+                ),
+              buildTransitionText(
+                operation,
+                transition.isInSimulation || transition.isPermanentHighlighted,
+              ),
+            ],
+          );
+        }).toList(),
       ),
     );
   }
 
-  Widget buildTransitionText(String label, bool isHighlighted) {
-    return Text(
-      label,
-      style: TextStyle(
-        color: isHighlighted ? Colors.white : Colors.black,
-        fontSize: 12,
-        fontWeight: isHighlighted ? FontWeight.bold : FontWeight.normal,
+  Widget buildTransitionText(Operations operation, bool isHighlighted) {
+    Color backgroundColor;
+
+    if (operation.isCorrect) {
+      backgroundColor = Colors.green.withOpacity(0.3);
+    } else if (operation.isChecking) {
+      backgroundColor = Colors.orange.withOpacity(0.3);
+    } else {
+      backgroundColor = Colors.transparent;
+    }
+
+    return Container(
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+      child: Text(
+        "${operation.getInputTopSymbol()}, ${operation.getStackPeakSymbol()} -> ${operation.getStackPushSymbol()}, ${operation.getStackPopSymbol()}",
+        style: GoogleFonts.roboto(
+          color: isHighlighted ? Colors.white : Colors.black,
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+          letterSpacing: -0.5,
+        ),
+        textAlign: TextAlign.center,
       ),
     );
   }

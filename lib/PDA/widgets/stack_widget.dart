@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:myapp/classes/pda_class.dart';
 
 class StackWidget extends StatefulWidget {
   const StackWidget({super.key});
@@ -9,11 +11,12 @@ class StackWidget extends StatefulWidget {
 }
 
 class StackWidgetState extends State<StackWidget> {
-  final List<String> _stack = [];
   final TextEditingController textController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final pda = context.watch<PDA>();
+
     return Container(
       padding: const EdgeInsets.all(12.0),
       child: Column(
@@ -21,7 +24,7 @@ class StackWidgetState extends State<StackWidget> {
         children: [
           const SizedBox(height: 10),
           Expanded(
-            child: _stack.isEmpty
+            child: pda.pdaStack.stack.isEmpty
                 ? Center(
                     child: Text(
                       'The stack is empty.',
@@ -38,7 +41,7 @@ class StackWidgetState extends State<StackWidget> {
                           reverse: true,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.end,
-                            children: _buildStackVisualization(),
+                            children: _buildStackVisualization(pda),
                           ),
                         ),
                       ),
@@ -71,10 +74,10 @@ class StackWidgetState extends State<StackWidget> {
                 onPressed: () {
                   final inputWord = textController.text.trim();
                   if (inputWord.isNotEmpty) {
-                    setState(() {
-                      _stack.addAll(inputWord.split(''));
-                      textController.clear();
-                    });
+                    for (var letter in inputWord.split('')) {
+                      pda.pushToStack(letter);
+                    }
+                    textController.clear();
                   }
                 },
                 style: ElevatedButton.styleFrom(
@@ -88,6 +91,22 @@ class StackWidgetState extends State<StackWidget> {
                 ),
                 child: Text('Push', style: GoogleFonts.poppins()),
               ),
+              const SizedBox(width: 10),
+              ElevatedButton(
+                onPressed: () {
+                  pda.popFromStack();
+                },
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.deepPurple[900],
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: Text('Pop', style: GoogleFonts.poppins()),
+              ),
             ],
           ),
         ],
@@ -95,39 +114,54 @@ class StackWidgetState extends State<StackWidget> {
     );
   }
 
-  List<Widget> _buildStackVisualization() {
+  List<Widget> _buildStackVisualization(PDA pda) {
     List<Widget> stackItems = [];
-    for (int i = _stack.length - 1; i >= 0; i--) {
+    for (int i = pda.pdaStack.stack.length - 1; i >= 0; i--) {
       stackItems.add(
-        Container(
-          margin: const EdgeInsets.symmetric(vertical: 1.0),
-          padding: const EdgeInsets.all(4.0),
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: i == _stack.length - 1
-                ? Colors.blueAccent
-                : Colors.deepPurple[200],
-            border: Border.all(color: Colors.deepPurple, width: 1),
-            borderRadius: BorderRadius.circular(5),
-            boxShadow: [
-              BoxShadow(
-                color: i == _stack.length - 1
-                    ? Colors.blueAccent.withOpacity(0.5)
-                    : Colors.deepPurple.withOpacity(0.5),
-                blurRadius: 10,
-                offset: const Offset(0, 3),
-              ),
-            ],
+        Dismissible(
+          key: ValueKey(pda.pdaStack.stack[i] + i.toString()),
+          direction: DismissDirection.startToEnd,
+          onDismissed: (direction) {
+            if (i == pda.pdaStack.stack.length - 1) {
+              pda.popFromStack();
+            }
+          },
+          background: Container(
+            alignment: Alignment.centerLeft,
+            color: Colors.deepPurple[900],
+            padding: const EdgeInsets.only(left: 20),
+            child: const Icon(Icons.delete, color: Colors.white),
           ),
-          child: Center(
-            child: Text(
-              _stack[i],
-              style: TextStyle(
-                fontSize: 14,
-                color: i == _stack.length - 1
-                    ? Colors.white
-                    : Colors.deepPurple[900],
-                fontWeight: FontWeight.bold,
+          child: Container(
+            margin: const EdgeInsets.symmetric(vertical: 1.0),
+            padding: const EdgeInsets.all(4.0),
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: i == pda.pdaStack.stack.length - 1
+                  ? Colors.blueAccent
+                  : Colors.deepPurple[200],
+              border: Border.all(color: Colors.deepPurple, width: 1),
+              borderRadius: BorderRadius.circular(5),
+              boxShadow: [
+                BoxShadow(
+                  color: i == pda.pdaStack.stack.length - 1
+                      ? Colors.blueAccent.withOpacity(0.5)
+                      : Colors.deepPurple.withOpacity(0.5),
+                  blurRadius: 10,
+                  offset: const Offset(0, 3),
+                ),
+              ],
+            ),
+            child: Center(
+              child: Text(
+                pda.pdaStack.stack[i],
+                style: TextStyle(
+                  fontSize: 14,
+                  color: i == pda.pdaStack.stack.length - 1
+                      ? Colors.white
+                      : Colors.deepPurple[900],
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),
