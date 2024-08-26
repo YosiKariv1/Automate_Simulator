@@ -37,9 +37,7 @@ class PDATransitionWidget extends StatelessWidget {
                         child: AnimatedBuilder(
                           animation: transition,
                           builder: (context, child) {
-                            return buildTransitionContainer(
-                              transition,
-                            );
+                            return buildTransitionContainer(transition);
                           },
                         ),
                       ),
@@ -74,16 +72,12 @@ class PDATransitionWidget extends StatelessWidget {
         ? Colors.red
         : (transition.isPermanentHighlighted ? Colors.green : Colors.white);
 
-    // Calculate the dynamic dimensions based on the number of operations
-    double dynamicHeight = transition.textRRect.height;
-    double dynamicWidth = transition.textRRect.width;
-
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
-      width: dynamicWidth,
-      height: dynamicHeight,
+      width: transition.textRRect.width,
+      height: transition.textRRect.height,
       decoration: BoxDecoration(
-        color: transitionColor,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
           color: transition.isInSimulation
@@ -105,24 +99,29 @@ class PDATransitionWidget extends StatelessWidget {
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: transition.operations.asMap().entries.map((entry) {
-          int index = entry.key;
-          Operations operation = entry.value;
-          return Column(
-            children: [
-              if (index > 0)
-                const Divider(
-                  color: Colors.deepPurple,
-                  height: 1,
-                  thickness: 1,
-                ),
-              buildTransitionText(
-                operation,
-                transition.isInSimulation || transition.isPermanentHighlighted,
-              ),
-            ],
-          );
-        }).toList(),
+        children: transition.operations.isNotEmpty
+            ? transition.operations.asMap().entries.map((entry) {
+                int index = entry.key;
+                Operations operation = entry.value;
+                return Column(
+                  children: [
+                    if (index > 0)
+                      const Divider(
+                        color: Colors.deepPurple,
+                        height: 1,
+                        thickness: 1,
+                      ),
+                    buildTransitionText(
+                      operation,
+                      transition.isInSimulation ||
+                          transition.isPermanentHighlighted,
+                    ),
+                  ],
+                );
+              }).toList()
+            : [
+                const SizedBox()
+              ], // Empty SizedBox for fixed size when no operations
       ),
     );
   }
@@ -142,13 +141,13 @@ class PDATransitionWidget extends StatelessWidget {
       alignment: Alignment.center,
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(15),
       ),
       padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
       child: Text(
-        "${operation.getInputTopSymbol()}, ${operation.getStackPeakSymbol()} -> ${operation.getStackPushSymbol()}, ${operation.getStackPopSymbol()}",
+        operation.toString(),
         style: GoogleFonts.roboto(
-          color: isHighlighted ? Colors.white : Colors.black,
+          color: Colors.black,
           fontSize: 14,
           fontWeight: FontWeight.bold,
           letterSpacing: -0.5,

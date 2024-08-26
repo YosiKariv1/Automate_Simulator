@@ -80,8 +80,20 @@ class Transition extends ChangeNotifier {
       double midy = fromPosition.dy - 70;
       midPoint = Offset(midx, midy);
     } else {
-      Offset controlPoint = Offset((fromPosition.dx + toPosition.dx) / 2,
-          (fromPosition.dy + toPosition.dy) / 2);
+      Offset controlPoint = Offset(
+        (fromPosition.dx + toPosition.dx) / 2,
+        (fromPosition.dy + toPosition.dy) / 2,
+      );
+
+      // עדכון נקודת האמצע אם הקונטיינר גבוה מדי
+      double dynamicHeight = baseHeight + (operations.length * operationHeight);
+      if (dynamicHeight > from.nodeSize) {
+        controlPoint = Offset(
+          controlPoint.dx,
+          controlPoint.dy - dynamicHeight / 2 + from.nodeSize / 2,
+        );
+      }
+
       if (fromPosition.dx > toPosition.dx && fromPosition.dy < toPosition.dy) {
         midPoint = Offset(controlPoint.dx, controlPoint.dy - 100);
       } else if (fromPosition.dx > toPosition.dx &&
@@ -96,18 +108,43 @@ class Transition extends ChangeNotifier {
   RRect get textRRect {
     double calculatedHeight = baseHeight;
     double calculatedWidth = baseWidth;
-    if (operations.length > 1) {
-      calculatedHeight = baseHeight + (operations.length * operationHeight);
-      calculatedWidth = baseWidth + (operations.length * operationWidth);
-    }
 
-    if (operations.length < 2) {
-      calculatedWidth = calculatedWidth + 35;
-      calculatedHeight = calculatedHeight + 10;
+    if (operations.isNotEmpty) {
+      // אם יש יותר מ-1 פעולות, הגדל את הגובה
+      if (operations.length > 1) {
+        calculatedHeight = baseHeight + (operations.length * operationHeight);
+        calculatedWidth = baseWidth + (operations.length * operationWidth);
+      }
+
+      if (operations.length < 2) {
+        calculatedWidth += 25;
+        calculatedHeight += 10;
+      }
+
+      if (operations.length > 2) {
+        calculatedHeight = calculatedHeight + (operations.length * 6);
+      }
+
+      double midx = midPoint.dx;
+      double midy = midPoint.dy;
+
+      // אם יש לולאה ויש יותר מ-2 פעולות, העלה את המיקום של ה-RRect בציר ה-Y בצורה מבוקרת
+      if (from == to && operations.length > 2) {
+        midy -= from.nodeSize / 2 +
+            (operations.length - 2) * 10; // העלה בהתאם לכמות הפעולות
+      }
+
+      final rect = Rect.fromCenter(
+          center: Offset(midx, midy),
+          width: calculatedWidth,
+          height: calculatedHeight);
+      return RRect.fromRectAndRadius(rect, const Radius.circular(8));
+    } else {
+      // אם אין פעולות, השתמש בגובה ורוחב הבסיס
+      final rect = Rect.fromCenter(
+          center: midPoint, width: baseWidth, height: baseHeight);
+      return RRect.fromRectAndRadius(rect, const Radius.circular(8));
     }
-    final rect = Rect.fromCenter(
-        center: midPoint, width: calculatedWidth, height: calculatedHeight);
-    return RRect.fromRectAndRadius(rect, const Radius.circular(8));
   }
 
   void updateSymbols(Set<String> newSymbols) {

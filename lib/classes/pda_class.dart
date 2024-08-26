@@ -12,7 +12,7 @@ class PDA extends ChangeNotifier {
   String alphabet = '';
   String word = '';
   Offset? currentMousePosition;
-  final PDAStack pdaStack = PDAStack();
+  PDAStack pdaStack = PDAStack();
 
   void setAlphabet(String newAlphabet) {
     alphabet = newAlphabet;
@@ -153,5 +153,65 @@ class PDA extends ChangeNotifier {
             '     Input: ${operation.inputTopSymbol}, Stack Pop: ${operation.stackPopSymbol}, Stack Push: ${operation.stackPushSymbol}');
       }
     }
+  }
+
+  void addPredefinedAutomaton() {
+    // Clear existing automaton
+    reset();
+
+    // Add nodes
+    Node q0 = Node(
+        name: 'q0',
+        isStart: true,
+        isAccepting: false,
+        position: const Offset(300, 300));
+    Node q1 = Node(
+        name: 'q1',
+        isStart: false,
+        isAccepting: false,
+        position: const Offset(500, 300));
+    Node q2 = Node(
+        name: 'q2',
+        isStart: false,
+        isAccepting: true,
+        position: const Offset(700, 300));
+
+    nodes.addAll([q0, q1, q2]);
+
+    // Add transitions
+    Transition t0to1 = Transition(from: q0, to: q1);
+    t0to1.setOperations([
+      Operations(
+          inputTopSymbol: 'ε', stackPopSymbol: 'ε', stackPushSymbol: '\$')
+    ]);
+
+    Transition t1to1a = Transition(from: q1, to: q1);
+    t1to1a.setOperations([
+      Operations(
+          inputTopSymbol: 'a', stackPopSymbol: '\$', stackPushSymbol: '\$A'),
+      Operations(
+          inputTopSymbol: 'a', stackPopSymbol: 'A', stackPushSymbol: 'AA'),
+      Operations(
+          inputTopSymbol: 'a', stackPopSymbol: 'B', stackPushSymbol: 'ε'),
+      Operations(
+          inputTopSymbol: 'b', stackPopSymbol: 'B', stackPushSymbol: 'BB'),
+      Operations(
+          inputTopSymbol: 'b', stackPopSymbol: '\$', stackPushSymbol: '\$B'),
+      Operations(
+          inputTopSymbol: 'b', stackPopSymbol: 'A', stackPushSymbol: 'ε'),
+    ]);
+
+    Transition t1to2 = Transition(from: q1, to: q2);
+    t1to2.setOperations([
+      Operations(
+          inputTopSymbol: 'ε', stackPopSymbol: '\$', stackPushSymbol: 'ε'),
+    ]);
+
+    transitions.addAll([t0to1, t1to1a, t1to2]);
+
+    // Set alphabet
+    alphabet = 'ab';
+
+    notifyListeners();
   }
 }

@@ -62,7 +62,7 @@ class TmPageState extends State<TmPage> {
   List<TargetFocus> _createTargets() {
     return [
       _buildTutorialStep(
-        "TapeWidget",
+        "Tape Section",
         tapeKey,
         "Turing Machine Tape",
         "Here you can see the tape, which represents the memory of the Turing Machine. "
@@ -71,7 +71,7 @@ class TmPageState extends State<TmPage> {
         ContentAlign.bottom,
       ),
       _buildTutorialStep(
-        "AddRuleWidget",
+        "AddRule Section",
         addRuleKey,
         "Add Rules",
         "Use this section to add rules to your Turing Machine. "
@@ -80,7 +80,7 @@ class TmPageState extends State<TmPage> {
         ContentAlign.top,
       ),
       _buildTutorialStep(
-        "EditorWidget",
+        "Editor Section",
         editorKey,
         "Turing Machine Editor",
         "Here you can see a visual representation of your Turing Machine. "
@@ -93,8 +93,7 @@ class TmPageState extends State<TmPage> {
         controlPanelKey,
         "Simulation Control Panel",
         "This control panel allows you to control the simulation of the Turing Machine. "
-            "You can play, pause, and reset the simulation. "
-            "Use the progress bar to navigate between simulation steps.",
+            "You can play, pause any time you want!. ",
         ContentAlign.top,
       ),
     ];

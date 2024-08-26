@@ -323,7 +323,7 @@ class DfaPageState extends State<DfaPage> {
   List<TargetFocus> _createTargets() {
     return [
       _buildTutorialStep(
-        "EditorWidget",
+        "Editor Section",
         editorKey,
         "DFA Editor",
         "This is where you can create and edit your DFA (Deterministic Finite Automaton). "
@@ -333,17 +333,17 @@ class DfaPageState extends State<DfaPage> {
         height: 100,
       ),
       _buildTutorialStep(
-        "RegxWidget",
+        "Word Section",
         regxKey,
-        "Regular Expression Input",
-        "Enter a regular expression here to test against your DFA. "
-            "The simulator will check if the DFA accepts the given expression.",
+        "WordInput",
+        "Enter a Word here to test against your DFA. "
+            "The simulator will check if the DFA accepts the given Word.",
         CustomTargetContentPosition(left: 0, top: 350),
         width: 0,
         height: 100,
       ),
       _buildTutorialStep(
-        "InfoPanel",
+        "Info Section",
         infoPanelKey,
         "DFA Information",
         "This panel provides detailed information about DFAs and their properties. "

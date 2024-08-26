@@ -1,165 +1,203 @@
-import 'package:flutter/material.dart';
-import 'package:myapp/PDA/simulator/pda_algorithm.dart';
-import 'package:myapp/classes/node_class.dart';
+import 'package:flutter/foundation.dart';
 import 'package:myapp/classes/pda_class.dart';
+import 'package:myapp/classes/node_class.dart';
+import 'package:myapp/classes/operations_class.dart';
 import 'package:myapp/classes/transition_class.dart';
 
-class PDASimulation extends ValueNotifier<bool> {
+class PDASimulator extends ChangeNotifier {
   final PDA pda;
-  List<SimulationStep> steps = [];
-  PDAAlgorithm algorithm = PDAAlgorithm();
-  int currentStepIndex = -1;
-  bool isSimulating = false;
-  bool algorithmFinished = false;
-
-  // Local variables for simulation
   Node? currentNode;
-  Transition? currentTransition;
+  String? currentSymbol;
+  int inputIndex = 0;
+  bool algorithmFinished = false;
+  bool isSimulationStarted = false;
 
-  PDASimulation(this.pda) : super(false);
+  PDASimulator(this.pda);
 
-  void start() {
-    if (pda.nodes.isEmpty) {
-      print(
-          "No nodes in PDA. Please add at least one node to start simulation.");
-      return; // Do nothing if there are no nodes
-    }
-
-    _initializeSimulation(); // Initialize steps before starting simulation
-
-    if (steps.isEmpty) {
-      print("No steps available for simulation.");
-      return;
-    }
-
-    if (currentStepIndex == -1) {
-      isSimulating = true;
-      algorithmFinished = false;
-      notifyListeners();
-      _executeNextStep();
-    }
+  void startSimulation() {
+    resetSimulation();
+    isSimulationStarted = true;
+    _runSimulation();
   }
 
-  void stop() {
-    isSimulating = false;
+  void stopSimulation() {
+    isSimulationStarted = false;
+    algorithmFinished = true;
+    _clearHighlights();
+    pda.pdaStack.reset(); // לאפס את המחסנית
     notifyListeners();
   }
 
-  void reset() {
-    currentStepIndex = -1;
-    isSimulating = false;
+  void resetSimulation() {
+    _initializeSimulation();
+    notifyListeners();
+  }
+
+  void _initializeSimulation() {
+    pda.pdaStack.reset();
+    pda.pushToStack('\$');
+
+    currentNode = pda.nodes
+        .firstWhere((node) => node.isStart, orElse: () => pda.nodes.first);
+    currentSymbol = pda.word.isNotEmpty ? pda.word[0] : 'ε';
+    inputIndex = 0;
     algorithmFinished = false;
-    pda.reset();
+    isSimulationStarted = false;
 
-    if (pda.nodes.isNotEmpty) {
-      currentNode = pda.nodes.first; // Reset to first node if exists
-    } else {
-      currentNode = null; // No nodes to reset
-    }
+    _clearHighlights();
 
-    currentTransition = null; // Reset transition
-    _resetAllNodesAndTransitions();
-    notifyListeners();
+    print(
+        "Simulation initialized. Start state: ${currentNode?.name}, Word: ${pda.word}");
   }
 
-  void _executeNextStep() {
-    if (!isSimulating || currentStepIndex >= steps.length - 1) {
-      algorithmFinished = true;
-      isSimulating = false;
-      notifyListeners();
-      return;
-    }
-
-    currentStepIndex++;
-    SimulationStep step = steps[currentStepIndex];
-
-    switch (step.type) {
-      case SimulationStepType.move:
-        _setCurrentNode(step.currentNode);
-        _highlightTransition(step.transition);
-        break;
-      case SimulationStepType.push:
-      case SimulationStepType.pop:
-        // These operations are handled in the PDA class
-        break;
-      case SimulationStepType.accept:
-      case SimulationStepType.reject:
-      case SimulationStepType.error:
-        algorithmFinished = true;
-        isSimulating = false;
-        break;
-    }
-
-    notifyListeners();
-
-    // Schedule the next step
-    Future.delayed(const Duration(milliseconds: 1000), _executeNextStep);
-  }
-
-  // Local method to set the current node
-  void _setCurrentNode(Node? node) {
-    if (currentNode != null) {
-      currentNode!.isInSimulation = false; // Reset previous node state
-    }
-    currentNode = node;
-    if (currentNode != null) {
-      currentNode!.isInSimulation = true; // Highlight new node
-    }
-  }
-
-  // Local method to highlight the transition
-  void _highlightTransition(Transition? transition) {
-    if (currentTransition != null) {
-      currentTransition!.isInSimulation =
-          false; // Reset previous transition state
-    }
-    currentTransition = transition;
-    if (currentTransition != null) {
-      currentTransition!.isInSimulation = true; // Highlight new transition
-    }
-  }
-
-  // Method to reset all nodes and transitions
-  void _resetAllNodesAndTransitions() {
+  void _clearHighlights() {
     for (var node in pda.nodes) {
       node.isInSimulation = false;
+      node.isPermanentHighlighted = false;
     }
     for (var transition in pda.transitions) {
       transition.isInSimulation = false;
+      transition.isPermanentHighlighted = false;
+      for (var operation in transition.operations) {
+        operation.isCorrect = false; // נוסיף את איפוס ההדגשה לפעולות
+      }
     }
   }
 
-  // Initialize the simulation steps
-  void _initializeSimulation() {
-    steps = algorithm.computeSteps(pda);
-
-    if (steps.isEmpty) {
-      print("No valid steps were found for the given configuration.");
-      currentNode = null;
-    } else {
-      currentNode = pda.nodes
-          .firstWhere((node) => node.isStart, orElse: () => pda.nodes.first);
+  Future<void> _runSimulation() async {
+    while (!algorithmFinished && isSimulationStarted) {
+      await _processStep();
+      await Future.delayed(Duration(milliseconds: 500));
     }
+  }
 
-    currentStepIndex = -1; // Reset step index
+  Future<void> _processStep() async {
+    if (algorithmFinished || !isSimulationStarted) return;
+
+    print("\nCurrent state: ${currentNode?.name}");
+    print("Current input symbol: $currentSymbol");
+    print("Current stack: ${pda.pdaStack.stack}");
+
+    _highlightNode(currentNode);
+    await Future.delayed(Duration(milliseconds: 300));
+    notifyListeners();
+
+    bool moved = await _tryTransitions();
+
+    if (!moved) {
+      if (currentNode?.isAccepting == true && inputIndex == pda.word.length) {
+        print("Accepted: Reached an accepting state");
+        algorithmFinished = true;
+      } else if (inputIndex == pda.word.length &&
+          (pda.pdaStack.stack.isEmpty ||
+              (pda.pdaStack.stack.length == 1 &&
+                  pda.pdaStack.stack.first == '\$'))) {
+        print("Accepted: Empty stack (except for \$)");
+        algorithmFinished = true;
+      } else {
+        print("Rejected: No valid transition or conditions not met");
+        algorithmFinished = true;
+      }
+    }
     notifyListeners();
   }
-}
 
-enum SimulationStepType { move, push, pop, accept, reject, error }
+  Future<bool> _tryTransitions() async {
+    for (var transition
+        in pda.transitions.where((t) => t.from == currentNode)) {
+      bool transitionApplied = false;
+      for (var operation in transition.operations) {
+        if (_checkOperation(operation, currentSymbol, pda.pdaStack.stack)) {
+          print(
+              "Transition found: ${transition.toString()} with operation: ${operation.toString()}"); // Debugging line
+          _highlightTransition(transition);
+          _highlightOperation(operation);
+          await Future.delayed(Duration(milliseconds: 300));
+          notifyListeners();
 
-class SimulationStep {
-  final SimulationStepType type;
-  final Node? currentNode;
-  final Transition? transition;
-  final String? inputSymbol;
-  final String? stackSymbol;
+          _applyOperation(operation);
 
-  SimulationStep({
-    required this.type,
-    this.currentNode,
-    this.transition,
-    this.inputSymbol,
-    this.stackSymbol,
-  });
+          if (operation.inputTopSymbol != 'ε') {
+            inputIndex++;
+            currentSymbol =
+                inputIndex < pda.word.length ? pda.word[inputIndex] : 'ε';
+          }
+
+          await Future.delayed(Duration(milliseconds: 300));
+          notifyListeners();
+
+          currentNode = transition.to;
+          _highlightNode(currentNode);
+          transitionApplied = true;
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  void _applyOperation(Operations operation) {
+    print("Applying operation: ${operation.toString()}");
+    print("Stack before: ${pda.pdaStack.stack}");
+
+    // Handle pop operation
+    if (operation.stackPopSymbol != 'ε') {
+      if (pda.pdaStack.stack.isNotEmpty &&
+          (pda.pdaStack.stack.last == operation.stackPopSymbol ||
+              operation.stackPopSymbol == '\$')) {
+        String? popped = pda.popFromStack();
+        print("Popped from stack: $popped");
+        _highlightOperation(operation); // Highlight after applying
+      } else {
+        print(
+            "Warning: Cannot pop ${operation.stackPopSymbol}, top of stack is ${pda.pdaStack.stack.isNotEmpty ? pda.pdaStack.stack.last : 'empty'}");
+        return;
+      }
+    }
+
+    // Handle push operation
+    if (operation.stackPushSymbol != 'ε') {
+      List<String> symbolsToPush = operation.stackPushSymbol.split('');
+      for (var symbol in symbolsToPush) {
+        if (symbol == '\$') {
+          if (!pda.pdaStack.stack.contains('\$')) {
+            pda.pushToStack('\$');
+            print("Inserted \$ at the bottom of the stack");
+          }
+        } else {
+          pda.pushToStack(symbol);
+          print("Pushed to stack: $symbol");
+        }
+      }
+      _highlightOperation(operation); // Highlight after applying
+    }
+
+    print("Stack after: ${pda.pdaStack.stack}");
+  }
+
+  void _highlightNode(Node? node) {
+    if (node != null) {
+      node.isInSimulation = false;
+      node.isPermanentHighlighted = true;
+    }
+  }
+
+  void _highlightTransition(Transition transition) {
+    transition.isInSimulation = false;
+    transition.isPermanentHighlighted = true;
+  }
+
+  void _highlightOperation(Operations operation) {
+    operation.isCorrect = true; // הדגשת הפעולה הנכונה בצבע ירוק
+  }
+
+  bool _checkOperation(
+      Operations operation, String? inputSymbol, List<String> stack) {
+    bool inputMatch = operation.inputTopSymbol == inputSymbol ||
+        operation.inputTopSymbol == 'ε';
+    bool stackMatch = operation.stackPopSymbol == 'ε' ||
+        (stack.isNotEmpty && operation.stackPopSymbol == stack.last);
+
+    return inputMatch && stackMatch;
+  }
 }

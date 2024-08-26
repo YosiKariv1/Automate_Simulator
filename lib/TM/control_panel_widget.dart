@@ -12,31 +12,18 @@ class TuringSimulationControlPanel extends StatefulWidget {
 }
 
 class TuringSimulationControlPanelState
-    extends State<TuringSimulationControlPanel>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _animation;
-  bool _showSpeedSlider = false;
-  double spaceArea = 300;
+    extends State<TuringSimulationControlPanel> {
+  double spaceArea = 300; // Set the space area for the sides
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 300),
-      vsync: this,
-    );
-    _animation = CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInOut,
-    );
     widget.simulator.addListener(_onSimulatorUpdate);
   }
 
   @override
   void dispose() {
     widget.simulator.removeListener(_onSimulatorUpdate);
-    _controller.dispose();
     super.dispose();
   }
 
@@ -49,7 +36,7 @@ class TuringSimulationControlPanelState
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SizedBox(width: spaceArea),
+        SizedBox(width: spaceArea), // Add space to the left
         Expanded(
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -67,41 +54,27 @@ class TuringSimulationControlPanelState
                 ),
               ],
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _buildProgressSlider(context),
-                const SizedBox(height: 5),
-                Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      _buildControlButton(
-                        icon: widget.simulator.isPaused
-                            ? Icons.play_arrow
-                            : Icons.pause,
-                        onPressed: _handlePlayPause,
-                        tooltip: widget.simulator.isPaused ? 'Play' : 'Pause',
-                      ),
-                      _buildControlButton(
-                        icon: Icons.stop,
-                        onPressed: _handleStop,
-                        tooltip: 'Stop',
-                      ),
-                      _buildControlButton(
-                        icon: Icons.replay,
-                        onPressed: _handleReset,
-                        tooltip: 'Reset',
-                      ),
-                      _buildSpeedControl(),
-                    ],
-                  ),
+                _buildActionButton(
+                  icon: Icons.play_arrow_rounded,
+                  label: 'Play Simulation',
+                  onPressed: _handlePlayPause,
+                  color: Colors.deepPurple.shade600,
+                ),
+                const SizedBox(width: 20),
+                _buildActionButton(
+                  icon: Icons.stop_circle_rounded,
+                  label: 'Stop Simulation',
+                  onPressed: _handleStop,
+                  color: Colors.deepPurple.shade400,
                 ),
               ],
             ),
           ),
         ),
-        SizedBox(width: spaceArea),
+        SizedBox(width: spaceArea), // Add space to the right
       ],
     );
   }
@@ -120,114 +93,26 @@ class TuringSimulationControlPanelState
     setState(() {});
   }
 
-  void _handleReset() {
-    widget.simulator.reset();
-    setState(() {});
-  }
-
-  void _toggleSpeedSlider() {
-    setState(() {
-      _showSpeedSlider = !_showSpeedSlider;
-      if (_showSpeedSlider) {
-        _controller.forward();
-      } else {
-        _controller.reverse();
-      }
-    });
-  }
-
-  void _handleSpeedChange(double speed) {
-    widget.simulator.setSpeed(speed);
-    setState(() {});
-  }
-
-  Widget _buildControlButton({
+  Widget _buildActionButton({
     required IconData icon,
+    required String label,
     required VoidCallback onPressed,
-    required String tooltip,
+    required Color color,
   }) {
-    return Tooltip(
-      message: tooltip,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16.0),
-          ),
-          backgroundColor: Colors.deepPurple[700],
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-        ),
-        child: Icon(icon, color: Colors.white),
+    return ElevatedButton.icon(
+      onPressed: onPressed,
+      icon: Icon(icon, size: 24),
+      label: Text(
+        label,
+        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
       ),
-    );
-  }
-
-  Widget _buildSpeedControl() {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        IconButton(
-          icon: const Icon(Icons.speed, size: 30),
-          onPressed: _toggleSpeedSlider,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: color,
+        foregroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
         ),
-        SizeTransition(
-          sizeFactor: _animation,
-          axis: Axis.horizontal,
-          child: SizedBox(
-            width: 120,
-            child: SliderTheme(
-              data: SliderTheme.of(context).copyWith(
-                activeTrackColor: Colors.teal[700],
-                inactiveTrackColor: Colors.teal[200],
-                thumbColor: Colors.deepPurple[700],
-                trackHeight: 5.0,
-                thumbShape:
-                    const RoundSliderThumbShape(enabledThumbRadius: 8.0),
-                overlayShape:
-                    const RoundSliderOverlayShape(overlayRadius: 14.0),
-              ),
-              child: Slider(
-                value: widget.simulator.speed,
-                min: 0.5,
-                max: 2.0,
-                divisions: 3,
-                label: '${widget.simulator.speed}x',
-                onChanged: _handleSpeedChange,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildProgressSlider(BuildContext context) {
-    double sliderValue = 0.0;
-    if (widget.simulator.steps.isNotEmpty &&
-        widget.simulator.currentStepIndex >= 0) {
-      sliderValue = widget.simulator.currentStepIndex /
-          (widget.simulator.steps.length - 1).clamp(1, double.infinity);
-    }
-
-    return SliderTheme(
-      data: SliderTheme.of(context).copyWith(
-        activeTrackColor: Colors.deepPurple[700],
-        inactiveTrackColor: Colors.deepPurple[200],
-        thumbColor: Colors.deepPurple[700],
-        trackHeight: 5.0,
-        thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8.0),
-        overlayShape: const RoundSliderOverlayShape(overlayRadius: 14.0),
-      ),
-      child: Slider(
-        value: sliderValue,
-        min: 0,
-        max: 1,
-        onChanged: (value) {
-          if (widget.simulator.steps.isNotEmpty) {
-            double progress = value;
-            widget.simulator.setProgress(progress);
-          }
-        },
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       ),
     );
   }

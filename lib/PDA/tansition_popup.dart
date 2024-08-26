@@ -25,10 +25,9 @@ class PDATransitionPopupState extends State<PDATransitionPopup> {
   void addAction() {
     setState(() {
       operations.add(Operations(
-        stackPeakSymbol: '',
         inputTopSymbol: '',
+        stackPopSymbol: '',
         stackPushSymbol: '',
-        stackPopSymbol: '', // הוספנו את המשתנה החדש
       ));
       editModes.add(true);
     });
@@ -139,7 +138,7 @@ class PDATransitionPopupState extends State<PDATransitionPopup> {
     );
   }
 
-  Widget _buildActionCard(Operations action, int index) {
+  Widget _buildActionCard(Operations operetion, int index) {
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
       elevation: 4,
@@ -169,11 +168,11 @@ class PDATransitionPopupState extends State<PDATransitionPopup> {
             ),
             const SizedBox(height: 16),
             if (editModes[index])
-              _buildEditFields(action, index)
+              _buildEditFields(operetion, index)
             else
               Center(
                 child: Text(
-                  "${action.getInputTopSymbol()}, ${action.getStackPeakSymbol()} -> ${action.getStackPushSymbol()}, ${action.getStackPopSymbol()}",
+                  operetion.toString(),
                   style: GoogleFonts.poppins(
                     fontSize: 18,
                     color: Colors.deepPurple[800],
@@ -200,22 +199,17 @@ class PDATransitionPopupState extends State<PDATransitionPopup> {
                   setState(() => action.inputTopSymbol = value),
             ),
             _buildTextField(
-              label: "Stack Peak",
-              value: action.stackPeakSymbol,
+              label: "Stack Top/Pop",
+              value: action.stackPopSymbol,
               onChanged: (value) =>
-                  setState(() => action.stackPeakSymbol = value),
+                  setState(() => action.stackPopSymbol = value),
             ),
             _buildTextField(
               label: "Stack Push",
               value: action.stackPushSymbol,
               onChanged: (value) =>
                   setState(() => action.stackPushSymbol = value),
-            ),
-            _buildTextField(
-              label: "Stack Pop", // שדה חדש למשתנה החסר
-              value: action.stackPopSymbol,
-              onChanged: (value) =>
-                  setState(() => action.stackPopSymbol = value),
+              isPushField: true, // להרחיב את שדה ה-Push
             ),
           ],
         ),
@@ -260,6 +254,7 @@ class PDATransitionPopupState extends State<PDATransitionPopup> {
     required String label,
     required String value,
     required ValueChanged<String> onChanged,
+    bool isPushField = false, // פרמטר חדש לבדוק אם זה שדה ה-Push
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -274,13 +269,15 @@ class PDATransitionPopupState extends State<PDATransitionPopup> {
         ),
         const SizedBox(height: 8),
         SizedBox(
-          width: 60,
+          width: isPushField ? 120 : 60, // מרחיבים את שדה ה-Push
           height: 40,
           child: TextField(
             controller: TextEditingController(text: value),
             onChanged: onChanged,
             textAlign: TextAlign.center,
-            maxLength: 1,
+            maxLength: isPushField
+                ? 10
+                : 1, // לשדה ה-Push נוכל להגדיר מגבלה גבוהה יותר
             style: GoogleFonts.roboto(
               fontSize: 18,
               color: Colors.deepPurple[800],

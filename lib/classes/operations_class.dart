@@ -1,17 +1,15 @@
 class Operations {
-  String stackPeakSymbol;
   String inputTopSymbol;
-  String stackPushSymbol;
   String stackPopSymbol;
+  String stackPushSymbol;
 
   bool isChecking;
   bool isCorrect;
 
   Operations({
-    required this.stackPeakSymbol,
     required this.inputTopSymbol,
-    required this.stackPushSymbol,
     required this.stackPopSymbol,
+    required this.stackPushSymbol,
     this.isChecking = false,
     this.isCorrect = false,
   });
@@ -20,20 +18,16 @@ class Operations {
     return inputTopSymbol.isEmpty ? 'ε' : inputTopSymbol;
   }
 
-  String getStackPeakSymbol() {
-    return stackPeakSymbol.isEmpty ? 'ε' : stackPeakSymbol;
+  String getStackPopSymbol() {
+    return stackPopSymbol.isEmpty ? 'ε' : stackPopSymbol;
   }
 
   String getStackPushSymbol() {
     return stackPushSymbol.isEmpty ? 'ε' : stackPushSymbol;
   }
 
-  String getStackPopSymbol() {
-    return stackPopSymbol.isEmpty ? 'ε' : stackPopSymbol;
-  }
-
   @override
   String toString() {
-    return '${getInputTopSymbol()},${getStackPeakSymbol()} -> ${getStackPushSymbol()},${getStackPopSymbol()}';
+    return '${getInputTopSymbol()},${getStackPopSymbol()} | ${getStackPushSymbol()}';
   }
 }
