@@ -119,9 +119,7 @@ class PDATransitionWidget extends StatelessWidget {
                   ],
                 );
               }).toList()
-            : [
-                const SizedBox()
-              ], // Empty SizedBox for fixed size when no operations
+            : [const SizedBox()],
       ),
     );
   }

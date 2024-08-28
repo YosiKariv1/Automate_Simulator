@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/classes/dfa_class.dart';
-import 'package:myapp/widgets/node_widget.dart';
-import 'package:myapp/widgets/transition_widget.dart';
+import 'package:myapp/DFA/widgets/node_widget.dart';
+import 'package:myapp/DFA/widgets/transition_widget.dart';
 import 'package:provider/provider.dart';
 
 class AutomatonWidget extends StatelessWidget {

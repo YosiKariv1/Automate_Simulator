@@ -159,7 +159,6 @@ class PDA extends ChangeNotifier {
     // Clear existing automaton
     reset();
 
-    // Add nodes
     Node q0 = Node(
         name: 'q0',
         isStart: true,

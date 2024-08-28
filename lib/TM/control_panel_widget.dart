@@ -13,7 +13,7 @@ class TuringSimulationControlPanel extends StatefulWidget {
 
 class TuringSimulationControlPanelState
     extends State<TuringSimulationControlPanel> {
-  double spaceArea = 300; // Set the space area for the sides
+  double spaceArea = 300;
 
   @override
   void initState() {
@@ -36,7 +36,7 @@ class TuringSimulationControlPanelState
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SizedBox(width: spaceArea), // Add space to the left
+        SizedBox(width: spaceArea),
         Expanded(
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -74,7 +74,7 @@ class TuringSimulationControlPanelState
             ),
           ),
         ),
-        SizedBox(width: spaceArea), // Add space to the right
+        SizedBox(width: spaceArea),
       ],
     );
   }

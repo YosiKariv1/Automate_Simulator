@@ -24,7 +24,7 @@ class PDASimulator extends ChangeNotifier {
     isSimulationStarted = false;
     algorithmFinished = true;
     _clearHighlights();
-    pda.pdaStack.reset(); // לאפס את המחסנית
+    pda.pdaStack.reset();
     notifyListeners();
   }
 

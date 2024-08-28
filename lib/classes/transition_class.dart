@@ -21,7 +21,6 @@ class Transition extends ChangeNotifier {
   //For PDA
   List<Operations> operations;
 
-  // Dynamic dimensions
   double operationHeight = 20.0;
   double baseHeight = 24.0;
   double operationWidth = 20.0;

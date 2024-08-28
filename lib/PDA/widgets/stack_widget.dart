@@ -48,7 +48,7 @@ class StackWidget extends StatelessWidget {
                 children: [
                   Expanded(
                     child: TextField(
-                      controller: _textController, // Use the controller here
+                      controller: _textController,
                       decoration: InputDecoration(
                         hintText: 'Enter text to push',
                         hintStyle: GoogleFonts.poppins(),
@@ -67,8 +67,7 @@ class StackWidget extends StatelessWidget {
                   const SizedBox(width: 10),
                   ElevatedButton(
                     onPressed: () {
-                      final inputWord =
-                          _textController.text; // Use text from the controller
+                      final inputWord = _textController.text;
                       if (inputWord.isNotEmpty) {
                         for (var letter in inputWord.split('')) {
                           pda.pushToStack(letter);
