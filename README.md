@@ -40,6 +40,7 @@ To get started with the simulators, clone the repository and follow the setup in
 
     git clone https://github.com/yourusername/automaton-simulators.git
     cd automaton-simulators
+    flutter run -d chrome
 
 Make sure you have Flutter installed. You can install Flutter from [flutter.dev](https://flutter.dev). After setting up Flutter, run the following command to get the dependencies:
 
