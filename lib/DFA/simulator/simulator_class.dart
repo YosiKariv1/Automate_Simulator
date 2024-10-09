@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
-import 'package:myapp/classes/dfa_class.dart';
-import 'package:myapp/classes/node_class.dart';
-import 'package:myapp/classes/transition_class.dart';
-import 'package:myapp/DFA/simulator/dfa_algorithm.dart';
+import 'package:automaton_simulator/classes/dfa_class.dart';
+import 'package:automaton_simulator/classes/node_class.dart';
+import 'package:automaton_simulator/classes/transition_class.dart';
+import 'package:automaton_simulator/DFA/simulator/dfa_algorithm.dart';
 
 class Simulator extends ValueNotifier<bool> {
   final DFA automaton;

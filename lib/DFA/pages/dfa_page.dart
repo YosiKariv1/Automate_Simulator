@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:myapp/DFA/simulator/word_display_widget.dart';
-import 'package:myapp/classes/dfa_class.dart';
-import 'package:myapp/DFA/info/dfa_info.dart';
-import 'package:myapp/DFA/info/welcome_popup.dart';
-import 'package:myapp/DFA/pages/widgets/animated_border.dart';
-import 'package:myapp/DFA/pages/widgets/editor_widget.dart';
-import 'package:myapp/DFA/pages/widgets/enter_word_widget.dart';
-import 'package:myapp/DFA/simulator/simulation_control_panel.dart';
-import 'package:myapp/DFA/simulator/simulator_class.dart';
+import 'package:automaton_simulator/DFA/simulator/word_display_widget.dart';
+import 'package:automaton_simulator/classes/dfa_class.dart';
+import 'package:automaton_simulator/DFA/info/dfa_info.dart';
+import 'package:automaton_simulator/DFA/info/welcome_popup.dart';
+import 'package:automaton_simulator/DFA/pages/widgets/animated_border.dart';
+import 'package:automaton_simulator/DFA/pages/widgets/editor_widget.dart';
+import 'package:automaton_simulator/DFA/pages/widgets/enter_word_widget.dart';
+import 'package:automaton_simulator/DFA/simulator/simulation_control_panel.dart';
+import 'package:automaton_simulator/DFA/simulator/simulator_class.dart';
 import 'package:provider/provider.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 

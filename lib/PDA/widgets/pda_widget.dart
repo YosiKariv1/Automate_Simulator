@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/PDA/widgets/node_widget.dart';
-import 'package:myapp/PDA/widgets/transition_widget.dart';
-import 'package:myapp/classes/pda_class.dart';
+import 'package:automaton_simulator/PDA/widgets/node_widget.dart';
+import 'package:automaton_simulator/PDA/widgets/transition_widget.dart';
+import 'package:automaton_simulator/classes/pda_class.dart';
 import 'package:provider/provider.dart';
 
 class PDAWidget extends StatelessWidget {

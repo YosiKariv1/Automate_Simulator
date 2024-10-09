@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/DFA/simulator/automaton_validator.dart';
-import 'package:myapp/DFA/simulator/simulator_class.dart';
+import 'package:automaton_simulator/DFA/simulator/automaton_validator.dart';
+import 'package:automaton_simulator/DFA/simulator/simulator_class.dart';
 
 class SimulationControlPanel extends StatefulWidget {
   final Simulator simulator;

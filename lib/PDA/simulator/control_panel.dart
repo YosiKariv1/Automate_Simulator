@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/PDA/simulator/pda_simulator.dart';
+import 'package:automaton_simulator/PDA/simulator/pda_simulator.dart';
 
 class SimulationControlPanel extends StatefulWidget {
   final PDASimulator simulator;

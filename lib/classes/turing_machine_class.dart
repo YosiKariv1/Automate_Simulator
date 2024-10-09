@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/classes/node_class.dart';
-import 'package:myapp/classes/rule_class.dart';
-import 'package:myapp/classes/tape_class.dart';
-import 'package:myapp/classes/transition_class.dart';
+import 'package:automaton_simulator/classes/node_class.dart';
+import 'package:automaton_simulator/classes/rule_class.dart';
+import 'package:automaton_simulator/classes/tape_class.dart';
+import 'package:automaton_simulator/classes/transition_class.dart';
 
 class TuringMachine extends ChangeNotifier {
   List<Rule> rules;

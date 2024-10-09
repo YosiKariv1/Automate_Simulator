@@ -1,4 +1,4 @@
-package com.example.myapp
+package com.example.automaton_simulator
 
 import io.flutter.embedding.android.FlutterActivity
 

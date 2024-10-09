@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/classes/dfa_class.dart';
+import 'package:automaton_simulator/classes/dfa_class.dart';
 
 class AutomatonValidator {
   static bool validateAndNotify(BuildContext context, DFA automaton) {

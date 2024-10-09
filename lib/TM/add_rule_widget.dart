@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/TM/widgets/rule_widget.dart';
-import 'package:myapp/classes/rule_class.dart';
-import 'package:myapp/classes/turing_machine_class.dart';
+import 'package:automaton_simulator/TM/widgets/rule_widget.dart';
+import 'package:automaton_simulator/classes/rule_class.dart';
+import 'package:automaton_simulator/classes/turing_machine_class.dart';
 import 'package:provider/provider.dart';
 
 class AddRuleWidget extends StatefulWidget {

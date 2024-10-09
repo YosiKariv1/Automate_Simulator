@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/classes/tape_class.dart';
-import 'package:myapp/classes/turing_machine_class.dart';
+import 'package:automaton_simulator/classes/tape_class.dart';
+import 'package:automaton_simulator/classes/turing_machine_class.dart';
 import 'package:provider/provider.dart';
 
 class TapeWidget extends StatefulWidget {

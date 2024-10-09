@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:myapp/classes/operations_class.dart';
+import 'package:automaton_simulator/classes/operations_class.dart';
 
 class PDATransitionPopup extends StatefulWidget {
   final List<Operations> initialOperations;

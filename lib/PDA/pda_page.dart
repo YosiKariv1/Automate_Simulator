@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:myapp/PDA/simulator/control_panel.dart';
-import 'package:myapp/PDA/enter_word_widget.dart';
-import 'package:myapp/PDA/simulator/pda_simulator.dart';
-import 'package:myapp/PDA/simulator/word_display_widget.dart';
-import 'package:myapp/PDA/welcom_popup.dart';
-import 'package:myapp/PDA/widgets/stack_widget.dart';
-import 'package:myapp/PDA/editor_widget.dart';
-import 'package:myapp/classes/pda_class.dart';
+import 'package:automaton_simulator/PDA/simulator/control_panel.dart';
+import 'package:automaton_simulator/PDA/enter_word_widget.dart';
+import 'package:automaton_simulator/PDA/simulator/pda_simulator.dart';
+import 'package:automaton_simulator/PDA/simulator/word_display_widget.dart';
+import 'package:automaton_simulator/PDA/welcom_popup.dart';
+import 'package:automaton_simulator/PDA/widgets/stack_widget.dart';
+import 'package:automaton_simulator/PDA/editor_widget.dart';
+import 'package:automaton_simulator/classes/pda_class.dart';
 import 'package:provider/provider.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 

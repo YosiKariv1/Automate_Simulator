@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/TM/widgets/turing_machine_widget.dart';
-import 'package:myapp/classes/turing_machine_class.dart';
+import 'package:automaton_simulator/TM/widgets/turing_machine_widget.dart';
+import 'package:automaton_simulator/classes/turing_machine_class.dart';
 import 'package:vector_math/vector_math_64.dart' show Vector3;
 
 class TmEditorWidget extends StatefulWidget {

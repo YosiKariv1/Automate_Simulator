@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/PDA/tansition_popup.dart';
-import 'package:myapp/classes/node_class.dart';
-import 'package:myapp/classes/operations_class.dart';
-import 'package:myapp/classes/transition_class.dart';
-import 'package:myapp/classes/stack_class.dart';
+import 'package:automaton_simulator/PDA/tansition_popup.dart';
+import 'package:automaton_simulator/classes/node_class.dart';
+import 'package:automaton_simulator/classes/operations_class.dart';
+import 'package:automaton_simulator/classes/transition_class.dart';
+import 'package:automaton_simulator/classes/stack_class.dart';
 
 class PDA extends ChangeNotifier {
   List<Node> nodes = [];

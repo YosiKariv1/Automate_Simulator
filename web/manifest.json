@@ -1,6 +1,6 @@
 {
-    "name": "myapp",
-    "short_name": "myapp",
+    "name": "automaton_simulator",
+    "short_name": "automaton_simulator",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

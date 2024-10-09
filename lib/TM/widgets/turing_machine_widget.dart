@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/TM/widgets/transition_widget.dart';
-import 'package:myapp/classes/turing_machine_class.dart';
-import 'package:myapp/TM/widgets/node_widget.dart';
+import 'package:automaton_simulator/TM/widgets/transition_widget.dart';
+import 'package:automaton_simulator/classes/turing_machine_class.dart';
+import 'package:automaton_simulator/TM/widgets/node_widget.dart';
 import 'package:provider/provider.dart';
 
 class TuringMachineWidget extends StatelessWidget {

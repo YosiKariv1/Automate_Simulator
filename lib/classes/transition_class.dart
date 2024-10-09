@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/classes/node_class.dart';
-import 'package:myapp/classes/operations_class.dart';
-import 'package:myapp/classes/rule_class.dart';
+import 'package:automaton_simulator/classes/node_class.dart';
+import 'package:automaton_simulator/classes/operations_class.dart';
+import 'package:automaton_simulator/classes/rule_class.dart';
 
 class Transition extends ChangeNotifier {
   Node from;

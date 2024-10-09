@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/TM/simulator/tm_simulator.dart';
+import 'package:automaton_simulator/TM/simulator/tm_simulator.dart';
 
 class TuringSimulationControlPanel extends StatefulWidget {
   final TuringSimulator simulator;

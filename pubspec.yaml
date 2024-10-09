@@ -1,4 +1,4 @@
-name: Automaton-Simulator
+name: automaton_simulator
 description: "An interactive learning platform featuring simulators for finite automata, pushdown automata (PDA), and Turing machines. Designed for students and enthusiasts to explore, design, and test computational models with real-time visual simulations."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.

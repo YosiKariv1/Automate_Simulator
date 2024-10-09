@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:myapp/classes/dfa_class.dart';
-import 'package:myapp/DFA/info/regex_info.dart';
+import 'package:automaton_simulator/classes/dfa_class.dart';
+import 'package:automaton_simulator/DFA/info/regex_info.dart';
 import 'package:provider/provider.dart';
 
 class EnterWordWidget extends StatefulWidget {

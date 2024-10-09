@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
-import 'package:myapp/classes/pda_class.dart';
-import 'package:myapp/classes/node_class.dart';
-import 'package:myapp/classes/operations_class.dart';
-import 'package:myapp/classes/transition_class.dart';
+import 'package:automaton_simulator/classes/pda_class.dart';
+import 'package:automaton_simulator/classes/node_class.dart';
+import 'package:automaton_simulator/classes/operations_class.dart';
+import 'package:automaton_simulator/classes/transition_class.dart';
 
 class PDASimulator extends ChangeNotifier {
   final PDA pda;

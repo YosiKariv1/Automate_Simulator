@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:myapp/DFA/pages/dfa_page.dart';
-import 'package:myapp/PDA/pda_page.dart';
-import 'package:myapp/TM/tm_page.dart';
+import 'package:automaton_simulator/DFA/pages/dfa_page.dart';
+import 'package:automaton_simulator/PDA/pda_page.dart';
+import 'package:automaton_simulator/TM/tm_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

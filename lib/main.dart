@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/classes/dfa_class.dart';
-import 'package:myapp/classes/pda_class.dart';
-import 'package:myapp/classes/turing_machine_class.dart';
-import 'package:myapp/home_page.dart';
+import 'package:automaton_simulator/classes/dfa_class.dart';
+import 'package:automaton_simulator/classes/pda_class.dart';
+import 'package:automaton_simulator/classes/turing_machine_class.dart';
+import 'package:automaton_simulator/home_page.dart';
 import 'package:provider/provider.dart';
 
 void main() {

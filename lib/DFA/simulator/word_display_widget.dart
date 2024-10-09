@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/classes/dfa_class.dart';
-import 'package:myapp/DFA/simulator/simulator_class.dart';
+import 'package:automaton_simulator/classes/dfa_class.dart';
+import 'package:automaton_simulator/DFA/simulator/simulator_class.dart';
 import 'package:provider/provider.dart';
 
 class WordDisplayWidget extends StatelessWidget {

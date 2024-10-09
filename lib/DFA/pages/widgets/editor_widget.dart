@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/classes/dfa_class.dart';
-import 'package:myapp/classes/node_class.dart';
-import 'package:myapp/DFA/simulator/simulator_class.dart';
-import 'package:myapp/DFA/widgets/automaton_widget.dart';
+import 'package:automaton_simulator/classes/dfa_class.dart';
+import 'package:automaton_simulator/classes/node_class.dart';
+import 'package:automaton_simulator/DFA/simulator/simulator_class.dart';
+import 'package:automaton_simulator/DFA/widgets/automaton_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:vector_math/vector_math_64.dart' show Vector3;
 import 'package:google_fonts/google_fonts.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:myapp/classes/pda_class.dart';
+import 'package:automaton_simulator/classes/pda_class.dart';
 import 'package:provider/provider.dart';
 
 class EnterWordWidget extends StatefulWidget {
