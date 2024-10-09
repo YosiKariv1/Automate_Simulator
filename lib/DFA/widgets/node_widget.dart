@@ -95,7 +95,7 @@ class NodeWidget extends StatelessWidget {
         shape: BoxShape.circle,
         border: Border.all(
           color:
-              (node.isAccepting ? Colors.blueGrey[500]! : Colors.transparent),
+              (node.isAccepting ? Colors.deepPurple[300]! : Colors.transparent),
           width: 4,
           strokeAlign: BorderSide.strokeAlignInside,
         ),
