@@ -2,8 +2,9 @@
 
 Welcome to the **Automaton Simulators** repository! This project features three powerful tools for exploring fundamental concepts in theoretical computer science: **Finite Automaton (FA)**, **Pushdown Automaton (PDA)**, and **Turing Machine (TM)** simulators. These simulators are designed to help you visualize and understand the behavior of different types of automata and their capabilities.
 
-## 📜 Overview
+[![Watch the video](https://img.youtube.com/vi/j9cCo6zZ1T8/maxresdefault.jpg)](https://www.youtube.com/watch?v=j9cCo6zZ1T8)
 
+## 📜 Overview
 ### 🔹 Finite Automaton (FA) Simulator
 
 The Finite Automaton Simulator allows you to explore the operation of finite automata, which are used to recognize regular languages. With this simulator, you can:
@@ -56,18 +57,6 @@ To run the simulators, use:
 2. Navigate to the desired simulator (Finite Automaton, Pushdown Automaton, or Turing Machine).
 3. Define your automaton's parameters (states, transitions, etc.).
 4. Enter the input string and observe the simulation results.
-
-## 🤝 Contributing
-
-We welcome contributions to enhance and expand the functionality of these simulators. Please follow these steps to contribute:
-
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature/YourFeature`).
-3. Make your changes and test them thoroughly.
-4. Commit your changes (`git commit -am 'Add new feature'`).
-5. Push to the branch (`git push origin feature/YourFeature`).
-6. Create a new Pull Request.
-
 
 ## 📬 Contact
 
