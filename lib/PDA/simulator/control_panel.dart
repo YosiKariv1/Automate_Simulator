@@ -4,7 +4,7 @@ import 'package:automaton_simulator/PDA/simulator/pda_simulator.dart';
 class SimulationControlPanel extends StatefulWidget {
   final PDASimulator simulator;
 
-  SimulationControlPanel({super.key, required this.simulator});
+  const SimulationControlPanel({super.key, required this.simulator});
 
   @override
   SimulationControlPanelState createState() => SimulationControlPanelState();
@@ -18,12 +18,12 @@ class SimulationControlPanelState extends State<SimulationControlPanel> {
       decoration: BoxDecoration(
         color: Colors.deepPurple.shade50,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black,
             spreadRadius: 2,
             blurRadius: 6,
-            offset: const Offset(0, 3),
+            offset: Offset(0, 3),
           ),
         ],
       ),

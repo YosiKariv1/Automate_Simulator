@@ -113,8 +113,10 @@ class TuringSimulator extends ValueNotifier<bool> {
         if (validNextTransitions.isEmpty) {
           // No valid transition for the next cell's symbol, mark as error
           turingMachine.cells[nextPosition].isError = true;
-          print(
-              "No valid transition found for symbol '$nextCellContent' in state '${steps[currentStepIndex].transition.to.name}'. Simulation halted.");
+          if (kDebugMode) {
+            print(
+                "No valid transition found for symbol '$nextCellContent' in state '${steps[currentStepIndex].transition.to.name}'. Simulation halted.");
+          }
           break;
         }
       }

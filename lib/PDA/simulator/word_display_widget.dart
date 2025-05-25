@@ -30,12 +30,12 @@ class PDAWordDisplayWidget extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: Colors.blueGrey),
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
+                    color: Colors.black,
                     spreadRadius: 1,
                     blurRadius: 3,
-                    offset: const Offset(0, 2),
+                    offset: Offset(0, 2),
                   ),
                 ],
               ),

@@ -42,11 +42,10 @@ class AnimatedBorderState extends State<AnimatedBorder>
                 return Container(
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: Colors.redAccent
-                          .withOpacity(0.5 + 0.5 * _animation.value),
+                      color: const Color.fromARGB(255, 214, 26, 76),
                       width: 5,
                     ),
-                    borderRadius: BorderRadius.circular(16.0),
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
                 );
               },

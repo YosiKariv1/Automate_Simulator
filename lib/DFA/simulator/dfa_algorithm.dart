@@ -2,6 +2,7 @@ import 'package:automaton_simulator/classes/dfa_class.dart';
 import 'package:automaton_simulator/classes/node_class.dart';
 import 'package:automaton_simulator/classes/transition_class.dart';
 import 'package:automaton_simulator/DFA/simulator/simulator_class.dart';
+import 'package:flutter/foundation.dart';
 
 class NodeWithTransitions {
   final Node node;
@@ -29,7 +30,9 @@ class DfaAlgorithm {
     List<NodeWithTransitions> structure = buildDataStructure(automaton);
 
     if (structure.isEmpty) {
-      print("האוטומט ריק");
+      if (kDebugMode) {
+        print("האוטומט ריק");
+      }
       return steps;
     }
 

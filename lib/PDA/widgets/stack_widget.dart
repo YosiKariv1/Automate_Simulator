@@ -143,8 +143,8 @@ class StackWidget extends StatelessWidget {
               boxShadow: [
                 BoxShadow(
                   color: i == pda.pdaStack.stack.length - 1
-                      ? Colors.blueAccent.withOpacity(0.5)
-                      : Colors.deepPurple.withOpacity(0.5),
+                      ? Colors.blueAccent
+                      : Colors.deepPurple,
                   blurRadius: 10,
                   offset: const Offset(0, 3),
                 ),

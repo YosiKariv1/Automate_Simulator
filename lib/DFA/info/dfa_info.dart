@@ -10,15 +10,11 @@ class DfaInfoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<DFA>(
       builder: (context, automaton, child) {
+        // --- EMPTY STATE CARD ---
         if (automaton.nodes.isEmpty) {
-          return Center(
-            child: Text(
-              'No DFA information available. Add nodes to see details.',
-              style: GoogleFonts.roboto(fontSize: 16),
-              textAlign: TextAlign.center,
-            ),
-          );
+          return _buildEmptyStateCard();
         }
+        // --- MAIN DFA INFO ---
         return SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -27,15 +23,16 @@ class DfaInfoWidget extends StatelessWidget {
               children: [
                 _buildInfoCard([
                   _buildInfoRow('States (Q)',
-                      automaton.nodes.map((n) => n.name).toList().join(', ')),
+                      automaton.nodes.map((n) => n.name).join(', ')),
                   _buildInfoRow(
                       'Alphabet (Σ)',
                       automaton.getAlphabet().isEmpty
-                          ? 'Not defined'
+                          ? 'Not set'
                           : automaton.getAlphabet()),
-                  _buildInfoRow('Start State (q0)', automaton.nodes.first.name),
                   _buildInfoRow(
-                      'Accept States (F)', _getAcceptStates(automaton)),
+                      'Initial State (q0)', automaton.nodes.first.name),
+                  _buildInfoRow(
+                      'Accepting States (F)', _getAcceptStates(automaton)),
                 ]),
                 const SizedBox(height: 24),
                 _buildTransitionTable(automaton),
@@ -47,6 +44,61 @@ class DfaInfoWidget extends StatelessWidget {
     );
   }
 
+  // --- EMPTY STATE CARD ---
+  Widget _buildEmptyStateCard() {
+    return Padding(
+      padding: const EdgeInsets.all(18.0),
+      child: Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(14),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 32.0, horizontal: 18.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(Icons.info_outline,
+                  size: 52, color: Colors.deepPurple.shade300),
+              const SizedBox(height: 15),
+              Text(
+                'No Automaton Data',
+                style: GoogleFonts.poppins(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.deepPurple.shade700,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 10),
+              Text(
+                'Add states and transitions in the editor to view details here.',
+                style: GoogleFonts.poppins(
+                  fontSize: 15.5,
+                  color: Colors.grey.shade600,
+                  height: 1.45,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 10),
+              Text(
+                '💡 Tip: Click "Add Node" to create your first state.',
+                style: GoogleFonts.poppins(
+                  fontSize: 13.2,
+                  color: Colors.deepPurple.shade400,
+                  fontStyle: FontStyle.italic,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // --- INFO CARD ---
   Widget _buildInfoCard(List<Widget> content) {
     return Card(
       elevation: 4,
@@ -61,6 +113,7 @@ class DfaInfoWidget extends StatelessWidget {
     );
   }
 
+  // --- INFO ROW ---
   Widget _buildInfoRow(String label, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -68,7 +121,7 @@ class DfaInfoWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            width: 120,
+            width: 130,
             child: Text(
               label,
               style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
@@ -82,12 +135,22 @@ class DfaInfoWidget extends StatelessWidget {
     );
   }
 
+  // --- TRANSITION TABLE ---
   Widget _buildTransitionTable(DFA automaton) {
     if (automaton.transitions.isEmpty) {
       return Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Text('No transitions defined', style: GoogleFonts.roboto()),
+          child: Center(
+            child: Text(
+              'No transitions defined',
+              style:
+                  GoogleFonts.roboto(fontSize: 16, color: Colors.grey.shade600),
+              textAlign: TextAlign.center,
+            ),
+          ),
         ),
       );
     }
@@ -157,9 +220,7 @@ class DfaInfoWidget extends StatelessWidget {
                               DataCell(
                                 ConstrainedBox(
                                   constraints: const BoxConstraints(
-                                    minHeight: 48,
-                                    maxHeight: 56,
-                                  ),
+                                      minHeight: 48, maxHeight: 56),
                                   child: Container(
                                     padding: const EdgeInsets.all(8),
                                     decoration: BoxDecoration(
@@ -178,9 +239,7 @@ class DfaInfoWidget extends StatelessWidget {
                                 return DataCell(
                                   ConstrainedBox(
                                     constraints: const BoxConstraints(
-                                      minHeight: 48,
-                                      maxHeight: 56,
-                                    ),
+                                        minHeight: 48, maxHeight: 56),
                                     child: Container(
                                       padding: const EdgeInsets.all(8),
                                       child: Text(nextState,
@@ -204,6 +263,7 @@ class DfaInfoWidget extends StatelessWidget {
     );
   }
 
+  // --- UTILS ---
   String _getNextState(DFA automaton, String currentState, String symbol) {
     for (var transition in automaton.transitions) {
       if (transition.from.name == currentState &&

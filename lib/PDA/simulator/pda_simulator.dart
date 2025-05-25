@@ -46,8 +46,10 @@ class PDASimulator extends ChangeNotifier {
 
     _clearHighlights();
 
-    print(
-        "Simulation initialized. Start state: ${currentNode?.name}, Word: ${pda.word}");
+    if (kDebugMode) {
+      print(
+          "Simulation initialized. Start state: ${currentNode?.name}, Word: ${pda.word}");
+    }
   }
 
   void _clearHighlights() {
@@ -59,7 +61,7 @@ class PDASimulator extends ChangeNotifier {
       transition.isInSimulation = false;
       transition.isPermanentHighlighted = false;
       for (var operation in transition.operations) {
-        operation.isCorrect = false; // נוסיף את איפוס ההדגשה לפעולות
+        operation.isCorrect = false;
       }
     }
   }
@@ -67,35 +69,47 @@ class PDASimulator extends ChangeNotifier {
   Future<void> _runSimulation() async {
     while (!algorithmFinished && isSimulationStarted) {
       await _processStep();
-      await Future.delayed(Duration(milliseconds: 500));
+      await Future.delayed(const Duration(milliseconds: 500));
     }
   }
 
   Future<void> _processStep() async {
     if (algorithmFinished || !isSimulationStarted) return;
 
-    print("\nCurrent state: ${currentNode?.name}");
-    print("Current input symbol: $currentSymbol");
-    print("Current stack: ${pda.pdaStack.stack}");
+    if (kDebugMode) {
+      print("\nCurrent state: ${currentNode?.name}");
+    }
+    if (kDebugMode) {
+      print("Current input symbol: $currentSymbol");
+    }
+    if (kDebugMode) {
+      print("Current stack: ${pda.pdaStack.stack}");
+    }
 
     _highlightNode(currentNode);
-    await Future.delayed(Duration(milliseconds: 300));
+    await Future.delayed(const Duration(milliseconds: 300));
     notifyListeners();
 
     bool moved = await _tryTransitions();
 
     if (!moved) {
       if (currentNode?.isAccepting == true && inputIndex == pda.word.length) {
-        print("Accepted: Reached an accepting state");
+        if (kDebugMode) {
+          print("Accepted: Reached an accepting state");
+        }
         algorithmFinished = true;
       } else if (inputIndex == pda.word.length &&
           (pda.pdaStack.stack.isEmpty ||
               (pda.pdaStack.stack.length == 1 &&
                   pda.pdaStack.stack.first == '\$'))) {
-        print("Accepted: Empty stack (except for \$)");
+        if (kDebugMode) {
+          print("Accepted: Empty stack (except for \$)");
+        }
         algorithmFinished = true;
       } else {
-        print("Rejected: No valid transition or conditions not met");
+        if (kDebugMode) {
+          print("Rejected: No valid transition or conditions not met");
+        }
         algorithmFinished = true;
       }
     }
@@ -105,14 +119,15 @@ class PDASimulator extends ChangeNotifier {
   Future<bool> _tryTransitions() async {
     for (var transition
         in pda.transitions.where((t) => t.from == currentNode)) {
-      bool transitionApplied = false;
       for (var operation in transition.operations) {
         if (_checkOperation(operation, currentSymbol, pda.pdaStack.stack)) {
-          print(
-              "Transition found: ${transition.toString()} with operation: ${operation.toString()}"); // Debugging line
+          if (kDebugMode) {
+            print(
+                "Transition found: ${transition.toString()} with operation: ${operation.toString()}");
+          }
           _highlightTransition(transition);
           _highlightOperation(operation);
-          await Future.delayed(Duration(milliseconds: 300));
+          await Future.delayed(const Duration(milliseconds: 300));
           notifyListeners();
 
           _applyOperation(operation);
@@ -123,12 +138,11 @@ class PDASimulator extends ChangeNotifier {
                 inputIndex < pda.word.length ? pda.word[inputIndex] : 'ε';
           }
 
-          await Future.delayed(Duration(milliseconds: 300));
+          await Future.delayed(const Duration(milliseconds: 300));
           notifyListeners();
 
           currentNode = transition.to;
           _highlightNode(currentNode);
-          transitionApplied = true;
           return true;
         }
       }
@@ -137,8 +151,12 @@ class PDASimulator extends ChangeNotifier {
   }
 
   void _applyOperation(Operations operation) {
-    print("Applying operation: ${operation.toString()}");
-    print("Stack before: ${pda.pdaStack.stack}");
+    if (kDebugMode) {
+      print("Applying operation: ${operation.toString()}");
+    }
+    if (kDebugMode) {
+      print("Stack before: ${pda.pdaStack.stack}");
+    }
 
     // Handle pop operation
     if (operation.stackPopSymbol != 'ε') {
@@ -146,11 +164,15 @@ class PDASimulator extends ChangeNotifier {
           (pda.pdaStack.stack.last == operation.stackPopSymbol ||
               operation.stackPopSymbol == '\$')) {
         String? popped = pda.popFromStack();
-        print("Popped from stack: $popped");
+        if (kDebugMode) {
+          print("Popped from stack: $popped");
+        }
         _highlightOperation(operation); // Highlight after applying
       } else {
-        print(
-            "Warning: Cannot pop ${operation.stackPopSymbol}, top of stack is ${pda.pdaStack.stack.isNotEmpty ? pda.pdaStack.stack.last : 'empty'}");
+        if (kDebugMode) {
+          print(
+              "Warning: Cannot pop ${operation.stackPopSymbol}, top of stack is ${pda.pdaStack.stack.isNotEmpty ? pda.pdaStack.stack.last : 'empty'}");
+        }
         return;
       }
     }
@@ -162,17 +184,23 @@ class PDASimulator extends ChangeNotifier {
         if (symbol == '\$') {
           if (!pda.pdaStack.stack.contains('\$')) {
             pda.pushToStack('\$');
-            print("Inserted \$ at the bottom of the stack");
+            if (kDebugMode) {
+              print("Inserted \$ at the bottom of the stack");
+            }
           }
         } else {
           pda.pushToStack(symbol);
-          print("Pushed to stack: $symbol");
+          if (kDebugMode) {
+            print("Pushed to stack: $symbol");
+          }
         }
       }
       _highlightOperation(operation); // Highlight after applying
     }
 
-    print("Stack after: ${pda.pdaStack.stack}");
+    if (kDebugMode) {
+      print("Stack after: ${pda.pdaStack.stack}");
+    }
   }
 
   void _highlightNode(Node? node) {

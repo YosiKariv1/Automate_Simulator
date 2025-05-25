@@ -107,9 +107,7 @@ class TransitionWidget extends StatelessWidget {
             (transition.isInSimulation || transition.isPermanentHighlighted)
                 ? [
                     BoxShadow(
-                        color: transitionColor.withOpacity(0.5),
-                        blurRadius: 10,
-                        spreadRadius: 5)
+                        color: transitionColor, blurRadius: 10, spreadRadius: 5)
                   ]
                 : null,
       ),

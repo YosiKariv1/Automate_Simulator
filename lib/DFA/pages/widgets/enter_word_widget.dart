@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:automaton_simulator/classes/dfa_class.dart';
-import 'package:automaton_simulator/DFA/info/regex_info.dart';
 import 'package:provider/provider.dart';
 
 class EnterWordWidget extends StatefulWidget {
@@ -25,124 +24,119 @@ class EnterWordWidgetState extends State<EnterWordWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          padding: const EdgeInsets.all(12.0),
-          width: double.infinity,
-          decoration: const BoxDecoration(
-            color: Colors.deepPurple,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(16.0),
-              topRight: Radius.circular(16.0),
-            ),
-          ),
-          child: Row(
-            children: [
-              Text(
-                'Input Word',
-                style: GoogleFonts.poppins(
-                  textStyle: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              const Spacer(),
-              IconButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return const RegexInfoPopup();
-                    },
-                  );
-                },
-                icon: const Icon(Icons.info_outline, color: Colors.white),
-              ),
-            ],
-          ),
-        ),
-        Flexible(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: showInputField
-                  ? Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        TextField(
-                          controller: textController,
-                          decoration: InputDecoration(
-                            hintText: 'Enter Word To check',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: const BorderSide(
-                                  color: Colors.deepPurple, width: 2),
-                            ),
-                          ),
-                          style: GoogleFonts.roboto(),
-                        ),
-                        const SizedBox(height: 16),
-                        ElevatedButton(
-                          onPressed: () {
-                            setState(() {
-                              inputText = textController.text;
-                              automatonModel.word = inputText;
-                              showInputField = false;
-                            });
-                          },
-                          style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.white,
-                            backgroundColor: Colors.deepPurple,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 24, vertical: 12),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                          child: Text('Submit', style: GoogleFonts.poppins()),
-                        ),
-                      ],
-                    )
-                  : Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          inputText.isEmpty ? 'No word are entered' : inputText,
-                          style: GoogleFonts.roboto(fontSize: 18),
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: 20),
-                        ElevatedButton(
-                          onPressed: () {
-                            setState(() {
-                              showInputField = true;
-                            });
-                          },
-                          style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.white,
-                            backgroundColor: Colors.deepPurple,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 24, vertical: 12),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                          child: Text('Enter Expression',
-                              style: GoogleFonts.poppins()),
-                        ),
-                      ],
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 250),
+        child: showInputField
+            ? Column(
+                key: const ValueKey('input'),
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    controller: textController,
+                    autofocus: true,
+                    decoration: InputDecoration(
+                      hintText: 'Enter word to check',
+                      hintStyle: GoogleFonts.poppins(
+                          color: Colors.deepPurple[200], fontSize: 16),
+                      filled: true,
+                      fillColor: Colors.deepPurple[50],
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide:
+                            BorderSide(color: Colors.deepPurple.shade200),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(
+                            color: Colors.deepPurple, width: 2),
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
                     ),
-            ),
-          ),
-        ),
-      ],
+                    style: GoogleFonts.roboto(
+                        fontSize: 17, color: Colors.deepPurple[900]),
+                  ),
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          inputText = textController.text;
+                          automatonModel.word = inputText;
+                          showInputField = false;
+                        });
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.deepPurple[700],
+                        padding: const EdgeInsets.symmetric(vertical: 13),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(9),
+                        ),
+                        elevation: 0,
+                      ),
+                      child: Text(
+                        'Submit',
+                        style: GoogleFonts.poppins(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            : Column(
+                key: const ValueKey('show'),
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    inputText.isEmpty
+                        ? 'Please enter a word to begin'
+                        : inputText,
+                    style: GoogleFonts.poppins(
+                      fontSize: 18,
+                      color: inputText.isEmpty
+                          ? Colors.deepPurple.shade200
+                          : Colors.deepPurple.shade700,
+                      fontWeight:
+                          inputText.isEmpty ? FontWeight.w400 : FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 18),
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton(
+                      onPressed: () {
+                        setState(() {
+                          showInputField = true;
+                          textController.text = inputText;
+                        });
+                      },
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: Colors.deepPurple[700],
+                        side: BorderSide(color: Colors.deepPurple.shade200),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(9),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 13),
+                      ),
+                      child: Text(
+                        inputText.isEmpty ? 'Enter Word' : 'Edit Word',
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+      ),
     );
   }
 }

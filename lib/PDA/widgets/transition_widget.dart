@@ -91,9 +91,7 @@ class PDATransitionWidget extends StatelessWidget {
             (transition.isInSimulation || transition.isPermanentHighlighted)
                 ? [
                     BoxShadow(
-                        color: transitionColor.withOpacity(0.5),
-                        blurRadius: 10,
-                        spreadRadius: 5)
+                        color: transitionColor, blurRadius: 10, spreadRadius: 5)
                   ]
                 : null,
       ),
@@ -128,9 +126,9 @@ class PDATransitionWidget extends StatelessWidget {
     Color backgroundColor;
 
     if (operation.isCorrect) {
-      backgroundColor = Colors.green.withOpacity(0.3);
+      backgroundColor = Colors.green;
     } else if (operation.isChecking) {
-      backgroundColor = Colors.orange.withOpacity(0.3);
+      backgroundColor = Colors.orange;
     } else {
       backgroundColor = Colors.transparent;
     }

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:automaton_simulator/PDA/tansition_popup.dart';
 import 'package:automaton_simulator/classes/node_class.dart';
@@ -134,23 +135,39 @@ class PDA extends ChangeNotifier {
   }
 
   void printPDAState() {
-    print('Current word: $word');
-    print('Stack content: ${pdaStack.stack}');
-
-    print('Nodes:');
-    for (var node in nodes) {
-      print(
-          ' - Node ${node.name}: isStart=${node.isStart}, isAccepting=${node.isAccepting}');
+    if (kDebugMode) {
+      print('Current word: $word');
+    }
+    if (kDebugMode) {
+      print('Stack content: ${pdaStack.stack}');
     }
 
-    print('Transitions:');
-    for (var transition in transitions) {
-      print(
-          ' - Transition from Node ${transition.from.name} to Node ${transition.to.name}');
-      print('   Operations:');
-      for (var operation in transition.operations) {
+    if (kDebugMode) {
+      print('Nodes:');
+    }
+    for (var node in nodes) {
+      if (kDebugMode) {
         print(
-            '     Input: ${operation.inputTopSymbol}, Stack Pop: ${operation.stackPopSymbol}, Stack Push: ${operation.stackPushSymbol}');
+            ' - Node ${node.name}: isStart=${node.isStart}, isAccepting=${node.isAccepting}');
+      }
+    }
+
+    if (kDebugMode) {
+      print('Transitions:');
+    }
+    for (var transition in transitions) {
+      if (kDebugMode) {
+        print(
+            ' - Transition from Node ${transition.from.name} to Node ${transition.to.name}');
+      }
+      if (kDebugMode) {
+        print('   Operations:');
+      }
+      for (var operation in transition.operations) {
+        if (kDebugMode) {
+          print(
+              '     Input: ${operation.inputTopSymbol}, Stack Pop: ${operation.stackPopSymbol}, Stack Push: ${operation.stackPushSymbol}');
+        }
       }
     }
   }

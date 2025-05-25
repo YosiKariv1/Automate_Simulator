@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:automaton_simulator/classes/node_class.dart';
 import 'package:automaton_simulator/classes/rule_class.dart';
@@ -24,8 +25,10 @@ class TuringMachine extends ChangeNotifier {
 
   void addRule(Rule rule) {
     rules.add(rule);
-    print(
-        "Rule added: ${rule.read} -> ${rule.write}, direction: ${rule.direction}");
+    if (kDebugMode) {
+      print(
+          "Rule added: ${rule.read} -> ${rule.write}, direction: ${rule.direction}");
+    }
     addNodeForRule(rule);
     notifyListeners();
   }
@@ -36,8 +39,10 @@ class TuringMachine extends ChangeNotifier {
       Node nodeToRemove = nodes.removeAt(index);
       transitions
           .removeWhere((t) => t.from == nodeToRemove || t.to == nodeToRemove);
-      print(
-          "Rule at index $index deleted, associated node and transitions removed.");
+      if (kDebugMode) {
+        print(
+            "Rule at index $index deleted, associated node and transitions removed.");
+      }
       notifyListeners();
     }
   }
@@ -60,7 +65,9 @@ class TuringMachine extends ChangeNotifier {
     }
 
     cells[headPosition].isHead = true;
-    print("Head Position = $headPosition");
+    if (kDebugMode) {
+      print("Head Position = $headPosition");
+    }
     notifyListeners();
   }
 
@@ -69,7 +76,9 @@ class TuringMachine extends ChangeNotifier {
       cells[headPosition].isHead = false; // בטל את הראש הקודם
       headPosition = position;
       cells[headPosition].isHead = true; // הגדר את המיקום החדש כראש
-      print("Head Position set to = $headPosition");
+      if (kDebugMode) {
+        print("Head Position set to = $headPosition");
+      }
       notifyListeners();
     }
   }
@@ -77,7 +86,9 @@ class TuringMachine extends ChangeNotifier {
   void updateTapeContent(int index, String content) {
     if (index >= 0 && index < cells.length) {
       cells[index].write(content);
-      print("Cell $index = $content");
+      if (kDebugMode) {
+        print("Cell $index = $content");
+      }
     }
     notifyListeners();
   }
@@ -86,7 +97,9 @@ class TuringMachine extends ChangeNotifier {
     for (var cell in cells) {
       cell.clear();
     }
-    print("Tape reset.");
+    if (kDebugMode) {
+      print("Tape reset.");
+    }
     notifyListeners();
   }
 
@@ -100,8 +113,10 @@ class TuringMachine extends ChangeNotifier {
       isStart: rules.isEmpty,
     );
     nodes.add(node);
-    print(
-        "Node added for rule ID: ${rule.id}, Node Position: ($xPosition, $yPosition)");
+    if (kDebugMode) {
+      print(
+          "Node added for rule ID: ${rule.id}, Node Position: ($xPosition, $yPosition)");
+    }
     notifyListeners();
   }
 
@@ -115,8 +130,10 @@ class TuringMachine extends ChangeNotifier {
           direction: rule.direction,
           symbol: {});
       transitions.add(transition);
-      print(
-          "Transition added: from Node ${from.name} to Node ${to.name}, Read: ${rule.read}, Write: ${rule.write}, Direction: ${rule.direction}");
+      if (kDebugMode) {
+        print(
+            "Transition added: from Node ${from.name} to Node ${to.name}, Read: ${rule.read}, Write: ${rule.write}, Direction: ${rule.direction}");
+      }
       notifyListeners();
     }
   }

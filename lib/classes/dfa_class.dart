@@ -111,10 +111,8 @@ class DFA extends ChangeNotifier {
 
         if (result != null && result.isNotEmpty) {
           if (existingTransition != null) {
-            // Update existing transition
             existingTransition.updateSymbols(result);
           } else {
-            // Create new transition
             Transition newTransition = Transition(
               from: tempTransition!.from,
               to: targetNode,
@@ -126,7 +124,6 @@ class DFA extends ChangeNotifier {
         }
       }
 
-      // Clear temporary transition and mouse position
       tempTransition = null;
       currentMousePosition = null;
       notifyListeners();
@@ -134,31 +131,35 @@ class DFA extends ChangeNotifier {
   }
 
   void printAutomatonInfo() {
-    // המרת האלפבית למחרוזת אחת לצורך השוואות קלות יותר
     String alphabetString = alphabet;
 
-    print("Alphabet: $alphabetString");
+    if (kDebugMode) {
+      print("Alphabet: $alphabetString");
+    }
 
     for (var node in nodes) {
-      print('Node: ${node.name}');
+      if (kDebugMode) {
+        print('Node: ${node.name}');
+      }
 
-      // איסוף כל הסימבולים המשומשים במעברים מהצומת הנוכחי
       String usedSymbols = '';
       for (var transition in transitions) {
         if (transition.from == node) {
-          print(
-              '  Transition to ${transition.to.name} with symbols: ${transition.symbol.join(', ')}');
+          if (kDebugMode) {
+            print(
+                '  Transition to ${transition.to.name} with symbols: ${transition.symbol.join(', ')}');
+          }
           for (var symbol in transition.symbol) {
             usedSymbols += symbol;
           }
         }
       }
 
-      // המרת הסימבולים המשומשים למחרוזת אחת ולמיין
       usedSymbols = String.fromCharCodes(usedSymbols.runes.toList()..sort());
-      print('  Symbols used in transitions: $usedSymbols');
+      if (kDebugMode) {
+        print('  Symbols used in transitions: $usedSymbols');
+      }
 
-      // מציאת סימבולים חסרים מהאלפבית
       String missingSymbols = '';
       for (var symbol in alphabetString.split('')) {
         if (!usedSymbols.contains(symbol)) {
@@ -167,12 +168,18 @@ class DFA extends ChangeNotifier {
       }
 
       if (missingSymbols.isNotEmpty) {
-        print('  Missing symbols for this node: $missingSymbols');
+        if (kDebugMode) {
+          print('  Missing symbols for this node: $missingSymbols');
+        }
       } else {
-        print('  No missing symbols for this node');
+        if (kDebugMode) {
+          print('  No missing symbols for this node');
+        }
       }
 
-      print('----------------------------------------------');
+      if (kDebugMode) {
+        print('----------------------------------------------');
+      }
     }
   }
 

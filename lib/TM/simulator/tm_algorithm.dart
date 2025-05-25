@@ -2,6 +2,7 @@ import 'package:automaton_simulator/TM/simulator/tm_simulator.dart';
 import 'package:automaton_simulator/classes/node_class.dart';
 import 'package:automaton_simulator/classes/transition_class.dart';
 import 'package:automaton_simulator/classes/turing_machine_class.dart';
+import 'package:flutter/foundation.dart';
 
 class TuringAlgorithm {
   final TuringMachine turingMachine;
@@ -29,8 +30,10 @@ class TuringAlgorithm {
 
       // No valid transitions found
       if (validTransitions.isEmpty) {
-        print(
-            "No valid transition found for symbol '${localTape![currentPosition]}' in state '${currentNode!.name}'. Simulation halted.");
+        if (kDebugMode) {
+          print(
+              "No valid transition found for symbol '${localTape![currentPosition]}' in state '${currentNode!.name}'. Simulation halted.");
+        }
         currentNode!.setError(true); // Highlight the node as an error
         break;
       }
@@ -52,7 +55,9 @@ class TuringAlgorithm {
 
       // Check if the head goes out of tape bounds
       if (currentPosition < 0 || currentPosition >= localTape!.length) {
-        print("Head moved out of tape bounds at position $currentPosition");
+        if (kDebugMode) {
+          print("Head moved out of tape bounds at position $currentPosition");
+        }
         break;
       }
 

@@ -1,9 +1,10 @@
+import 'package:automaton_simulator/DFA/pages/widgets/panel_container.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:automaton_simulator/DFA/simulator/word_display_widget.dart';
 import 'package:automaton_simulator/classes/dfa_class.dart';
 import 'package:automaton_simulator/DFA/info/dfa_info.dart';
-import 'package:automaton_simulator/DFA/info/welcome_popup.dart';
+import 'package:automaton_simulator/DFA/info/welcome_popup_dfa.dart';
 import 'package:automaton_simulator/DFA/pages/widgets/animated_border.dart';
 import 'package:automaton_simulator/DFA/pages/widgets/editor_widget.dart';
 import 'package:automaton_simulator/DFA/pages/widgets/enter_word_widget.dart';
@@ -37,6 +38,38 @@ class DfaPageState extends State<DfaPage> {
       await showWelcomeDialog(context);
       showTutorial();
     });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        color: Colors.white,
+        child: SafeArea(
+          child: Column(
+            children: [
+              buildCustomHeader(),
+              Expanded(
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    bool isWideScreen = constraints.maxWidth > 800;
+                    return Flex(
+                      direction: isWideScreen ? Axis.horizontal : Axis.vertical,
+                      children: [
+                        buildEditorPanel(),
+                        buildRightPanel(isWideScreen),
+                      ],
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   Widget buildCustomHeader() {
@@ -82,38 +115,6 @@ class DfaPageState extends State<DfaPage> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        color: Colors.white,
-        child: SafeArea(
-          child: Column(
-            children: [
-              buildCustomHeader(),
-              Expanded(
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    bool isWideScreen = constraints.maxWidth > 800;
-                    return Flex(
-                      direction: isWideScreen ? Axis.horizontal : Axis.vertical,
-                      children: [
-                        buildEditorPanel(),
-                        buildRightPanel(isWideScreen),
-                      ],
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget buildEditorPanel() {
     return Expanded(
       flex: 3,
@@ -147,7 +148,10 @@ class DfaPageState extends State<DfaPage> {
                                   ),
                                 ],
                               ),
-                              child: DFAEditorWidget(key: editorKey),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(7.0),
+                                child: DFAEditorWidget(key: editorKey),
+                              ),
                             ),
                             AnimatedBorder(isSimulating: isSimulating),
                           ],
@@ -160,10 +164,9 @@ class DfaPageState extends State<DfaPage> {
                     builder: (context, isSimulating, child) {
                       return AnimatedPositioned(
                         duration: const Duration(milliseconds: 300),
-                        top: isSimulating ? 0 : -50,
                         left: 0,
                         right: 0,
-                        height: 50,
+                        height: isSimulating ? 125 : 0,
                         child: WordDisplayWidget(
                           isVisible: isSimulating,
                           simulator: simulator,
@@ -215,85 +218,33 @@ class DfaPageState extends State<DfaPage> {
     return Container(
       key: regxKey,
       width: double.infinity,
-      height: 200,
-      margin: const EdgeInsets.all(8.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(25.0),
-        border: Border.all(
-          color: Colors.deepPurple,
-          width: 4.0,
+      margin: const EdgeInsets.only(top: 15),
+      child: PanelContainer(
+        title: 'Input Word',
+        icon: IconButton(
+          onPressed: () {
+            // show info
+          },
+          icon: const Icon(Icons.info_outline, color: Colors.white),
         ),
-        boxShadow: const [
-          BoxShadow(color: Colors.black12, blurRadius: 10.0),
-        ],
+        padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+        child: const EnterWordWidget(),
       ),
-      child: const EnterWordWidget(),
     );
   }
 
   Widget buildInfoPanel() {
     return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Container(
-          key: infoPanelKey,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(26.0),
-            border: Border.all(
-              color: Colors.deepPurple.shade500,
-              width: 4.0,
-            ),
-            boxShadow: const [
-              BoxShadow(
-                color: Colors.black12,
-                blurRadius: 15.0,
-                offset: Offset(0, 10),
-              ),
-            ],
-          ),
-          child: Column(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(12.0),
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                  color: Colors.deepPurple,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20.0),
-                    topRight: Radius.circular(20.0),
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    Text(
-                      'DFA Information',
-                      style: GoogleFonts.poppins(
-                        textStyle: const TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    const Spacer(),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.info_outline, color: Colors.white),
-                    ),
-                  ],
-                ),
-              ),
-              const Expanded(
-                child: SingleChildScrollView(
-                  padding: EdgeInsets.all(12.0),
-                  child: DfaInfoWidget(),
-                ),
-              ),
-            ],
-          ),
+      child: PanelContainer(
+        title: 'DFA Information',
+        icon: IconButton(
+          onPressed: () {},
+          icon: const Icon(Icons.info_outline, color: Colors.white),
         ),
+        containerKey: infoPanelKey,
+        scrollable: true,
+        padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+        child: const DfaInfoWidget(),
       ),
     );
   }
@@ -301,7 +252,7 @@ class DfaPageState extends State<DfaPage> {
   void showTutorial() {
     TutorialCoachMark(
       targets: _createTargets(),
-      colorShadow: Colors.deepPurple[900]!.withOpacity(0.8),
+      colorShadow: Colors.deepPurple[900]!,
       textSkip: "Skip Tutorial",
       textStyleSkip: const TextStyle(
           color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
@@ -403,11 +354,11 @@ class DfaPageState extends State<DfaPage> {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
+                        color: Colors.black,
                         blurRadius: 10,
-                        offset: const Offset(0, 5),
+                        offset: Offset(0, 5),
                       ),
                     ],
                   ),

@@ -40,7 +40,7 @@ class TmPageState extends State<TmPage> {
   void showTutorial() {
     TutorialCoachMark(
       targets: _createTargets(),
-      colorShadow: Colors.deepPurple[900]!.withOpacity(0.8),
+      colorShadow: Colors.deepPurple[900]!,
       textSkip: "Skip Tutorial",
       textStyleSkip: GoogleFonts.poppins(
           color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
@@ -119,11 +119,11 @@ class TmPageState extends State<TmPage> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10),
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
+                    color: Colors.black,
                     blurRadius: 10,
-                    offset: const Offset(0, 5),
+                    offset: Offset(0, 5),
                   ),
                 ],
               ),

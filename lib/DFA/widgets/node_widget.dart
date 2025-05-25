@@ -101,12 +101,7 @@ class NodeWidget extends StatelessWidget {
         ),
         boxShadow:
             (node.isInSimulation || node.isPermanentHighlighted || node.isError)
-                ? [
-                    BoxShadow(
-                        color: nodeColor.withOpacity(0.5),
-                        blurRadius: 10,
-                        spreadRadius: 5)
-                  ]
+                ? [BoxShadow(color: nodeColor, blurRadius: 10, spreadRadius: 5)]
                 : null,
       ),
       child: Center(

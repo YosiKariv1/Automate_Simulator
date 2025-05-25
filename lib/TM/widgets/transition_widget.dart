@@ -73,7 +73,7 @@ class TuringTransitionWidget extends StatelessWidget {
                 transition.isInSimulation || transition.isPermanentHighlighted
                     ? [
                         BoxShadow(
-                          color: borderColor.withOpacity(0.8),
+                          color: borderColor,
                           spreadRadius: 4,
                           blurRadius: 8,
                         ),

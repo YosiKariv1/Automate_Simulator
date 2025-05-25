@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 class PDAStack extends ChangeNotifier {
-  List<String> _stack = [];
+  final List<String> _stack = [];
 
   List<String> get stack => List.unmodifiable(_stack);
 

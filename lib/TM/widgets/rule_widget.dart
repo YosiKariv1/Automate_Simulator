@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:automaton_simulator/classes/rule_class.dart';
 import 'package:automaton_simulator/classes/turing_machine_class.dart';
@@ -240,16 +241,16 @@ class RuleWidgetState extends State<RuleWidget> {
 
     turingMachine.notifyListeners();
 
-    print("Sub-rule removed and its transition deleted.");
+    if (kDebugMode) {
+      print("Sub-rule removed and its transition deleted.");
+    }
   }
 
   void saveRuleAndSubRules() {
-    // מחיקת מעברים ישנים של הרול הראשי ושל תתי-הרולים
     turingMachine.transitions.removeWhere(
       (transition) => transition.from.name == widget.rule.id.toString(),
     );
 
-    // יצירת מעבר עבור הרול הראשי
     final fromNode = turingMachine.nodes[widget.ruleIndex];
     final toNode = turingMachine.nodes.firstWhere(
       (node) => node.name == widget.rule.newState,
@@ -266,6 +267,8 @@ class RuleWidgetState extends State<RuleWidget> {
       turingMachine.addTransitionForRule(fromNode, subToNode, subRule);
     }
 
-    print("Transitions updated for Rule ID ${widget.rule.id}");
+    if (kDebugMode) {
+      print("Transitions updated for Rule ID ${widget.rule.id}");
+    }
   }
 }

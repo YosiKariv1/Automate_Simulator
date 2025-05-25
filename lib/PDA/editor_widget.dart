@@ -183,7 +183,7 @@ class PDAEditorWidgetState extends State<PDAEditorWidget> {
           borderRadius: BorderRadius.circular(15),
         ),
         elevation: 10,
-        shadowColor: Colors.black.withOpacity(0.3),
+        shadowColor: Colors.black,
         minimumSize: const Size(150, 50),
       ),
       icon: Icon(icon, size: 24),

@@ -46,8 +46,8 @@ class NodeWidget extends StatelessWidget {
         shape: BoxShape.circle,
         boxShadow: node.isInSimulation
             ? [
-                BoxShadow(
-                  color: Colors.green.withOpacity(0.8),
+                const BoxShadow(
+                  color: Colors.green,
                   spreadRadius: 8,
                   blurRadius: 16,
                 ),

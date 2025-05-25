@@ -12,6 +12,7 @@ class Transition extends ChangeNotifier {
   bool isPermanentHighlighted = false;
   bool isError = false;
   bool _isPending = false;
+  bool isBeingChecked = false;
 
   //For turing machine
   String read = '';

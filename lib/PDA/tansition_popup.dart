@@ -56,11 +56,11 @@ class PDATransitionPopupState extends State<PDATransitionPopup> {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: Colors.black,
               blurRadius: 10,
-              offset: const Offset(0, 5),
+              offset: Offset(0, 5),
             ),
           ],
         ),

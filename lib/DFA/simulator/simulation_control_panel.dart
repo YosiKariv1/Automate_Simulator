@@ -36,6 +36,46 @@ class SimulationControlPanelState extends State<SimulationControlPanel>
     super.dispose();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildProgressSlider(context),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _buildControlButton(
+                icon:
+                    widget.simulator.isPlaying ? Icons.pause : Icons.play_arrow,
+                onPressed: _handlePlayPause,
+                tooltip: widget.simulator.isPlaying ? 'Pause' : 'Play',
+              ),
+              _buildControlButton(
+                icon: Icons.stop,
+                onPressed: _handleStop,
+                tooltip: 'Stop',
+              ),
+              _buildControlButton(
+                icon: Icons.replay,
+                onPressed: _handleReset,
+                tooltip: 'Reset',
+              ),
+              _buildSpeedControl(),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
   void _toggleSpeedSlider() {
     setState(() {
       _showSpeedSlider = !_showSpeedSlider;
@@ -78,46 +118,6 @@ class SimulationControlPanelState extends State<SimulationControlPanel>
     widget.simulator.setProgress(value);
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-      decoration: BoxDecoration(
-        color: Colors.deepPurple.shade50,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _buildProgressSlider(context),
-          const SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _buildControlButton(
-                icon:
-                    widget.simulator.isPlaying ? Icons.pause : Icons.play_arrow,
-                onPressed: _handlePlayPause,
-                tooltip: widget.simulator.isPlaying ? 'Pause' : 'Play',
-              ),
-              _buildControlButton(
-                icon: Icons.stop,
-                onPressed: _handleStop,
-                tooltip: 'Stop',
-              ),
-              _buildControlButton(
-                icon: Icons.replay,
-                onPressed: _handleReset,
-                tooltip: 'Reset',
-              ),
-              _buildSpeedControl(),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildControlButton({
     required IconData icon,
     required VoidCallback onPressed,
@@ -129,12 +129,13 @@ class SimulationControlPanelState extends State<SimulationControlPanel>
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.0),
+            borderRadius: BorderRadius.circular(15.0),
           ),
           backgroundColor: Colors.deepPurple.shade700,
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+          shadowColor: Colors.deepPurple.shade300,
+          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
         ),
-        child: Icon(icon, color: Colors.white),
+        child: Icon(icon, color: Colors.white, size: 25),
       ),
     );
   }
@@ -162,7 +163,7 @@ class SimulationControlPanelState extends State<SimulationControlPanel>
                 activeTrackColor: Colors.deepPurple.shade700,
                 inactiveTrackColor: Colors.deepPurple.shade100,
                 thumbColor: Colors.deepPurple.shade700,
-                overlayColor: Colors.deepPurple.withOpacity(0.2),
+                overlayColor: Colors.deepPurple,
               ),
               child: Slider(
                 value: widget.simulator.speed,
@@ -191,7 +192,7 @@ class SimulationControlPanelState extends State<SimulationControlPanel>
             activeTrackColor: Colors.deepPurple.shade700,
             inactiveTrackColor: Colors.deepPurple.shade100,
             thumbColor: Colors.deepPurple.shade700,
-            overlayColor: Colors.deepPurple.withOpacity(0.2),
+            overlayColor: Colors.deepPurple,
           ),
           child: Slider(
             value: widget.simulator.progress,

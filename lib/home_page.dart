@@ -3,58 +3,67 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:automaton_simulator/DFA/pages/dfa_page.dart';
 import 'package:automaton_simulator/PDA/pda_page.dart';
 import 'package:automaton_simulator/TM/tm_page.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                _buildHeader(),
-                _buildSimulatorOptions(context),
-                _buildFeatures(),
-                _buildFooter(),
-              ],
-            ),
-          ),
-        ],
+    return const Scaffold(
+      backgroundColor: Colors.white,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            HeaderSection(),
+            SimulatorOptionsSection(),
+            FeaturesSection(),
+            AboutMeSection(),
+            FooterSection(),
+          ],
+        ),
       ),
     );
   }
+}
 
-  Widget _buildHeader() {
+/// ---------- HEADER -----------
+class HeaderSection extends StatelessWidget {
+  const HeaderSection({super.key});
+  @override
+  Widget build(BuildContext context) {
     return Container(
-      height: 200,
+      padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 20),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Colors.deepPurple.shade800, Colors.deepPurple.shade500],
+          colors: [Colors.deepPurple.shade700, Colors.deepPurple.shade400],
         ),
+        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(35)),
       ),
       child: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               'Educational Automaton Simulator',
-              style: GoogleFonts.rajdhani(
-                fontSize: 48,
-                fontWeight: FontWeight.bold,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.poppins(
+                fontSize: 42,
+                fontWeight: FontWeight.w600,
                 color: Colors.white,
+                letterSpacing: 0.5,
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 15),
             Text(
-              'Learn and Explore Various Automaton Models',
-              style: GoogleFonts.roboto(
+              'Learn & Explore Automaton Models',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.poppins(
                 fontSize: 18,
+                fontWeight: FontWeight.w300,
                 color: Colors.white70,
               ),
             ),
@@ -63,109 +72,315 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildSimulatorOptions(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+/// ----------- SIMULATOR OPTIONS -----------
+class SimulatorOptionsSection extends StatelessWidget {
+  const SimulatorOptionsSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 20),
+      color: Colors.white,
       child: Column(
         children: [
           Text(
-            'Choose a Simulator:',
-            style: GoogleFonts.rubik(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
+            'Choose Your Simulator',
+            style: GoogleFonts.poppins(
+              fontSize: 32,
+              fontWeight: FontWeight.w700,
               color: Colors.deepPurple[800],
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 12),
+          Text(
+            'Select the model you wish to simulate and start exploring automata theory in action.',
+            textAlign: TextAlign.center,
+            style: GoogleFonts.poppins(
+              fontSize: 17,
+              color: Colors.deepPurple[400],
+              height: 1.5,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          const SizedBox(height: 38),
           Wrap(
-            spacing: 20,
-            runSpacing: 20,
+            spacing: 35,
+            runSpacing: 35,
             alignment: WrapAlignment.center,
             children: [
-              _buildSimulatorCard(
-                context,
-                'DFA',
-                'Finite Automaton',
-                Icons.account_tree,
-                Colors.blue,
-                () => Navigator.push(
+              SimulatorCard(
+                title: 'DFA',
+                subtitle: 'Finite Automaton',
+                icon: Icons.account_tree_outlined,
+                color: Colors.blue,
+                onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const DfaPage()),
                 ),
               ),
-              _buildSimulatorCard(
-                context,
-                'PDA',
-                'Pushdown Automaton',
-                Icons.storage,
-                Colors.green,
-                () => Navigator.push(
+              SimulatorCard(
+                title: 'PDA',
+                subtitle: 'Pushdown Automaton',
+                icon: Icons.layers_outlined,
+                color: Colors.green,
+                onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const PdaPage()),
                 ),
               ),
-              _buildSimulatorCard(
-                context,
-                'TM',
-                'Turing Machine',
-                Icons.computer,
-                Colors.orange,
-                () => Navigator.push(
+              SimulatorCard(
+                title: 'TM',
+                subtitle: 'Turing Machine',
+                icon: Icons.memory_outlined,
+                color: Colors.orange,
+                onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const TmPage()),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 20),
-          Text(
-            'This simulator helps you understand the concepts of different automaton models. Choose a simulator to get started.',
-            style: GoogleFonts.rubik(
-              fontSize: 16,
-              color: Colors.deepPurple[800],
-            ),
-          ),
-          const SizedBox(height: 50),
         ],
       ),
     );
   }
+}
 
-  Widget _buildSimulatorCard(BuildContext context, String title,
-      String subtitle, IconData icon, Color color, VoidCallback onTap) {
-    return Card(
-      elevation: 10,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(15),
-        child: Container(
-          alignment: Alignment.center,
-          height: 250,
-          width: 400,
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
+class SimulatorCard extends StatelessWidget {
+  final String title, subtitle;
+  final IconData icon;
+  final Color color;
+  final VoidCallback onTap;
+  const SimulatorCard({
+    super.key,
+    required this.title,
+    required this.subtitle,
+    required this.icon,
+    required this.color,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 410,
+      child: Card(
+        elevation: 7,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: color, width: 2),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(20),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 44, horizontal: 30),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(icon, size: 70, color: color),
+                const SizedBox(height: 25),
+                Text(
+                  title,
+                  style: GoogleFonts.poppins(
+                    fontSize: 29,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.grey[850],
+                  ),
+                ),
+                const SizedBox(height: 11),
+                Text(
+                  subtitle,
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.poppins(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.grey[600],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// ----------- FEATURES -----------
+class FeaturesSection extends StatelessWidget {
+  const FeaturesSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: const Color(0xFFF7F7F8),
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(vertical: 70),
+      child: Column(
+        children: [
+          Text(
+            'Features',
+            style: GoogleFonts.poppins(
+              fontSize: 38,
+              fontWeight: FontWeight.bold,
+              color: const Color(0xFF4725A6),
+            ),
+          ),
+          const SizedBox(height: 55),
+          const Wrap(
+            spacing: 80,
+            runSpacing: 40,
+            alignment: WrapAlignment.center,
             children: [
-              Icon(icon, size: 50, color: color),
-              const SizedBox(height: 20),
-              Text(
-                title,
-                style: GoogleFonts.rubik(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey[800],
-                ),
+              FeatureBox(
+                icon: Icons.play_circle_fill,
+                iconBg: Color(0xFF6B39CF),
+                title: 'Interactive Simulations',
+                subtitle:
+                    'Visualize automata in action with\nstep-by-step animations',
               ),
-              const SizedBox(height: 10),
+              FeatureBox(
+                icon: Icons.school,
+                iconBg: Color(0xFF6B39CF),
+                title: 'Comprehensive Tutorials',
+                subtitle: 'Learn the theory behind each\ncomputational model',
+              ),
+              FeatureBox(
+                icon: Icons.edit,
+                iconBg: Color(0xFF6B39CF),
+                title: 'Custom Automata Creation',
+                subtitle:
+                    'Design and test your own automata\nwith an intuitive interface',
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class FeatureBox extends StatelessWidget {
+  final IconData icon;
+  final Color iconBg;
+  final String title;
+  final String subtitle;
+  const FeatureBox({
+    super.key,
+    required this.icon,
+    required this.iconBg,
+    required this.title,
+    required this.subtitle,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 320,
+      child: Column(
+        children: [
+          Icon(icon, color: const Color(0xFF4725A6), size: 55),
+          const SizedBox(height: 25),
+          Text(
+            title,
+            textAlign: TextAlign.center,
+            style: GoogleFonts.poppins(
+              fontSize: 22,
+              fontWeight: FontWeight.w600,
+              color: const Color(0xFF383838),
+            ),
+          ),
+          const SizedBox(height: 9),
+          Text(
+            subtitle,
+            textAlign: TextAlign.center,
+            style: GoogleFonts.poppins(
+              fontSize: 15,
+              color: Colors.grey,
+              height: 1.4,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// ----------- ABOUT ME -----------
+class AboutMeSection extends StatelessWidget {
+  const AboutMeSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 64, horizontal: 30),
+      color: Colors.white,
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 820),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
               Text(
-                subtitle,
-                textAlign: TextAlign.center,
-                style: GoogleFonts.roboto(
-                  fontSize: 14,
-                  color: Colors.grey[600],
+                'About This Project',
+                style: GoogleFonts.poppins(
+                  fontSize: 30,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.deepPurple[800],
                 ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 28),
+              Text(
+                'Automaton Simulator was created to help students, educators, and anyone curious about computation explore the world of automata.\n\nHere you can visualize, experiment with, and truly understand the concepts behind finite automata, pushdown automata, and Turing machines — in an intuitive and interactive way.\n\nWhether you’re struggling with theory or just want to play with machines, this tool is for you!',
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  color: Colors.grey[800],
+                  height: 1.7,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 28),
+              Text(
+                'This project was lovingly developed by a single developer. If you found it helpful or inspiring, feel free to support, share, or just say hi!',
+                style: GoogleFonts.poppins(
+                  fontSize: 14,
+                  color: Colors.deepPurple[400],
+                  fontWeight: FontWeight.w500,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 28),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SocialLinkButton(
+                    icon: FontAwesomeIcons.github,
+                    label: 'Support / Star',
+                    url: 'https://github.com/YosiKariv1',
+                  ),
+                  SizedBox(width: 18),
+                  SocialLinkButton(
+                    icon: FontAwesomeIcons.linkedin,
+                    label: 'Connect',
+                    url: 'https://www.linkedin.com/in/yosi-kariv/',
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Created and maintained by Yosi Kariv 💜',
+                style: GoogleFonts.poppins(
+                  fontSize: 13,
+                  color: Colors.deepPurple[200],
+                  fontWeight: FontWeight.w400,
+                ),
+                textAlign: TextAlign.center,
               ),
             ],
           ),
@@ -173,90 +388,64 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildFeatures() {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
-      color: Colors.grey[100],
-      child: Column(
-        children: [
-          Text(
-            'Features',
-            style: GoogleFonts.rubik(
-              fontSize: 36,
-              fontWeight: FontWeight.bold,
-              color: Colors.deepPurple[800],
-            ),
-          ),
-          const SizedBox(height: 40),
-          Wrap(
-            spacing: 20,
-            runSpacing: 20,
-            alignment: WrapAlignment.center,
-            children: [
-              _buildFeatureItem(
-                'Interactive Simulations',
-                'Visualize automata in action with step-by-step animations',
-                Icons.play_circle_fill,
-              ),
-              _buildFeatureItem(
-                'Comprehensive Tutorials',
-                'Learn the theory behind each computational model',
-                Icons.school,
-              ),
-              _buildFeatureItem(
-                'Custom Automata Creation',
-                'Design and test your own automata with an intuitive interface',
-                Icons.edit,
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
+class SocialLinkButton extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final String url;
+  const SocialLinkButton({
+    super.key,
+    required this.icon,
+    required this.label,
+    required this.url,
+  });
+
+  Future<void> _launchURL(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      debugPrint('Could not launch $url');
+    }
   }
 
-  Widget _buildFeatureItem(String title, String description, IconData icon) {
-    return Container(
-      width: 300,
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        children: [
-          Icon(icon, size: 50, color: Colors.deepPurple[600]),
-          const SizedBox(height: 20),
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            style: GoogleFonts.rubik(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.grey[800],
-            ),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            description,
-            textAlign: TextAlign.center,
-            style: GoogleFonts.roboto(
-              fontSize: 16,
-              color: Colors.grey[600],
-            ),
-          ),
-        ],
+  @override
+  Widget build(BuildContext context) {
+    return TextButton.icon(
+      icon: FaIcon(icon, size: 22, color: Colors.deepPurple[600]),
+      label: Text(
+        label,
+        style: GoogleFonts.poppins(
+          color: Colors.deepPurple[600],
+          fontWeight: FontWeight.w500,
+        ),
       ),
+      style: TextButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 12),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+          side: BorderSide(color: Colors.deepPurple.shade100),
+        ),
+      ),
+      onPressed: () => _launchURL(url),
     );
   }
+}
 
-  Widget _buildFooter() {
+/// ----------- FOOTER -----------
+class FooterSection extends StatelessWidget {
+  const FooterSection({super.key});
+  @override
+  Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 20),
+      padding: const EdgeInsets.symmetric(vertical: 24),
       color: Colors.deepPurple[900],
       child: Center(
         child: Text(
-          '© 2024 Automata Simulator. All rights reserved.',
+          '© 2024 Automaton Simulator. All rights reserved.',
           textAlign: TextAlign.center,
-          style: GoogleFonts.roboto(
-            fontSize: 14,
+          style: GoogleFonts.poppins(
+            fontSize: 13,
+            fontWeight: FontWeight.w300,
             color: Colors.white70,
           ),
         ),
