@@ -1,0 +1,36 @@
+name: Deploy to S3
+
+on:
+  push:
+    branches:
+      - main # משנה אם אתה עובד על branch אחר
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.19.0"
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build Web App
+        run: flutter build web
+
+      - name: Deploy to S3
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        with:
+          args: --delete --acl public-read
+        env:
+          AWS_S3_BUCKET: automaton-simulator
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: eu-north-1
+          SOURCE_DIR: build/web

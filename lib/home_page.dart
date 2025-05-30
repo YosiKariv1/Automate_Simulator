@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:automaton_simulator/DFA/pages/dfa_page.dart';
 import 'package:automaton_simulator/PDA/pda_page.dart';
 import 'package:automaton_simulator/TM/tm_page.dart';
@@ -44,25 +43,27 @@ class HeaderSection extends StatelessWidget {
         ),
         borderRadius: const BorderRadius.vertical(bottom: Radius.circular(35)),
       ),
-      child: Center(
+      child: const Center(
         child: Column(
           children: [
             Text(
-              'Educational Automaton Simulator',
+              'Educational Automaton Simulator!',
               textAlign: TextAlign.center,
-              style: GoogleFonts.poppins(
+              style: TextStyle(
+                fontFamily: 'Poppins',
                 fontSize: 42,
                 fontWeight: FontWeight.w600,
                 color: Colors.white,
                 letterSpacing: 0.5,
               ),
             ),
-            const SizedBox(height: 15),
+            SizedBox(height: 15),
             Text(
               'Learn & Explore Automaton Models',
               textAlign: TextAlign.center,
-              style: GoogleFonts.poppins(
-                fontSize: 18,
+              style: TextStyle(
+                fontFamily: 'Poppins',
+                fontSize: 20,
                 fontWeight: FontWeight.w300,
                 color: Colors.white70,
               ),
@@ -87,7 +88,8 @@ class SimulatorOptionsSection extends StatelessWidget {
         children: [
           Text(
             'Choose Your Simulator',
-            style: GoogleFonts.poppins(
+            style: TextStyle(
+              fontFamily: 'Poppins',
               fontSize: 32,
               fontWeight: FontWeight.w700,
               color: Colors.deepPurple[800],
@@ -96,12 +98,12 @@ class SimulatorOptionsSection extends StatelessWidget {
           const SizedBox(height: 12),
           Text(
             'Select the model you wish to simulate and start exploring automata theory in action.',
-            textAlign: TextAlign.center,
-            style: GoogleFonts.poppins(
+            style: TextStyle(
+              fontFamily: 'Poppins',
               fontSize: 17,
-              color: Colors.deepPurple[400],
-              height: 1.5,
               fontWeight: FontWeight.w400,
+              height: 1.5,
+              color: Colors.deepPurple[400],
             ),
           ),
           const SizedBox(height: 38),
@@ -185,22 +187,24 @@ class SimulatorCard extends StatelessWidget {
                 const SizedBox(height: 25),
                 Text(
                   title,
-                  style: GoogleFonts.poppins(
+                  style: TextStyle(
+                    fontFamily: 'Poppins',
                     fontSize: 29,
                     fontWeight: FontWeight.w700,
                     color: Colors.grey[850],
                   ),
                 ),
-                const SizedBox(height: 11),
                 Text(
                   subtitle,
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.poppins(
+                  style: TextStyle(
+                    fontFamily: 'Poppins',
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
                     color: Colors.grey[600],
                   ),
                 ),
+                const SizedBox(height: 11),
               ],
             ),
           ),
@@ -224,10 +228,11 @@ class FeaturesSection extends StatelessWidget {
         children: [
           Text(
             'Features',
-            style: GoogleFonts.poppins(
+            style: TextStyle(
+              fontFamily: 'Poppins',
               fontSize: 38,
               fontWeight: FontWeight.bold,
-              color: const Color(0xFF4725A6),
+              color: Colors.deepPurple[800],
             ),
           ),
           const SizedBox(height: 55),
@@ -280,7 +285,7 @@ class FeatureBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 320,
+      width: 340,
       child: Column(
         children: [
           Icon(icon, color: const Color(0xFF4725A6), size: 55),
@@ -288,21 +293,23 @@ class FeatureBox extends StatelessWidget {
           Text(
             title,
             textAlign: TextAlign.center,
-            style: GoogleFonts.poppins(
+            style: const TextStyle(
+              fontFamily: 'Poppins',
               fontSize: 22,
               fontWeight: FontWeight.w600,
-              color: const Color(0xFF383838),
+              color: Color(0xFF383838),
             ),
           ),
           const SizedBox(height: 9),
           Text(
             subtitle,
             textAlign: TextAlign.center,
-            style: GoogleFonts.poppins(
-              fontSize: 15,
-              color: Colors.grey,
+            style: const TextStyle(
+              fontFamily: 'Poppins',
               height: 1.4,
+              fontSize: 15,
               fontWeight: FontWeight.w400,
+              color: Colors.grey,
             ),
           ),
         ],
@@ -328,32 +335,34 @@ class AboutMeSection extends StatelessWidget {
             children: [
               Text(
                 'About This Project',
-                style: GoogleFonts.poppins(
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: 'Poppins',
                   fontSize: 30,
                   fontWeight: FontWeight.w700,
                   color: Colors.deepPurple[800],
                 ),
-                textAlign: TextAlign.center,
               ),
               const SizedBox(height: 28),
               Text(
                 'Automaton Simulator was created to help students, educators, and anyone curious about computation explore the world of automata.\n\nHere you can visualize, experiment with, and truly understand the concepts behind finite automata, pushdown automata, and Turing machines — in an intuitive and interactive way.\n\nWhether you’re struggling with theory or just want to play with machines, this tool is for you!',
-                style: GoogleFonts.poppins(
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: 'Poppins',
                   fontSize: 16,
                   color: Colors.grey[800],
                   height: 1.7,
                 ),
-                textAlign: TextAlign.center,
               ),
               const SizedBox(height: 28),
               Text(
                 'This project was lovingly developed by a single developer. If you found it helpful or inspiring, feel free to support, share, or just say hi!',
-                style: GoogleFonts.poppins(
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: 'Poppins',
                   fontSize: 14,
                   color: Colors.deepPurple[400],
-                  fontWeight: FontWeight.w500,
                 ),
-                textAlign: TextAlign.center,
               ),
               const SizedBox(height: 28),
               const Row(
@@ -375,12 +384,13 @@ class AboutMeSection extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 'Created and maintained by Yosi Kariv 💜',
-                style: GoogleFonts.poppins(
-                  fontSize: 13,
-                  color: Colors.deepPurple[200],
-                  fontWeight: FontWeight.w400,
-                ),
                 textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 13,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.deepPurple[200],
+                ),
               ),
             ],
           ),
@@ -414,9 +424,10 @@ class SocialLinkButton extends StatelessWidget {
       icon: FaIcon(icon, size: 22, color: Colors.deepPurple[600]),
       label: Text(
         label,
-        style: GoogleFonts.poppins(
+        style: TextStyle(
+          fontFamily: 'Poppins',
+          fontWeight: FontWeight.w600,
           color: Colors.deepPurple[600],
-          fontWeight: FontWeight.w500,
         ),
       ),
       style: TextButton.styleFrom(
@@ -439,12 +450,13 @@ class FooterSection extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 24),
       color: Colors.deepPurple[900],
-      child: Center(
+      child: const Center(
         child: Text(
           '© 2024 Automaton Simulator. All rights reserved.',
           textAlign: TextAlign.center,
-          style: GoogleFonts.poppins(
-            fontSize: 13,
+          style: TextStyle(
+            fontFamily: 'Poppins',
+            fontSize: 15,
             fontWeight: FontWeight.w300,
             color: Colors.white70,
           ),
