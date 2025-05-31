@@ -458,7 +458,7 @@ class FooterSection extends StatelessWidget {
             fontFamily: 'Poppins',
             fontSize: 15,
             fontWeight: FontWeight.w300,
-            color: Colors.white70,
+            color: Colors.white,
           ),
         ),
       ),

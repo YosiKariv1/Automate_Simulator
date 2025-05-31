@@ -182,8 +182,6 @@ class WelcomeDialogDFA extends StatelessWidget {
 Future<bool> showWelcomeDialog(BuildContext context) async {
   final result = await showGeneralDialog<bool>(
     context: context,
-    barrierDismissible: false,
-    barrierLabel: "Welcome Dialog",
     pageBuilder: (context, animation, secondaryAnimation) {
       return ScaleTransition(
         scale: Tween<double>(begin: 0.5, end: 1.0).animate(animation),

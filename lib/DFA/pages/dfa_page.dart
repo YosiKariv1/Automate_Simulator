@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:automaton_simulator/DFA/simulator/word_display_widget.dart';
 import 'package:automaton_simulator/classes/dfa_class.dart';
-import 'package:automaton_simulator/DFA/info/dfa_info.dart';
-import 'package:automaton_simulator/DFA/info/welcome_popup_dfa.dart';
+import 'package:automaton_simulator/DFA/info/dfa_table.dart';
+import 'package:automaton_simulator/DFA/info/dfa_welcom_popup.dart';
 import 'package:automaton_simulator/DFA/pages/widgets/animated_border.dart';
 import 'package:automaton_simulator/DFA/pages/widgets/editor_widget.dart';
 import 'package:automaton_simulator/DFA/pages/widgets/enter_word_widget.dart';
@@ -98,8 +98,8 @@ class DfaPageState extends State<DfaPage> {
           ),
           Text(
             'DFA Simulator',
-            style: GoogleFonts.rajdhani(
-              fontSize: 40,
+            style: GoogleFonts.poppins(
+              fontSize: 35,
               fontWeight: FontWeight.bold,
               color: Colors.white,
             ),
@@ -253,20 +253,24 @@ class DfaPageState extends State<DfaPage> {
     TutorialCoachMark(
       targets: _createTargets(),
       colorShadow: Colors.deepPurple[900]!,
-      textSkip: "Skip Tutorial",
-      textStyleSkip: const TextStyle(
-          color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
-      paddingFocus: 10,
-      opacityShadow: 0.8,
       hideSkip: false,
-      alignSkip: Alignment.bottomRight,
       skipWidget: Container(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: Colors.deepPurple.shade700,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: Colors.deepPurple.shade900,
+            width: 2,
+          ),
         ),
-        child: const Text("Skip", style: TextStyle(color: Colors.white)),
+        child: const Text("Skip",
+            style: TextStyle(
+              fontFamily: 'Poppins',
+              color: Colors.white,
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+            )),
       ),
     ).show(context: context);
   }
@@ -274,59 +278,61 @@ class DfaPageState extends State<DfaPage> {
   List<TargetFocus> _createTargets() {
     return [
       _buildTutorialStep(
-        "Editor Section",
-        editorKey,
-        "DFA Editor",
-        "This is where you can create and edit your DFA (Deterministic Finite Automaton). "
-            "Add states and transitions to define your automaton's behavior.",
-        CustomTargetContentPosition(left: 0, bottom: 0),
-        width: 100,
-        height: 100,
+        id: "Editor Section",
+        key: editorKey,
+        title: "Visual DFA Builder",
+        description: "Use this interactive editor to visually design your DFA. "
+            "Tap to add states, drag to reposition them, and draw transitions to define how your automaton behaves. "
+            "This is the heart of your simulation.",
+        position: CustomTargetContentPosition(top: 100, left: 10),
+        alignment: Alignment.centerLeft,
+        maxWidth: 350,
+        minHeight: 185,
       ),
       _buildTutorialStep(
-        "Word Section",
-        regxKey,
-        "WordInput",
-        "Enter a Word here to test against your DFA. "
+        id: "Word Section",
+        key: regxKey,
+        title: "Word Input",
+        description: "Enter a Word here to test against your DFA. "
             "The simulator will check if the DFA accepts the given Word.",
-        CustomTargetContentPosition(left: 0, top: 350),
-        width: 0,
-        height: 100,
+        position: CustomTargetContentPosition(top: 80, right: 500),
+        alignment: Alignment.topRight,
       ),
       _buildTutorialStep(
-        "Info Section",
-        infoPanelKey,
-        "DFA Information",
-        "This panel provides detailed information about DFAs and their properties. "
+        id: "Info Section",
+        key: infoPanelKey,
+        title: "DFA Information / Table",
+        description:
+            "This panel provides detailed information about DFAs and their properties. "
             "It's a great resource for learning more about automata theory.",
-        CustomTargetContentPosition(left: 0, top: 150),
-        width: 0,
-        height: 100,
+        position: CustomTargetContentPosition(top: 300, right: 500),
+        alignment: Alignment.centerRight,
       ),
       _buildTutorialStep(
-        "ControlPanel",
-        controlPanelKey,
-        "Simulation Control Panel",
-        "Use these controls to run, pause, and reset the simulation. "
+        id: "Control Panel",
+        key: controlPanelKey,
+        title: "Simulation Control Panel",
+        description:
+            "Use these controls to run, pause, and reset the simulation. "
             "You can also step through the simulation one state at a time.",
-        CustomTargetContentPosition(bottom: 150),
-        width: 300,
-        height: 120,
+        position: CustomTargetContentPosition(bottom: 150),
+        alignment: Alignment.centerLeft,
       ),
     ];
   }
 
-  TargetFocus _buildTutorialStep(
-    String identify,
-    GlobalKey key,
-    String title,
-    String description,
-    CustomTargetContentPosition position, {
-    required double width,
-    required double height,
+  TargetFocus _buildTutorialStep({
+    required String id,
+    required GlobalKey key,
+    required String title,
+    required String description,
+    CustomTargetContentPosition? position,
+    Alignment alignment = Alignment.center,
+    double maxWidth = 300,
+    double minHeight = 150,
   }) {
     return TargetFocus(
-      identify: identify,
+      identify: id,
       keyTarget: key,
       alignSkip: Alignment.topRight,
       contents: [
@@ -334,60 +340,60 @@ class DfaPageState extends State<DfaPage> {
           align: ContentAlign.custom,
           customPosition: position,
           builder: (context, controller) {
-            return LayoutBuilder(
-              builder: (context, constraints) {
-                double finalWidth =
-                    width > 0 ? width : constraints.minWidth * 0.8;
-                double finalHeight =
-                    height > 0 ? height : constraints.maxHeight * 0.4;
-
-                return Container(
-                  width: finalWidth,
-                  height: finalHeight,
-                  constraints: BoxConstraints(
-                    minWidth: 10,
-                    maxWidth: constraints.maxWidth * 0.8,
-                    minHeight: 50,
-                    maxHeight: constraints.maxHeight * 0.8,
-                  ),
-                  padding: const EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black,
-                        blurRadius: 10,
-                        offset: Offset(0, 5),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        style: TextStyle(
-                          color: Colors.deepPurple[800],
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+            return Align(
+              alignment: alignment,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: maxWidth,
+                  minHeight: minHeight,
+                ),
+                child: Material(
+                  color: Colors.transparent,
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 10,
+                          offset: Offset(0, 4),
                         ),
-                      ),
-                      const SizedBox(height: 10),
-                      Expanded(
-                        child: SingleChildScrollView(
-                          child: Text(
-                            description,
-                            style: TextStyle(
-                                color: Colors.deepPurple[700], fontSize: 14),
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          title,
+                          style: const TextStyle(
+                            fontFamily: 'Poppins',
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.deepPurple,
                           ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 5),
+                        Flexible(
+                          child: SingleChildScrollView(
+                            child: Text(
+                              description,
+                              style: const TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 14,
+                                color: Colors.black87,
+                                height: 1.4,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                );
-              },
+                ),
+              ),
             );
           },
         ),
