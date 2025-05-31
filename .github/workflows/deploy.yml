@@ -1,7 +1,7 @@
 name: Check AWS Secrets
 
 on:
-  workflow_dispatch: # תריץ ידנית כשאתה לוחץ Play ב-GitHub
+  workflow_dispatch:
 
 jobs:
   check-aws:
