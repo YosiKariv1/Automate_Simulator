@@ -24,15 +24,6 @@ jobs:
       - name: Build Web App
         run: flutter build web
 
-      - name: Check env variables (safe)
-        run: |
-          if [ -z "$AWS_ACCESS_KEY_ID" ]; then echo "❌ AWS_ACCESS_KEY_ID is empty"; fi
-          if [ -z "$AWS_SECRET_ACCESS_KEY" ]; then echo "❌ AWS_SECRET_ACCESS_KEY is empty"; fi
-          echo "✅ Done"
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
       - name: Deploy to S3
         uses: jakejarvis/s3-sync-action@v0.5.1
         with:
