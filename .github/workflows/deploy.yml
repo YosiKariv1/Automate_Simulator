@@ -1,45 +1,18 @@
-name: Deploy to S3
+name: Check AWS Secrets
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch: # תריץ ידנית כשאתה לוחץ Play ב-GitHub
 
 jobs:
-  build-and-deploy:
+  check-aws:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: "3.32.1"
-
-      - name: Install dependencies
-        run: flutter pub get
-
-      - name: Build Web App
-        run: flutter build web
-
-      - name: Check env variables (safe)
+      - name: Check AWS secrets (safe)
         run: |
-          if [ -z "$AWS_ACCESS_KEY_ID" ]; then echo "❌ AWS_ACCESS_KEY_ID is empty"; fi
-          if [ -z "$AWS_SECRET_ACCESS_KEY" ]; then echo "❌ AWS_SECRET_ACCESS_KEY is empty"; fi
-          echo "✅ Done"
+          echo "🔍 Checking secrets..."
+          if [ -z "$AWS_ACCESS_KEY_ID" ]; then echo "❌ AWS_ACCESS_KEY_ID is empty"; else echo "✅ AWS_ACCESS_KEY_ID loaded"; fi
+          if [ -z "$AWS_SECRET_ACCESS_KEY" ]; then echo "❌ AWS_SECRET_ACCESS_KEY is empty"; else echo "✅ AWS_SECRET_ACCESS_KEY loaded"; fi
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
-      - name: Deploy to S3
-        uses: jakejarvis/s3-sync-action@v0.5.1
-        with:
-          args: --acl public-read --follow-symlinks --delete
-        env:
-          AWS_S3_BUCKET: automaton-simulator
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: eu-north-1
-          SOURCE_DIR: build/web
