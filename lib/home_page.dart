@@ -47,7 +47,7 @@ class HeaderSection extends StatelessWidget {
         child: Column(
           children: [
             Text(
-              'Educational Automaton Simulator!',
+              'Educational Automaton Simulator!!',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'Poppins',
