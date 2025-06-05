@@ -36,7 +36,7 @@ class DfaAlgorithm {
       return steps;
     }
 
-    NodeWithTransitions current = structure[0]; // מצב התחלתי
+    NodeWithTransitions current = structure[0];
 
     // Add an initial step to highlight the start state without processing any input
     steps.add(

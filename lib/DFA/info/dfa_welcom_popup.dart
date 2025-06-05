@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:automaton_simulator/classes/dfa_class.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -67,7 +68,10 @@ class WelcomeDialogDFA extends StatelessWidget {
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(
                     labelText: 'Enter alphabet symbols (e.g., a,b,0,1)',
-                    labelStyle: TextStyle(color: Colors.deepPurple.shade400),
+                    labelStyle: TextStyle(
+                        color: Colors.deepPurple.shade400,
+                        fontFamily: 'Poppins',
+                        fontSize: 15),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15.0),
                       borderSide: BorderSide(color: Colors.deepPurple.shade300),
@@ -77,10 +81,8 @@ class WelcomeDialogDFA extends StatelessWidget {
                       borderSide: BorderSide(
                           color: Colors.deepPurple.shade700, width: 2),
                     ),
-                    prefixIcon:
-                        Icon(Icons.abc, color: Colors.deepPurple.shade700),
-                    hintText: 'e.g., a,b,0,1',
-                    hintStyle: TextStyle(color: Colors.grey.shade400),
+                    prefixIcon: Icon(FontAwesomeIcons.font,
+                        size: 15, color: Colors.deepPurple.shade700),
                   ),
                   cursorColor: Colors.deepPurple.shade700,
                 ),

@@ -115,7 +115,7 @@ class SimulatorOptionsSection extends StatelessWidget {
               SimulatorCard(
                 title: 'DFA',
                 subtitle: 'Finite Automaton',
-                icon: Icons.account_tree_outlined,
+                icon: FontAwesomeIcons.codeBranch,
                 color: Colors.blue,
                 onTap: () => Navigator.push(
                   context,
@@ -125,7 +125,7 @@ class SimulatorOptionsSection extends StatelessWidget {
               SimulatorCard(
                 title: 'PDA',
                 subtitle: 'Pushdown Automaton',
-                icon: Icons.layers_outlined,
+                icon: FontAwesomeIcons.layerGroup,
                 color: Colors.green,
                 onTap: () => Navigator.push(
                   context,
@@ -135,7 +135,7 @@ class SimulatorOptionsSection extends StatelessWidget {
               SimulatorCard(
                 title: 'TM',
                 subtitle: 'Turing Machine',
-                icon: Icons.memory_outlined,
+                icon: FontAwesomeIcons.memory,
                 color: Colors.orange,
                 onTap: () => Navigator.push(
                   context,
@@ -242,20 +242,20 @@ class FeaturesSection extends StatelessWidget {
             alignment: WrapAlignment.center,
             children: [
               FeatureBox(
-                icon: Icons.play_circle_fill,
+                icon: FontAwesomeIcons.play,
                 iconBg: Color(0xFF6B39CF),
                 title: 'Interactive Simulations',
                 subtitle:
                     'Visualize automata in action with\nstep-by-step animations',
               ),
               FeatureBox(
-                icon: Icons.school,
+                icon: FontAwesomeIcons.graduationCap,
                 iconBg: Color(0xFF6B39CF),
                 title: 'Comprehensive Tutorials',
                 subtitle: 'Learn the theory behind each\ncomputational model',
               ),
               FeatureBox(
-                icon: Icons.edit,
+                icon: FontAwesomeIcons.pen,
                 iconBg: Color(0xFF6B39CF),
                 title: 'Custom Automata Creation',
                 subtitle:
@@ -288,7 +288,7 @@ class FeatureBox extends StatelessWidget {
       width: 340,
       child: Column(
         children: [
-          Icon(icon, color: const Color(0xFF4725A6), size: 55),
+          Icon(icon, color: const Color(0xFF4725A6), size: 50),
           const SizedBox(height: 25),
           Text(
             title,

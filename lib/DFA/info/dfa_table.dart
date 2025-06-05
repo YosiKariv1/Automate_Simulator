@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:automaton_simulator/classes/dfa_class.dart';
 import 'package:provider/provider.dart';
 
-class DfaInfoWidget extends StatelessWidget {
-  const DfaInfoWidget({super.key});
+class DfaTable extends StatelessWidget {
+  const DfaTable({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,28 +17,27 @@ class DfaInfoWidget extends StatelessWidget {
         }
         // --- MAIN DFA INFO ---
         return SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildInfoCard([
-                  _buildInfoRow('States (Q)',
-                      automaton.nodes.map((n) => n.name).join(', ')),
-                  _buildInfoRow(
-                      'Alphabet (Σ)',
-                      automaton.getAlphabet().isEmpty
-                          ? 'Not set'
-                          : automaton.getAlphabet()),
-                  _buildInfoRow(
-                      'Initial State (q0)', automaton.nodes.first.name),
-                  _buildInfoRow(
-                      'Accepting States (F)', _getAcceptStates(automaton)),
-                ]),
-                const SizedBox(height: 24),
-                _buildTransitionTable(automaton),
-              ],
-            ),
+          child: Column(
+            children: [
+              _buildInfoCard([
+                _buildInfoRow(
+                    'States (Q)', automaton.nodes.map((n) => n.name).join(', '),
+                    icon: FontAwesomeIcons.circleDot),
+                _buildInfoRow(
+                    'Alphabet (Σ)',
+                    automaton.getAlphabet().isEmpty
+                        ? 'Not set'
+                        : automaton.getAlphabet(),
+                    icon: FontAwesomeIcons.font),
+                _buildInfoRow('Initial State (q0)', automaton.nodes.first.name,
+                    icon: FontAwesomeIcons.play),
+                _buildInfoRow(
+                    'Accepting States (F)', _getAcceptStates(automaton),
+                    icon: FontAwesomeIcons.circleCheck),
+              ]),
+              const SizedBox(height: 10),
+              _buildTransitionTable(automaton),
+            ],
           ),
         );
       },
@@ -59,7 +59,7 @@ class DfaInfoWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Icon(Icons.info_outline,
+              Icon(FontAwesomeIcons.circleInfo,
                   size: 52, color: Colors.deepPurple.shade300),
               const SizedBox(height: 15),
               Text(
@@ -104,31 +104,55 @@ class DfaInfoWidget extends StatelessWidget {
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(14.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: content,
+          children: [
+            ...content,
+          ],
         ),
       ),
     );
   }
 
   // --- INFO ROW ---
-  Widget _buildInfoRow(String label, String value) {
+  Widget _buildInfoRow(String label, String value, {IconData? icon}) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          if (icon != null)
+            Padding(
+              padding: const EdgeInsets.only(right: 6.0, top: 4),
+              child: Icon(icon, size: 20, color: Colors.deepPurple.shade300),
+            ),
           SizedBox(
             width: 130,
             child: Text(
               label,
-              style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+              style: GoogleFonts.poppins(
+                fontWeight: FontWeight.w600,
+                fontSize: 15.5,
+                color: Colors.grey.shade800,
+              ),
             ),
           ),
           Expanded(
-            child: Text(value, style: GoogleFonts.roboto()),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              decoration: BoxDecoration(
+                color: Colors.deepPurple.shade50,
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: Text(
+                value,
+                style: GoogleFonts.roboto(
+                  fontSize: 14.5,
+                  color: Colors.deepPurple.shade800,
+                ),
+              ),
+            ),
           ),
         ],
       ),

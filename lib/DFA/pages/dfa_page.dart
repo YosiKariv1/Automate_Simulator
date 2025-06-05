@@ -1,6 +1,5 @@
 import 'package:automaton_simulator/DFA/pages/widgets/panel_container.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:automaton_simulator/DFA/simulator/word_display_widget.dart';
 import 'package:automaton_simulator/classes/dfa_class.dart';
 import 'package:automaton_simulator/DFA/info/dfa_table.dart';
@@ -12,6 +11,7 @@ import 'package:automaton_simulator/DFA/simulator/simulation_control_panel.dart'
 import 'package:automaton_simulator/DFA/simulator/simulator_class.dart';
 import 'package:provider/provider.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class DfaPage extends StatefulWidget {
   const DfaPage({super.key});
@@ -90,25 +90,31 @@ class DfaPageState extends State<DfaPage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            icon: const Icon(FontAwesomeIcons.arrowLeft,
+                color: Colors.white, size: 22),
             onPressed: () {
               automaton.reset();
               Navigator.of(context).pop();
             },
           ),
-          Text(
+          const Text(
             'DFA Simulator',
-            style: GoogleFonts.poppins(
+            style: TextStyle(
+              fontFamily: 'Poppins',
               fontSize: 35,
               fontWeight: FontWeight.bold,
               color: Colors.white,
             ),
           ),
-          IconButton(
-            icon: const Icon(Icons.help_outline, color: Colors.white),
-            onPressed: () {
-              showTutorial();
-            },
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 12, 0),
+            child: IconButton(
+              icon: const Icon(FontAwesomeIcons.circleQuestion,
+                  color: Colors.white, size: 22),
+              onPressed: () {
+                showTutorial();
+              },
+            ),
           ),
         ],
       ),
@@ -244,7 +250,7 @@ class DfaPageState extends State<DfaPage> {
         containerKey: infoPanelKey,
         scrollable: true,
         padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-        child: const DfaInfoWidget(),
+        child: const DfaTable(),
       ),
     );
   }

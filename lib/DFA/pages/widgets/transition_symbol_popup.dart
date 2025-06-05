@@ -43,8 +43,8 @@ class _TransitionSymbolPopupState extends State<TransitionSymbolPopup> {
             borderRadius: BorderRadius.circular(24),
             boxShadow: const [
               BoxShadow(
-                color: Colors.deepPurple,
-                blurRadius: 32,
+                color: Colors.black,
+                blurRadius: 12,
                 offset: Offset(0, 8),
               ),
             ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:automaton_simulator/DFA/simulator/automaton_validator.dart';
 import 'package:automaton_simulator/DFA/simulator/simulator_class.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SimulationControlPanel extends StatefulWidget {
   final Simulator simulator;
@@ -44,33 +45,38 @@ class SimulationControlPanelState extends State<SimulationControlPanel>
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          _buildProgressSlider(context),
-          const SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _buildControlButton(
-                icon:
-                    widget.simulator.isPlaying ? Icons.pause : Icons.play_arrow,
-                onPressed: _handlePlayPause,
-                tooltip: widget.simulator.isPlaying ? 'Pause' : 'Play',
-              ),
-              _buildControlButton(
-                icon: Icons.stop,
-                onPressed: _handleStop,
-                tooltip: 'Stop',
-              ),
-              _buildControlButton(
-                icon: Icons.replay,
-                onPressed: _handleReset,
-                tooltip: 'Reset',
-              ),
-              _buildSpeedControl(),
-            ],
+          IconButton(
+            icon: FaIcon(
+              widget.simulator.isPlaying
+                  ? FontAwesomeIcons.pause
+                  : FontAwesomeIcons.play,
+              size: 32,
+            ),
+            tooltip: widget.simulator.isPlaying ? 'Pause' : 'Play',
+            onPressed: _handlePlayPause,
+            color: Colors.deepPurple.shade700,
           ),
+          const SizedBox(width: 12),
+          IconButton(
+            icon: const FaIcon(FontAwesomeIcons.stop, size: 26),
+            tooltip: 'Stop',
+            onPressed: _handleStop,
+            color: Colors.deepPurple,
+          ),
+          const SizedBox(width: 12),
+          IconButton(
+            icon: const FaIcon(FontAwesomeIcons.rotateLeft, size: 26),
+            tooltip: 'Reset',
+            onPressed: _handleReset,
+            color: Colors.deepPurple,
+          ),
+          const SizedBox(width: 10),
+          _buildSpeedControl(),
+          const SizedBox(width: 20),
+          Expanded(child: _buildProgressSlider(context)),
         ],
       ),
     );
@@ -111,7 +117,9 @@ class SimulationControlPanelState extends State<SimulationControlPanel>
   }
 
   void _handleSpeedChange(double speed) {
-    widget.simulator.setSpeed(speed);
+    setState(() {
+      widget.simulator.setSpeed(speed);
+    });
   }
 
   void _handleProgressChange(double value) {
@@ -129,11 +137,12 @@ class SimulationControlPanelState extends State<SimulationControlPanel>
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0),
+            borderRadius: BorderRadius.circular(5.0),
           ),
           backgroundColor: Colors.deepPurple.shade700,
-          shadowColor: Colors.deepPurple.shade300,
+          shadowColor: Colors.deepPurple.shade200,
           padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+          elevation: 4,
         ),
         child: Icon(icon, color: Colors.white, size: 25),
       ),
@@ -145,8 +154,10 @@ class SimulationControlPanelState extends State<SimulationControlPanel>
       mainAxisSize: MainAxisSize.min,
       children: [
         IconButton(
-          icon: const Icon(Icons.speed, size: 30, color: Colors.deepPurple),
+          icon: const FaIcon(FontAwesomeIcons.gaugeHigh,
+              size: 28, color: Colors.deepPurple),
           onPressed: _toggleSpeedSlider,
+          tooltip: 'Adjust Speed',
         ),
         SizeTransition(
           sizeFactor: _animation,
@@ -184,23 +195,44 @@ class SimulationControlPanelState extends State<SimulationControlPanel>
     return ValueListenableBuilder<bool>(
       valueListenable: widget.simulator,
       builder: (context, _, __) {
-        return SliderTheme(
-          data: SliderTheme.of(context).copyWith(
-            trackHeight: 5.0,
-            thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8.0),
-            overlayShape: const RoundSliderOverlayShape(overlayRadius: 14.0),
-            activeTrackColor: Colors.deepPurple.shade700,
-            inactiveTrackColor: Colors.deepPurple.shade100,
-            thumbColor: Colors.deepPurple.shade700,
-            overlayColor: Colors.deepPurple,
-          ),
-          child: Slider(
-            value: widget.simulator.progress,
-            min: 0,
-            max: 1,
-            onChanged:
-                widget.simulator.steps.isEmpty ? null : _handleProgressChange,
-          ),
+        final currentStep =
+            (widget.simulator.progress * widget.simulator.steps.length).floor();
+        final totalSteps = widget.simulator.steps.length;
+
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              totalSteps == 0 ? '0 / 0' : '$currentStep / $totalSteps',
+              style: const TextStyle(
+                fontSize: 13.5,
+                fontWeight: FontWeight.w500,
+                color: Colors.deepPurple,
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: SliderTheme(
+                data: SliderTheme.of(context).copyWith(
+                  trackHeight: 5.0,
+                  thumbShape:
+                      const RoundSliderThumbShape(enabledThumbRadius: 8.0),
+                  overlayShape:
+                      const RoundSliderOverlayShape(overlayRadius: 14.0),
+                  activeTrackColor: Colors.deepPurple.shade700,
+                  inactiveTrackColor: Colors.deepPurple.shade100,
+                  thumbColor: Colors.deepPurple.shade700,
+                  overlayColor: Colors.deepPurple.withOpacity(0.2),
+                ),
+                child: Slider(
+                  value: widget.simulator.progress,
+                  min: 0,
+                  max: 1,
+                  onChanged: totalSteps == 0 ? null : _handleProgressChange,
+                ),
+              ),
+            ),
+          ],
         );
       },
     );

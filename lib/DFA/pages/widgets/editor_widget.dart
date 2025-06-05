@@ -6,6 +6,7 @@ import 'package:automaton_simulator/DFA/widgets/automaton_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:vector_math/vector_math_64.dart' show Vector3;
 import 'package:google_fonts/google_fonts.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class DFAEditorWidget extends StatefulWidget {
   const DFAEditorWidget({super.key});
@@ -62,19 +63,19 @@ class DFAEditorWidgetState extends State<DFAEditorWidget> {
           buildButton(
             label: 'Add Node',
             color: Colors.deepPurple[700]!,
-            icon: Icons.add,
+            icon: FontAwesomeIcons.plus,
             onPressed: addNode,
           ),
           buildButton(
             label: 'Focus',
             color: Colors.deepPurple[700]!,
-            icon: Icons.center_focus_strong_sharp,
+            icon: FontAwesomeIcons.bullseye,
             onPressed: focusAutomaton,
           ),
           buildButton(
             label: 'Delete Node',
             color: Colors.deepPurple[900]!,
-            icon: Icons.delete,
+            icon: FontAwesomeIcons.trashCan,
             onPressed: automaton.removeNode,
           ),
         ],
@@ -95,20 +96,19 @@ class DFAEditorWidgetState extends State<DFAEditorWidget> {
         backgroundColor: color,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(7),
         ),
         elevation: 10,
         shadowColor: Colors.black,
         minimumSize: const Size(150, 50),
       ),
-      icon: Icon(icon, size: 24),
+      icon: Icon(icon, size: 20),
       label: Text(
         label,
         style: GoogleFonts.poppins(
-          // שימוש בפונט חדש
           textStyle: const TextStyle(
             fontSize: 16,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w500,
           ),
         ),
       ),
