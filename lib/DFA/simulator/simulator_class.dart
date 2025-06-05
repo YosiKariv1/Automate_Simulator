@@ -10,8 +10,8 @@ class Simulator extends ValueNotifier<bool> {
   List<SimulationStep> steps = [];
   int currentStepIndex = -1;
   List<String> processedSymbols = [];
-  Set<Transition> highlightedTransitions = {};
-  Set<Node> highlightedNodes = {};
+  Node? _previousNode;
+  Transition? _previousTransition;
   Node? currentNode;
   Transition? currentTransition;
   String? currentSymbol;
@@ -126,18 +126,18 @@ class Simulator extends ValueNotifier<bool> {
   }
 
   void _updateSimulationState(SimulationStep step) {
+    _clearPreviousHighlights();
+
     currentNode = step.node;
     currentTransition = step.transition;
     currentSymbol = step.symbol;
     lastStepType = step.type;
     isOnNode = (step.transition == null);
 
-    highlightedNodes.add(step.node);
     permanentHighlightedNodes.add(step.node);
 
     if (step.transition != null) {
       activeTransition = step.transition;
-      highlightedTransitions.add(step.transition!);
       permanentHighlightedTransitions.add(step.transition!);
       if (step.symbol != null) {
         processedSymbols.add(step.symbol!);
@@ -149,6 +149,9 @@ class Simulator extends ValueNotifier<bool> {
     }
 
     _highlightCurrentElements();
+
+    _previousNode = currentNode;
+    _previousTransition = activeTransition;
   }
 
   void _resetSimulation() {
@@ -165,17 +168,17 @@ class Simulator extends ValueNotifier<bool> {
     processedSymbols.clear();
     lastStepType = null;
     lastProcessedIndex = -1;
-    highlightedTransitions.clear();
-    highlightedNodes.clear();
     permanentHighlightedTransitions.clear();
     permanentHighlightedNodes.clear();
     activeTransition = null;
+    _previousNode = null;
+    _previousTransition = null;
     _clearAllHighlights();
   }
 
   void _highlightCurrentElements() {
     for (var node in automaton.nodes) {
-      node.isInSimulation = highlightedNodes.contains(node);
+      node.isInSimulation = node == currentNode;
       node.isPermanentHighlighted = permanentHighlightedNodes.contains(node);
     }
 
@@ -191,6 +194,11 @@ class Simulator extends ValueNotifier<bool> {
         transition.isPermanentHighlighted = false;
       }
     }
+  }
+
+  void _clearPreviousHighlights() {
+    _previousNode?.isInSimulation = false;
+    _previousTransition?.isInSimulation = false;
   }
 
   void _clearAllHighlights() {
