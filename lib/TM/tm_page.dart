@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'package:automaton_simulator/common/widgets/custom_header.dart';
 class TmPage extends StatefulWidget {
   const TmPage({super.key});
 
@@ -166,7 +167,7 @@ class TmPageState extends State<TmPage> {
         child: SafeArea(
           child: Column(
             children: [
-              buildCustomHeader(),
+              CustomHeader(title: "Turing Machine Simulator", onBack: () { Navigator.of(context).pop(); }, onHelp: () { showTutorial(); },),
               Expanded(
                 child: SingleChildScrollView(
                   child: Padding(
@@ -196,47 +197,6 @@ class TmPageState extends State<TmPage> {
     );
   }
 
-  Widget buildCustomHeader() {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Colors.deepPurple.shade800, Colors.deepPurple.shade500],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: const BorderRadius.only(
-          bottomLeft: Radius.circular(20),
-          bottomRight: Radius.circular(20),
-        ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-          Text(
-            'Turing Machine Simulator',
-            style: GoogleFonts.rajdhani(
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.help_outline, color: Colors.white),
-            onPressed: () {
-              showTutorial();
-            },
-          ),
-        ],
-      ),
-    );
-  }
 
   Widget buildEditorArea() {
     return Container(

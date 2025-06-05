@@ -88,7 +88,6 @@ class Simulator extends ValueNotifier<bool> {
     String input = automaton.word;
     steps = algorithm.simulate(automaton, input);
     currentStepIndex = -1;
-    processedSymbols.clear();
     lastProcessedIndex = -1;
     permanentHighlightedTransitions.clear();
     permanentHighlightedNodes.clear();
@@ -161,13 +160,9 @@ class Simulator extends ValueNotifier<bool> {
   }
 
   void _resetSimulationState() {
-    currentNode = null;
-    currentTransition = null;
-    currentSymbol = null;
-    isOnNode = true;
-    processedSymbols.clear();
     lastStepType = null;
     lastProcessedIndex = -1;
+    highlightedNodes.clear();
     permanentHighlightedTransitions.clear();
     permanentHighlightedNodes.clear();
     activeTransition = null;
@@ -201,6 +196,7 @@ class Simulator extends ValueNotifier<bool> {
     _lastHighlightedNode?.isInSimulation = false;
     _lastHighlightedTransition?.isInSimulation = false;
   }
+
 
   void _clearAllHighlights() {
     for (var node in automaton.nodes) {
