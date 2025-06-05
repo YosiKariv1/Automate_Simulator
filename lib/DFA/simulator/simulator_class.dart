@@ -9,15 +9,9 @@ class Simulator extends ValueNotifier<bool> {
   DfaAlgorithm algorithm = DfaAlgorithm();
   List<SimulationStep> steps = [];
   int currentStepIndex = -1;
-  List<String> processedSymbols = [];
-  Set<Transition> highlightedTransitions = {};
   Set<Node> highlightedNodes = {};
-  Node? currentNode;
-  Transition? currentTransition;
-  String? currentSymbol;
   SimulationStepType? lastStepType;
   double speed = 1.0;
-  bool isOnNode = true;
   int lastProcessedIndex = -1;
   Set<Transition> permanentHighlightedTransitions = {};
   Set<Node> permanentHighlightedNodes = {};
@@ -88,7 +82,6 @@ class Simulator extends ValueNotifier<bool> {
     String input = automaton.word;
     steps = algorithm.simulate(automaton, input);
     currentStepIndex = -1;
-    processedSymbols.clear();
     lastProcessedIndex = -1;
     permanentHighlightedTransitions.clear();
     permanentHighlightedNodes.clear();
@@ -126,21 +119,15 @@ class Simulator extends ValueNotifier<bool> {
   }
 
   void _updateSimulationState(SimulationStep step) {
-    currentNode = step.node;
-    currentTransition = step.transition;
-    currentSymbol = step.symbol;
     lastStepType = step.type;
-    isOnNode = (step.transition == null);
 
     highlightedNodes.add(step.node);
     permanentHighlightedNodes.add(step.node);
 
     if (step.transition != null) {
       activeTransition = step.transition;
-      highlightedTransitions.add(step.transition!);
       permanentHighlightedTransitions.add(step.transition!);
       if (step.symbol != null) {
-        processedSymbols.add(step.symbol!);
         lastProcessedIndex =
             automaton.word.indexOf(step.symbol!, lastProcessedIndex + 1);
       }
@@ -158,14 +145,8 @@ class Simulator extends ValueNotifier<bool> {
   }
 
   void _resetSimulationState() {
-    currentNode = null;
-    currentTransition = null;
-    currentSymbol = null;
-    isOnNode = true;
-    processedSymbols.clear();
     lastStepType = null;
     lastProcessedIndex = -1;
-    highlightedTransitions.clear();
     highlightedNodes.clear();
     permanentHighlightedTransitions.clear();
     permanentHighlightedNodes.clear();
