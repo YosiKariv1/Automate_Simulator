@@ -9,9 +9,15 @@ class Simulator extends ValueNotifier<bool> {
   DfaAlgorithm algorithm = DfaAlgorithm();
   List<SimulationStep> steps = [];
   int currentStepIndex = -1;
-  Set<Node> highlightedNodes = {};
+  List<String> processedSymbols = [];
+  Node? _lastHighlightedNode;
+  Transition? _lastHighlightedTransition;
+  Node? currentNode;
+  Transition? currentTransition;
+  String? currentSymbol;
   SimulationStepType? lastStepType;
   double speed = 1.0;
+  bool isOnNode = true;
   int lastProcessedIndex = -1;
   Set<Transition> permanentHighlightedTransitions = {};
   Set<Node> permanentHighlightedNodes = {};
@@ -119,15 +125,21 @@ class Simulator extends ValueNotifier<bool> {
   }
 
   void _updateSimulationState(SimulationStep step) {
-    lastStepType = step.type;
+    _clearPreviousHighlights();
 
-    highlightedNodes.add(step.node);
+    currentNode = step.node;
+    currentTransition = step.transition;
+    currentSymbol = step.symbol;
+    lastStepType = step.type;
+    isOnNode = (step.transition == null);
+
     permanentHighlightedNodes.add(step.node);
 
     if (step.transition != null) {
       activeTransition = step.transition;
       permanentHighlightedTransitions.add(step.transition!);
       if (step.symbol != null) {
+        processedSymbols.add(step.symbol!);
         lastProcessedIndex =
             automaton.word.indexOf(step.symbol!, lastProcessedIndex + 1);
       }
@@ -136,6 +148,9 @@ class Simulator extends ValueNotifier<bool> {
     }
 
     _highlightCurrentElements();
+
+    _lastHighlightedNode = currentNode;
+    _lastHighlightedTransition = activeTransition;
   }
 
   void _resetSimulation() {
@@ -151,12 +166,14 @@ class Simulator extends ValueNotifier<bool> {
     permanentHighlightedTransitions.clear();
     permanentHighlightedNodes.clear();
     activeTransition = null;
+    _lastHighlightedNode = null;
+    _lastHighlightedTransition = null;
     _clearAllHighlights();
   }
 
   void _highlightCurrentElements() {
     for (var node in automaton.nodes) {
-      node.isInSimulation = highlightedNodes.contains(node);
+      node.isInSimulation = node == currentNode;
       node.isPermanentHighlighted = permanentHighlightedNodes.contains(node);
     }
 
@@ -173,6 +190,13 @@ class Simulator extends ValueNotifier<bool> {
       }
     }
   }
+
+  // Remove highlight from the elements that were active in the previous step.
+  void _clearPreviousHighlights() {
+    _lastHighlightedNode?.isInSimulation = false;
+    _lastHighlightedTransition?.isInSimulation = false;
+  }
+
 
   void _clearAllHighlights() {
     for (var node in automaton.nodes) {
