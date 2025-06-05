@@ -11,7 +11,7 @@ import 'package:automaton_simulator/DFA/simulator/simulation_control_panel.dart'
 import 'package:automaton_simulator/DFA/simulator/simulator_class.dart';
 import 'package:provider/provider.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:automaton_simulator/common/widgets/custom_header.dart';
 
 class DfaPage extends StatefulWidget {
   const DfaPage({super.key});
@@ -50,7 +50,7 @@ class DfaPageState extends State<DfaPage> {
         child: SafeArea(
           child: Column(
             children: [
-              buildCustomHeader(),
+              CustomHeader(title: "DFA Simulator", onBack: () { automaton.reset(); Navigator.of(context).pop(); }, onHelp: () { showTutorial(); },),
               Expanded(
                 child: LayoutBuilder(
                   builder: (context, constraints) {
@@ -72,54 +72,6 @@ class DfaPageState extends State<DfaPage> {
     );
   }
 
-  Widget buildCustomHeader() {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Colors.deepPurple.shade800, Colors.deepPurple.shade500],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: const BorderRadius.only(
-          bottomLeft: Radius.circular(20),
-          bottomRight: Radius.circular(20),
-        ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          IconButton(
-            icon: const Icon(FontAwesomeIcons.arrowLeft,
-                color: Colors.white, size: 22),
-            onPressed: () {
-              automaton.reset();
-              Navigator.of(context).pop();
-            },
-          ),
-          const Text(
-            'DFA Simulator',
-            style: TextStyle(
-              fontFamily: 'Poppins',
-              fontSize: 35,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, 12, 0),
-            child: IconButton(
-              icon: const Icon(FontAwesomeIcons.circleQuestion,
-                  color: Colors.white, size: 22),
-              onPressed: () {
-                showTutorial();
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
   Widget buildEditorPanel() {
     return Expanded(

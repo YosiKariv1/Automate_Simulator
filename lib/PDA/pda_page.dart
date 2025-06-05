@@ -10,6 +10,7 @@ import 'package:automaton_simulator/PDA/editor_widget.dart';
 import 'package:automaton_simulator/classes/pda_class.dart';
 import 'package:provider/provider.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
+import 'package:automaton_simulator/common/widgets/custom_header.dart';
 
 class PdaPage extends StatefulWidget {
   const PdaPage({super.key});
@@ -49,7 +50,7 @@ class PdaPageState extends State<PdaPage> {
         child: SafeArea(
           child: Column(
             children: [
-              buildCustomHeader(),
+              CustomHeader(title: "PDA Simulator", onBack: () { automaton.reset(); Navigator.of(context).pop(); }, onHelp: () { showTutorial(); },),
               Expanded(
                 child: LayoutBuilder(
                   builder: (context, constraints) {
@@ -71,48 +72,6 @@ class PdaPageState extends State<PdaPage> {
     );
   }
 
-  Widget buildCustomHeader() {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Colors.deepPurple.shade800, Colors.deepPurple.shade500],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: const BorderRadius.only(
-          bottomLeft: Radius.circular(20),
-          bottomRight: Radius.circular(20),
-        ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () {
-              automaton.reset();
-              Navigator.of(context).pop();
-            },
-          ),
-          Text(
-            'PDA Simulator',
-            style: GoogleFonts.rajdhani(
-              fontSize: 40,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.info_outline, color: Colors.white),
-            onPressed: () {
-              showTutorial(); // הצגת הדרכה בלחיצה על האייקון
-            },
-          ),
-        ],
-      ),
-    );
-  }
 
   Widget buildEditorPanel() {
     return Expanded(
