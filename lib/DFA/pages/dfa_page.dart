@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:automaton_simulator/DFA/simulator/word_display_widget.dart';
 import 'package:automaton_simulator/classes/dfa_class.dart';
 import 'package:automaton_simulator/DFA/info/dfa_table.dart';
-import 'package:automaton_simulator/DFA/info/dfa_welcom_popup.dart';
+import 'package:automaton_simulator/DFA/info/dfa_welcome_popup.dart';
 import 'package:automaton_simulator/DFA/pages/widgets/animated_border.dart';
 import 'package:automaton_simulator/DFA/pages/widgets/editor_widget.dart';
 import 'package:automaton_simulator/DFA/pages/widgets/enter_word_widget.dart';
