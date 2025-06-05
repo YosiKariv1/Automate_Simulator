@@ -162,7 +162,6 @@ class Simulator extends ValueNotifier<bool> {
   void _resetSimulationState() {
     lastStepType = null;
     lastProcessedIndex = -1;
-    highlightedNodes.clear();
     permanentHighlightedTransitions.clear();
     permanentHighlightedNodes.clear();
     activeTransition = null;
@@ -196,7 +195,6 @@ class Simulator extends ValueNotifier<bool> {
     _lastHighlightedNode?.isInSimulation = false;
     _lastHighlightedTransition?.isInSimulation = false;
   }
-
 
   void _clearAllHighlights() {
     for (var node in automaton.nodes) {
