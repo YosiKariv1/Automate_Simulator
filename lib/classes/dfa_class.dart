@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:automaton_simulator/classes/node_class.dart';
 import 'package:automaton_simulator/classes/transition_class.dart';
-import 'package:automaton_simulator/DFA/pages/widgets/transition_symbol_popup.dart';
+import 'package:automaton_simulator/DFA/widgets/transition_symbol_popup.dart';
 
 class DFA extends ChangeNotifier {
   List<Node> nodes = [];

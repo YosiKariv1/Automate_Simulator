@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:automaton_simulator/DFA/pages/dfa_page.dart';
+import 'package:automaton_simulator/DFA/screens/dfa_page.dart';
 import 'package:automaton_simulator/PDA/pda_page.dart';
 import 'package:automaton_simulator/TM/tm_page.dart';
 import 'package:url_launcher/url_launcher.dart';
