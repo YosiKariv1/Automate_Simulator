@@ -10,8 +10,8 @@ class Simulator extends ValueNotifier<bool> {
   List<SimulationStep> steps = [];
   int currentStepIndex = -1;
   List<String> processedSymbols = [];
-  Node? _previousNode;
-  Transition? _previousTransition;
+  Node? _lastHighlightedNode;
+  Transition? _lastHighlightedTransition;
   Node? currentNode;
   Transition? currentTransition;
   String? currentSymbol;
@@ -150,8 +150,8 @@ class Simulator extends ValueNotifier<bool> {
 
     _highlightCurrentElements();
 
-    _previousNode = currentNode;
-    _previousTransition = activeTransition;
+    _lastHighlightedNode = currentNode;
+    _lastHighlightedTransition = activeTransition;
   }
 
   void _resetSimulation() {
@@ -171,8 +171,8 @@ class Simulator extends ValueNotifier<bool> {
     permanentHighlightedTransitions.clear();
     permanentHighlightedNodes.clear();
     activeTransition = null;
-    _previousNode = null;
-    _previousTransition = null;
+    _lastHighlightedNode = null;
+    _lastHighlightedTransition = null;
     _clearAllHighlights();
   }
 
@@ -196,9 +196,10 @@ class Simulator extends ValueNotifier<bool> {
     }
   }
 
+  // Remove highlight from the elements that were active in the previous step.
   void _clearPreviousHighlights() {
-    _previousNode?.isInSimulation = false;
-    _previousTransition?.isInSimulation = false;
+    _lastHighlightedNode?.isInSimulation = false;
+    _lastHighlightedTransition?.isInSimulation = false;
   }
 
   void _clearAllHighlights() {
