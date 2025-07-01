@@ -169,9 +169,9 @@ class DfaTable extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Center(
             child: Text(
-              'No transitions defined',
-              style:
-                  GoogleFonts.roboto(fontSize: 16, color: Colors.grey.shade600),
+              'Add transitions to view the transition table.',
+              style: GoogleFonts.poppins(
+                  fontSize: 16, color: Colors.grey.shade600),
               textAlign: TextAlign.center,
             ),
           ),
